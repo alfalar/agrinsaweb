@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+
+<h:body>
+	<f:view>
+		<h:form id="form">
+			<h:panelGrid style="vertical-align: middle; font-size: 14px; text-align: center;" columns="1">
+				<h:graphicImage value="../images/logo_agrinsa.jpg" />
+				<h:panelGrid style="vertical-align: middle; font-size: 14px; text-align: center;border:1" columns="2">
+					<h:outputText value="Usuario: " />
+					<p:inputText id="usuario" value="#{loginBean.userName}" />
+					<h:outputText value="Contrasena " />
+					<p:password id="password" value="#{loginBean.password}"
+						feedback="true" />
+					<p:commandButton value="Aceptar" ajax="false" align="center"
+						action="#{loginBean.doLogin}">
+					</p:commandButton>
+					<h:outputLabel value="#{loginBean.mensaje}" />
+				</h:panelGrid>
+			</h:panelGrid>
+		</h:form>
+	</f:view>
+</h:body>
+
+</html>

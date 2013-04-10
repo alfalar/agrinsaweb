@@ -1,0 +1,63 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean id="appCtxHolder" class="co.geographs.agrinsa.util.AppCtxHolder" />
+	<!-- Datasource usando Pool <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+		<property name="resourceRef"><value>false</value></property> <property name="jndiName"> 
+		<value>jdbc/UnibanDS</value> </property> </bean> -->
+	<!-- Datasource: Para desarrollo BD SQLServer -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+		<property name="url"
+			value="jdbc:sqlserver://localhost:1433;databaseName=agrinsagdb" />
+		<property name="username" value="agrinsa" />
+		<property name="password" value="agrinsa2013" />
+	</bean>
+
+	<!-- Hibernate -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+				<!-- prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop -->
+				<prop key="hibernate.show_sql">true</prop>				
+				<prop key="hibernate.hibernate.format_sql">true</prop>
+
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>co.geographs.agrinsa.dao.business.Usuarios</value>
+				<value>co.geographs.agrinsa.dao.business.Roles</value>
+				<value>co.geographs.agrinsa.dao.business.MiembrosRol</value>
+				<value>co.geographs.agrinsa.dao.business.Permisos</value>
+				<value>co.geographs.agrinsa.dao.business.PermisosRol</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="usuariosDao" class="co.geographs.agrinsa.dao.UsuariosDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="constantesDao" class="co.geographs.agrinsa.dao.ConstantesDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="nuevoloteDao" class="co.geographs.agrinsa.dao.NuevoLoteDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="visitasDao" class="co.geographs.agrinsa.dao.VisitasDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+</beans>
+

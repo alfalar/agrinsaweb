@@ -1,0 +1,44 @@
+.ppsaToolbarWindow {position: absolute; z-index: 99;}
+.ppsaToolbarWindow .iwContainer {position: absolute; display: none; background-color: #C0C0C0;opacity:0.9}
+.ppsaToolbarWindow .map {position: relative; width: 100%; height: 100%; background-color: #FFF;}
+.ppsaToolbarWindow .iwHighlight {position: absolute; display: none; z-index: 99; cursor: move;}
+.ppsaToolbarWindow .iwButton {position: relative; width: 16px; height: 16px; cursor: pointer; z-index: 99;}
+.ppsaToolbarWindow .iwMaximizer {display: none;}.ppsaToolbarWindow .iwDisabledButton {display: none !important;}
+.ppsaToolbarWindow .iwMaximize {background: url(../images/information.png) 0px -130px;}
+.ppsaToolbarWindow .iwRestore {background: url(../images/information.png) 0px -104px;}
+.ppsaToolbarWindow.iwTL {top: 0px; left: 0px;}.ppsaToolbarWindow.iwTR {top: 0px; right: 0px;}
+.ppsaToolbarWindow.iwBL {bottom: 0px; left: 0px;}.ppsaToolbarWindow.iwBR {bottom: 0px; right: 0px;}
+.ppsaToolbarWindow.iwTL .iwContainer {top: 0px; left: 0px; border-bottom: 1px solid #000; border-right: 1px solid #000; padding-bottom: 2px; padding-right: 2px;}
+.ppsaToolbarWindow.iwTR .iwContainer {top: 0px; right: 0px; border-bottom: 1px solid #000; border-left: 1px solid #000; padding-bottom: 2px; padding-left: 2px;}
+.ppsaToolbarWindow.iwBL .iwContainer {bottom: 0px; left: 0px; border-top: 1px solid #000; border-right: 1px solid #000; padding-top: 2px; padding-right: 2px;}
+.ppsaToolbarWindow.iwBR .iwContainer {bottom: 0px; right: 0px; border-top: 1px solid #000; border-left: 1px solid #000; padding-top: 2px; padding-left: 2px;}
+.ppsaToolbarWindow.iwTL .iwShow, .ppsaToolbarWindow.iwBR .iwHide {background: url(../images/information.png) 0px -26px;}
+.ppsaToolbarWindow.iwTR .iwShow, .ppsaToolbarWindow.iwBL .iwHide {background: url(../images/information.png) 0px 0px;}
+.ppsaToolbarWindow.iwBL .iwShow, .ppsaToolbarWindow.iwTR .iwHide {background: url(../images/information.png) 0px -78px;}
+.ppsaToolbarWindow.iwBR .iwShow, .ppsaToolbarWindow.iwTL .iwHide {background: url(../images/information.png) 0px -52px;}
+.ppsaToolbarWindow .logo-med, .ppsaToolbarWindow .logo-sm,.ppsaToolbarWindow .bingLogo-lg {display: none;}
+.zoominIcon { background-image:url(images/zoomin.png); width:46px; height:46px; }
+.zoomoutIcon { background-image:url(images/zoomout.png); width:46px; height:46px; }
+.zoomfullextIcon { background-image:url(images/fullextent.png); width:46px; height:46px; }
+.panIcon { background-image:url(images/paneo.png); width:46px; height:46px; }      
+.printIcon { background-image:url(images/imprimir.png); width:46px; height:46px; }
+.interesIcon { background-image:url(images/interes.png); width:46px; height:46px; }
+.magnifyIcon { background-image:url(images/magnify.png); width:46px; height:46px; }
+.descargaIcon { background-image:url(images/descarga.png); width:46px; height:46px; }
+.temasIcon { background-image:url(images/tema.png); width:46px; height:46px; }
+.medirIcon { background-image:url(images/medir.png); width:46px; height:46px; }
+.identificarIcon { background-image:url(images/identificar.png); width:46px; height:46px; }
+.capasIcon { background-image:url(images/capas.png); width:46px; height:46px; }
+.simbologiaIcon { background-image:url(images/simbologia.png); width:46px; height:46px; }
+.emailIcon { background-image:url(images/email.png); width:46px; height:46px; }
+.seleccionIcon { background-image:url(images/seleccion.png); width:46px; height:46px; }
+.wmsIcon { background-image:url(images/wms.png); width:46px; height:46px; }
+.rasterIcon { background-image:url(images/raster.png); width:46px; height:46px; }
+.borrarIcon { background-image:url(images/borrar.png); width:46px; height:46px; }
+
+.claro .dijitToolbar {
+    background-color:transparent;
+    background-image: none;    
+    border-bottom: 1px solid #B5BCC7;
+    padding: 2px 0 2px 4px;
+}

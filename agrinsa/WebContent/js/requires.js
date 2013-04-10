@@ -1,0 +1,10 @@
+dojo.require("esri.widgets");
+dojo.require("esri.arcgis.utils");
+dojo.require("dojox.layout.FloatingPane");
+dojo.require("utilities.custommenu");
+dojo.require("esri.layout");
+dojo.require("utilities.App");
+//BEGIN:SDP 
+dojo.require("dojoclass.dijit.ToolBarWindow");
+dojo.require("dojoclass.dojo.ProveedorConstantes");
+//END:SDP

@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+
+</h:head>
+
+<h:body>
+	<f:view>
+		<h:form>
+			<pe:remoteCommand name="getConstantes" id="getConstantes"
+				actionListener="#{constantesBean.getConstantesJson}"
+				oncomplete="hcgetConstante(xhr, status, args)">
+			</pe:remoteCommand>
+
+			<pe:remoteCommand name="setMensaje"
+				actionListener="#{constantesAplicacionBean.mostrarMensaje}"
+				update=":mensajes">
+				<pe:methodSignature parameters="java.lang.String,java.lang.String" />
+				<pe:methodParam name="texto" />
+				<pe:methodParam name="tipo" />
+			</pe:remoteCommand>
+
+		</h:form>
+	</f:view>
+	<script type="text/javascript">
+		function hcgetConstante(xhr, status, args) {
+			var lista = args.constantes;
+			var obj = dojo.fromJson(lista);
+			console.log(obj);
+			proveedorConstantes.setValores(obj);
+		}
+	</script>
+</h:body>
+
+</html>
