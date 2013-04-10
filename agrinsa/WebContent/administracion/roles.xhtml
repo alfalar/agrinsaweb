@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+		<f:view>
+			<h:form id="form">
+				<p:dataTable id="dataTable" var="roles" value="#{administracionBean.roles}">
+					<f:facet name="header">
+						ROLES DEL SISTEMA
+					</f:facet>
+
+					<p:column>
+						<f:facet name="header">
+							Rol
+						</f:facet>
+
+						<h:outputText value="#{roles.rol}" />
+
+					</p:column>
+
+
+					<f:facet name="footer">
+						Total de Roles: #{administracionBean.totalroles}
+					</f:facet>
+
+				</p:dataTable>
+
+			</h:form>
+		</f:view>
+	</h:body>
+
+</html>

@@ -87,5 +87,13 @@ public class UsuariosDao {
 		List<Roles> lista=this.hibernateTemplate.find(consulta);
 		return lista;
 	}
-	
+	/**
+	 * Retorna la lista de roles en el sistema
+	 * @return
+	 */
+	public List<Roles> getRoles(){
+		String consulta="from Roles";
+		List<Roles> lista=this.hibernateTemplate.find(consulta);
+		return lista;
+	}
 }
