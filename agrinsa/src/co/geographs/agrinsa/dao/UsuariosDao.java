@@ -132,5 +132,20 @@ public class UsuariosDao {
 			return e.getMessage();
 		}
 	}
+	
+	public String updateRol(Roles rol) {
+		try {						
+			this.hibernateTemplate.update(rol);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
 
 }

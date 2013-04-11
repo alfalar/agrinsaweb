@@ -2,9 +2,13 @@ package co.geographs.agrinsa.beans;
 
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.event.RowEditEvent;
 
 import co.geographs.agrinsa.dao.UsuariosDao;
 import co.geographs.agrinsa.dao.business.Roles;
@@ -93,5 +97,17 @@ public class AdministracionBean {
 	public void setConstantesBean(ConstantesBean constantesBean) {
 		this.constantesBean = constantesBean;
 	}
-	
-}
+
+	public void onEdit(RowEditEvent event) {            
+        Roles rol=((Roles) event.getObject());
+        UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+        mensaje=usuariosDao.updateRol(rol);
+		if(mensaje.equalsIgnoreCase("OK")){
+			constantesBean.mostrarMensaje("Rol Actualizado", "INFO");	
+		}else{
+			constantesBean.mostrarMensaje(mensaje, "ERROR");
+		}	
+    }        
+    public void onCancel(RowEditEvent event) {  
+    }  
+ }

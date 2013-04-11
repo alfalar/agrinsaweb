@@ -16,17 +16,27 @@ xmlns:p="http://primefaces.org/ui">
 					<p:row>
 						<p:column colspan="2">
 							<p:dataTable id="tablaroles" var="roles" value="#{administracionBean.roles}" rowKey="#{roles.rolId}"
-									selection="#{administracionBean.selectedRol}" selectionMode="single">
+									selection="#{administracionBean.selectedRol}" selectionMode="single"
+									editable="true">
 								<f:facet name="header">
 									ROLES DEL SISTEMA
-								</f:facet>									
-								<p:column>
+								</f:facet>	
+								 <p:ajax event="rowEdit" listener="#{administracionBean.onEdit}" update=":mensajes" />  
+  						         <p:ajax event="rowEditCancel" listener="#{administracionBean.onCancel}" update=":mensajes" />  
+    								
+								<p:column headerText="Id">
 									<h:outputText value="#{roles.rolId}" />
 								</p:column>
-									
-								<p:column>
-									<h:outputText value="#{roles.rol}" />
+								<p:column headerText="Rol">
+									<p:cellEditor>  
+	                   					<f:facet name="output"><h:outputText value="#{roles.rol}" /></f:facet>  
+	                   					<f:facet name="input"><p:inputText id="rolInput" value="#{roles.rol}"/></f:facet>  
+	               					</p:cellEditor>  									
+																									
 								</p:column>
+								 <p:column style="width:6%">  
+  							          <p:rowEditor />  
+        						 </p:column>    
 								<f:facet name="footer">
 									Total de Roles: #{administracionBean.totalroles}
 								</f:facet>
@@ -40,11 +50,20 @@ xmlns:p="http://primefaces.org/ui">
 						</p:column>
 						<p:column>
 							<p:commandButton id="elimrol" value="Eliminar Rol" icon="ui-icon-closethick" style="margin:0"
-								actionListener="#{administracionBean.deleteRol}" update="tablaroles :mensajes"
-								/>						
+									onclick="confirmacion.show()"/>						
 						</p:column>						
 					</p:row>					
 				</p:panelGrid>
+				
+				<p:confirmDialog id="confirmDialog" message="Seguro que quiere eliminar el Rol?"  
+				                header="Eliminación del Rol" severity="alert" widgetVar="confirmacion">  
+				                  
+				        <p:commandButton id="confirm" value="Si" oncomplete="confirmacion.hide()"  
+				                    actionListener="#{administracionBean.deleteRol}" update="tablaroles :mensajes" />  
+				        <p:commandButton id="decline" value="No" onclick="confirmacion.hide()" type="button" />   
+				                  
+			    </p:confirmDialog>  
+  				
 				</h:form>
 				<h:form id="form2">
 				<p:dialog id="agregarusuariodlg" header="Nuevo Rol" widgetVar="nrDialog" resizable="false"
