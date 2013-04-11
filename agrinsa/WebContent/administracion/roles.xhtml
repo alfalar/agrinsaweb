@@ -5,33 +5,71 @@ xmlns:h="http://java.sun.com/jsf/html"
 xmlns:f="http://java.sun.com/jsf/core"
 xmlns:p="http://primefaces.org/ui">
 	<h:head>
-
+		<link rel="stylesheet" type="text/css" href="../css/primecss/theme.css"/>
 	</h:head>
 
 	<h:body>
 		<f:view>
+			<p:growl id="mensajes" sticky="false" showDetail="true"/>
 			<h:form id="form">
-				<p:dataTable id="dataTable" var="roles" value="#{administracionBean.roles}">
-					<f:facet name="header">
-						ROLES DEL SISTEMA
-					</f:facet>
-
-					<p:column>
-						<f:facet name="header">
-							Rol
-						</f:facet>
-
-						<h:outputText value="#{roles.rol}" />
-
-					</p:column>
-
-
-					<f:facet name="footer">
-						Total de Roles: #{administracionBean.totalroles}
-					</f:facet>
-
-				</p:dataTable>
-
+				<p:panelGrid>
+					<p:row>
+						<p:column colspan="2">
+							<p:dataTable id="tablaroles" var="roles" value="#{administracionBean.roles}" rowKey="#{roles.rolId}"
+									selection="#{administracionBean.selectedRol}" selectionMode="single">
+								<f:facet name="header">
+									ROLES DEL SISTEMA
+								</f:facet>									
+								<p:column>
+									<h:outputText value="#{roles.rolId}" />
+								</p:column>
+									
+								<p:column>
+									<h:outputText value="#{roles.rol}" />
+								</p:column>
+								<f:facet name="footer">
+									Total de Roles: #{administracionBean.totalroles}
+								</f:facet>
+							</p:dataTable>						
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:commandButton type="button" value="Nuevo Rol" icon="ui-icon-plus" style="margin:0"
+							    onclick="nrDialog.show()"/>				
+						</p:column>
+						<p:column>
+							<p:commandButton id="elimrol" value="Eliminar Rol" icon="ui-icon-closethick" style="margin:0"
+								actionListener="#{administracionBean.deleteRol}" update="tablaroles :mensajes"
+								/>						
+						</p:column>						
+					</p:row>					
+				</p:panelGrid>
+				</h:form>
+				<h:form id="form2">
+				<p:dialog id="agregarusuariodlg" header="Nuevo Rol" widgetVar="nrDialog" resizable="false"
+					showEffect="fade" hideEffect="explode">
+						<h:panelGrid>
+							<p:row>
+								<p:column>
+									<h:outputText value="Nombre:" />
+								</p:column>
+								<p:column>
+									<p:inputText id="nomrol" value="#{administracionBean.nombrerol}"  required="true">
+									 	<f:validateLength minimum="5" />
+									 </p:inputText>
+									 <p:message id="msgnomrol" for="nomrol" display="icon"/> 									
+								</p:column>																  						
+							</p:row>
+							<p:row>
+								<p:column colspan="2">
+									<p:commandButton value="Agregar" icon="ui-icon-plus" style="margin:0"
+										actionListener="#{administracionBean.addRol}" update=":form:tablaroles nomrol msgnomrol :mensajes"
+										/>
+								</p:column>								
+							</p:row>																			
+						</h:panelGrid>
+				</p:dialog>
 			</h:form>
 		</f:view>
 	</h:body>

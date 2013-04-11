@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.engine.SessionFactoryImplementor;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import co.geographs.agrinsa.dao.business.Roles;
@@ -96,4 +97,40 @@ public class UsuariosDao {
 		List<Roles> lista=this.hibernateTemplate.find(consulta);
 		return lista;
 	}
+	
+	/**
+	 * 
+	 * @param nombrerol
+	 * @return
+	 */
+	public String addRol(String nombrerol) {
+		try {
+			Roles rol = new Roles();
+			rol.setRol(nombrerol);
+			this.hibernateTemplate.save(rol);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
+	public String deleteRol(Roles rol) {
+		try {						
+			this.hibernateTemplate.delete(rol);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+
 }
