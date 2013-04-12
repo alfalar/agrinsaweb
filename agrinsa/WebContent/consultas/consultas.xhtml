@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+
+<h:body>
+	<f:view>
+		<h:form id="form">
+			<p:panelGrid columns="1">
+				<f:facet name="header">
+       				Informes
+    			</f:facet>
+				<p:selectOneMenu value="#{consultasBean.selectedTiposconsulta}">						
+					<f:selectItems value="#{consultasBean.tiposconsulta}" var="tipo"
+							itemLabel="#{tipo.label}" itemValue="#{tipo.value}" />
+					<p:ajax listener="#{consultasBean.cambioconsulta}"
+						update="tblareaxciudad"/>		
+				</p:selectOneMenu>
+				<p:dataTable id="tblareaxciudad" var="cons" paginator="true" rows="10"
+					paginatorAlwaysVisible="false" paginatorPosition="bottom"
+					emptyMessage="No hay registros">
+					<p:column headerText="Ciudad">  
+            			<h:outputText value="#{cons.ciudad}" />  
+        			</p:column>  
+					<p:column headerText="Area">  
+            			<h:outputText value="#{cons.area}" />  
+        			</p:column>
+				</p:dataTable>
+			</p:panelGrid>
+		</h:form>
+	</f:view>
+</h:body>
+
+</html>

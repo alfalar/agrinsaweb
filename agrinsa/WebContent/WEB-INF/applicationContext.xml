@@ -61,5 +61,10 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	
+	<bean id="consultasDao" class="co.geographs.agrinsa.dao.ConsultasDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>
 
