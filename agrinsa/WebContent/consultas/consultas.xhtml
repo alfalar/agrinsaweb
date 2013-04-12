@@ -15,22 +15,35 @@
 				<f:facet name="header">
        				Informes
     			</f:facet>
-				<p:selectOneMenu value="#{consultasBean.selectedTiposconsulta}">						
-					<f:selectItems value="#{consultasBean.tiposconsulta}" var="tipo"
-							itemLabel="#{tipo.label}" itemValue="#{tipo.value}" />
+				<p:selectOneMenu id="seltiposconsulta" value="#{consultasBean.selectedTiposconsulta}">
 					<p:ajax listener="#{consultasBean.cambioconsulta}"
-						update="tblareaxciudad"/>		
+							update="panelaxc"/>												
+					<f:selectItems value="#{consultasBean.tiposconsulta}"/>
 				</p:selectOneMenu>
-				<p:dataTable id="tblareaxciudad" var="cons" paginator="true" rows="10"
-					paginatorAlwaysVisible="false" paginatorPosition="bottom"
-					emptyMessage="No hay registros">
-					<p:column headerText="Ciudad">  
-            			<h:outputText value="#{cons.ciudad}" />  
-        			</p:column>  
-					<p:column headerText="Area">  
-            			<h:outputText value="#{cons.area}" />  
-        			</p:column>
-				</p:dataTable>
+				<p:panel id="panelaxc">
+					<p:dataTable id="tblareaxciudad" var="cons" paginator="true" rows="10" 
+						rendered="#{consultasBean.areaxciudadenabled}"
+						paginatorAlwaysVisible="false" paginatorPosition="bottom"
+						emptyMessage="No hay registros">
+						<p:column headerText="Ciudad">  
+	            			<h:outputText value="#{cons.ciudad}" />  
+	        			</p:column>  
+						<p:column headerText="Area">  
+	            			<h:outputText value="#{cons.area}" />  
+	        			</p:column>
+					</p:dataTable>
+				</p:panel>
+				<p:panelGrid columns="2" rendered="#{consultasBean.areaxciudadenabled}" >
+					<h:commandLink>  
+					    <p:graphicImage value="/images/excel.png" />  
+					    <p:dataExporter type="xls" target="tblareaxciudad" fileName="areaxciudad"/>  
+					</h:commandLink>  
+				  
+					<h:commandLink>  
+				    	<p:graphicImage value="/images/pdf.png" />  
+				    	<p:dataExporter type="pdf" target="tblareaxciudad" fileName="areaxciudad"/>  
+					</h:commandLink>  
+				</p:panelGrid>
 			</p:panelGrid>
 		</h:form>
 	</f:view>
