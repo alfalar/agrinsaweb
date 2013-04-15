@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import co.geographs.agrinsa.dao.business.Areaxciudad;
+import co.geographs.agrinsa.dao.business.Areaxvereda;
 import co.geographs.agrinsa.dao.business.TiposConsulta;
 
 public class ConsultasDao {
@@ -45,7 +47,7 @@ public class ConsultasDao {
 	}
 	
 	/**
-	 * 
+	 * Retorna el area cultivada por ciudad
 	 */
 	public List<Areaxciudad> getAreaxciudad(){
 		List<Areaxciudad> arealist=new ArrayList<Areaxciudad>();
@@ -67,4 +69,31 @@ public class ConsultasDao {
 		}						
 		return arealist;		
 	}
+	
+	/**
+	 * Retorna el area cultivada por vereda
+	 */
+	public List<Areaxvereda> getAreaxvereda(){
+		List<Areaxvereda> arealist=new ArrayList<Areaxvereda>();
+		Session sesion = this.hibernateTemplate.getSessionFactory()
+				.getCurrentSession();
+		String consulta="select nlote.Vereda as vereda, SUM(nlote.Area) as areasembrada "+
+						"from LOTE_VW nlote "+
+						"group by nlote.Vereda";
+		Query query = sesion
+				.createSQLQuery(consulta)
+				.addScalar("vereda", Hibernate.STRING)
+				.addScalar("areasembrada", Hibernate.BIG_DECIMAL);
+		List<Object> lista=query.list();
+		Iterator iterator = lista.iterator();
+		while (iterator.hasNext()) {
+				Object[] row = (Object[]) iterator.next();
+				Areaxvereda areaxvereda=new Areaxvereda();
+				areaxvereda.setVereda(String.valueOf(row[0]));
+				areaxvereda.setArea( ((BigDecimal)row[1]).doubleValue() );
+				arealist.add(areaxvereda);
+		}						
+		return arealist;		
+	}
+	
 }

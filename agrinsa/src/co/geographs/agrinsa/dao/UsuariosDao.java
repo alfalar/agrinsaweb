@@ -28,6 +28,10 @@ public class UsuariosDao {
 		return usuarios.get(0);
 	}
 	
+	public List<Usuarios> getUsuarios(){		
+		List<Usuarios> usuarios=this.hibernateTemplate.find("from Usuarios u");		
+		return usuarios;
+	}
 	 /**
      * Retorna la lista de usuarios
      * @return
@@ -55,6 +59,26 @@ public class UsuariosDao {
 			return false;
 		}
 	}
+	
+	/**
+	 * 
+	 * @param nombrerol
+	 * @return
+	 */
+	public String addUsuario(Usuarios usuario) {
+		try {
+			this.hibernateTemplate.save(usuario);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
 	/**
 	 * Retorna los recursos permitidos para un usuario
 	 * @param usuario

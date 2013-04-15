@@ -17,8 +17,7 @@
 					<h:outputText value="Usuario: " />
 					<p:inputText id="usuario" value="#{loginBean.userName}" />
 					<h:outputText value="Contrasena " />
-					<p:password id="password" value="#{loginBean.password}"
-						feedback="true" />
+					<p:password id="password" value="#{loginBean.password}" />
 					<p:commandButton value="Aceptar" ajax="false" align="center"
 						action="#{loginBean.doLogin}">
 					</p:commandButton>

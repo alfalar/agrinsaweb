@@ -1,175 +1,293 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:ui="http://java.sun.com/jsf/facelets"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:p="http://primefaces.org/ui">
-	<h:head>
-		<link rel="stylesheet" type="text/css" href="../css/primecss/theme.css"/>
-	</h:head>
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<link rel="stylesheet" type="text/css" href="../css/primecss/theme.css" />
+</h:head>
 
-	<h:body>
-		<f:view>
-			<p:growl id="mensajes" sticky="false" showDetail="true"/>
-			<h:form id="form">
+<h:body>
+	<f:view>
+		<p:growl id="mensajes" sticky="false" showDetail="true" />
+		<h:form id="form">
 			<p:panelGrid columns="2">
 				<f:facet name="header">
 					ADMINISTRACION DE ROLES,USUARIOS Y PERMISOS
-				</f:facet>	
+				</f:facet>
 				<p:panelGrid>
 					<p:row>
 						<p:column colspan="2">
-							<p:dataTable id="tablaroles" var="roles" value="#{administracionBean.roles}" rowKey="#{roles.rolId}"
-									selection="#{administracionBean.selectedRol}" selectionMode="single"
-									editable="true">
+							<p:dataTable id="tablaroles" var="roles"
+								value="#{administracionBean.roles}" rowKey="#{roles.rolId}"
+								selection="#{administracionBean.selectedRol}"
+								selectionMode="single" editable="true">
 								<f:facet name="header">
 									ROLES DEL SISTEMA
-								</f:facet>	
-								 <p:ajax event="rowEdit" listener="#{administracionBean.onEdit}" update=":mensajes" />  
-  						         <p:ajax event="rowEditCancel" listener="#{administracionBean.onCancel}" update=":mensajes" />  
-    								
+								</f:facet>
+								<p:ajax event="rowEdit" listener="#{administracionBean.onEdit}"
+									update=":mensajes" />
+								<p:ajax event="rowEditCancel"
+									listener="#{administracionBean.onCancel}" update=":mensajes" />
+
 								<p:column headerText="Id">
 									<h:outputText value="#{roles.rolId}" />
 								</p:column>
 								<p:column headerText="Rol">
-									<p:cellEditor>  
-	                   					<f:facet name="output"><h:outputText value="#{roles.rol}" /></f:facet>  
-	                   					<f:facet name="input"><p:inputText id="rolInput" value="#{roles.rol}"/></f:facet>  
-	               					</p:cellEditor>  									
-																									
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{roles.rol}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="rolInput" value="#{roles.rol}" />
+										</f:facet>
+									</p:cellEditor>
+
 								</p:column>
-								 <p:column style="width:6%">  
-  							          <p:rowEditor />  
-        						 </p:column>    
+								<p:column style="width:6%">
+									<p:rowEditor />
+								</p:column>
 								<f:facet name="footer">
 									Total de Roles: #{administracionBean.totalroles}
 								</f:facet>
-							</p:dataTable>						
+							</p:dataTable>
 						</p:column>
 					</p:row>
 					<p:row>
 						<p:column>
-							<p:commandButton type="button" value="Nuevo Rol" icon="ui-icon-plus" style="margin:0"
-							    onclick="nrDialog.show()"/>				
+							<p:commandButton type="button" value="Nuevo Rol"
+								icon="ui-icon-plus" style="margin:0" onclick="nrDialog.show()" />
 						</p:column>
 						<p:column>
-							<p:commandButton id="elimrol" value="Eliminar Rol" icon="ui-icon-closethick" style="margin:0"
-									onclick="confirmacion.show()"/>						
-						</p:column>						
-					</p:row>					
+							<p:commandButton id="elimrol" value="Eliminar Rol"
+								icon="ui-icon-closethick" style="margin:0"
+								onclick="confirmacion.show()" />
+						</p:column>
+					</p:row>
 				</p:panelGrid>
 				<p:panelGrid>
 					<p:row>
 						<p:column colspan="2">
-							<p:dataTable id="tablausuarios" var="usuarios" value="#{administracionBean.usuarios}" rowKey="#{usuarios.usuarioId}"
-									selection="#{administracionBean.selectedUsuario}" selectionMode="single"
-									editable="true">
+							<p:dataTable id="tablausuarios" var="usuarios"
+								value="#{administracionBean.usuarios}"
+								rowKey="#{usuarios.usuarioId}"
+								selection="#{administracionBean.selectedUsuario}"
+								selectionMode="single" editable="true">
 								<f:facet name="header">
 									USUARIOS DEL SISTEMA
-								</f:facet>	
-								 <p:ajax event="rowEdit" listener="#{administracionBean.onEditUsuario}" update=":mensajes" />  
-  						         <p:ajax event="rowEditCancel" listener="#{administracionBean.onCancel}" update=":mensajes" />  
-    								
+								</f:facet>
+								<p:ajax event="rowEdit"
+									listener="#{administracionBean.onEditUsuario}"
+									update=":mensajes" />
+								<p:ajax event="rowEditCancel"
+									listener="#{administracionBean.onCancel}" update=":mensajes" />
+
 								<p:column headerText="Id">
 									<h:outputText value="#{usuarios.usuarioId}" />
 								</p:column>
 								<p:column headerText="Nombre de Usuario">
-									<p:cellEditor>  
-	                   					<f:facet name="output"><h:outputText value="#{usuarios.usuario}" /></f:facet>  
-	                   					<f:facet name="input"><p:inputText id="usuarioInput" value="#{usuarios.usuario}"/></f:facet>  
-	               					</p:cellEditor>  																																	
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{usuarios.usuario}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="usuarioInput" value="#{usuarios.usuario}" />
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 								<p:column headerText="Password">
-									<p:cellEditor>  
-	                   					<f:facet name="output"><h:outputText value="#{usuarios.password}" /></f:facet>  
-	                   					<f:facet name="input"><p:inputText id="passwordInput" value="#{usuarios.password}"/></f:facet>  
-	               					</p:cellEditor>  																																	
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="**********" />
+										</f:facet>
+										<f:facet name="input">
+											<p:password id="passwordInput" value="#{usuarios.password}" />
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 								<p:column headerText="Primer Nombre">
-									<p:cellEditor>  
-	                   					<f:facet name="output"><h:outputText value="#{usuarios.primerNombre}" /></f:facet>  
-	                   					<f:facet name="input"><p:inputText id="pnombreInput" value="#{usuarios.primerNombre}"/></f:facet>  
-	               					</p:cellEditor>  																																	
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{usuarios.primerNombre}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="pnombreInput"
+												value="#{usuarios.primerNombre}" />
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 								<p:column headerText="Segundo Nombre">
-									<p:cellEditor>  
-	                   					<f:facet name="output"><h:outputText value="#{usuarios.segundoNombre}" /></f:facet>  
-	                   					<f:facet name="input"><p:inputText id="snombreInput" value="#{usuarios.segundoNombre}"/></f:facet>  
-	               					</p:cellEditor>  																																	
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{usuarios.segundoNombre}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="snombreInput"
+												value="#{usuarios.segundoNombre}" />
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 								<p:column headerText="Primer Apellido">
-									<p:cellEditor>  
-	                   					<f:facet name="output"><h:outputText value="#{usuarios.primerApellido}" /></f:facet>  
-	                   					<f:facet name="input"><p:inputText id="papellidoInput" value="#{usuarios.primerApellido}"/></f:facet>  
-	               					</p:cellEditor>  																																	
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{usuarios.primerApellido}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="papellidoInput"
+												value="#{usuarios.primerApellido}" />
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 								<p:column headerText="Segundo Apellido">
-									<p:cellEditor>  
-	                   					<f:facet name="output"><h:outputText value="#{usuarios.segundoApellido}" /></f:facet>  
-	                   					<f:facet name="input"><p:inputText id="sapellidoInput" value="#{usuarios.segundoApellido}"/></f:facet>  
-	               					</p:cellEditor>  																																	
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{usuarios.segundoApellido}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText id="sapellidoInput"
+												value="#{usuarios.segundoApellido}" />
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
-								
-								 <p:column style="width:6%">  
-  							          <p:rowEditor />  
-        						 </p:column>    
+
+								<p:column style="width:6%">
+									<p:rowEditor />
+								</p:column>
 								<f:facet name="footer">
 									Total de Usuarios: #{administracionBean.totalusuarios}
 								</f:facet>
-							</p:dataTable>						
+							</p:dataTable>
 						</p:column>
 					</p:row>
 					<p:row>
 						<p:column>
-							<p:commandButton type="button" value="Nuevo Rol" icon="ui-icon-plus" style="margin:0"
-							    onclick="nrDialog.show()"/>				
+							<p:commandButton type="button" value="Nuevo Usuario"
+								icon="ui-icon-plus" style="margin:0"
+								onclick="nusuarioDialog.show()" />
 						</p:column>
 						<p:column>
-							<p:commandButton id="elimrol" value="Eliminar Rol" icon="ui-icon-closethick" style="margin:0"
-									onclick="confirmacion.show()"/>						
-						</p:column>						
-					</p:row>					
+							<p:commandButton id="elimuser" value="Eliminar Usuario"
+								icon="ui-icon-closethick" style="margin:0"
+								onclick="confirmacionusuario.show()" />
+						</p:column>
+					</p:row>
 				</p:panelGrid>
-				
+
 			</p:panelGrid>
-			
-			
-				<p:confirmDialog id="confirmDialog" message="Seguro que quiere eliminar el Rol?"  
-				                header="Eliminación del Rol" severity="alert" widgetVar="confirmacion">  
-				                  
-				        <p:commandButton id="confirm" value="Si" oncomplete="confirmacion.hide()"  
-				                    actionListener="#{administracionBean.deleteRol}" update="tablaroles :mensajes" />  
-				        <p:commandButton id="decline" value="No" onclick="confirmacion.hide()" type="button" />   
-				                  
-			    </p:confirmDialog>  
-  				
-				</h:form>
-				<h:form id="form2">
-				<p:dialog id="agregarusuariodlg" header="Nuevo Rol" widgetVar="nrDialog" resizable="false"
-					showEffect="fade" hideEffect="explode">
-						<h:panelGrid>
-							<p:row>
-								<p:column>
-									<h:outputText value="Nombre:" />
-								</p:column>
-								<p:column>
-									<p:inputText id="nomrol" value="#{administracionBean.nombrerol}"  required="true">
-									 	<f:validateLength minimum="5" />
-									 </p:inputText>
-									 <p:message id="msgnomrol" for="nomrol" display="icon"/> 									
-								</p:column>																  						
-							</p:row>
-							<p:row>
-								<p:column colspan="2">
-									<p:commandButton value="Agregar" icon="ui-icon-plus" style="margin:0"
-										actionListener="#{administracionBean.addRol}" update=":form:tablaroles nomrol msgnomrol :mensajes"
-										/>
-								</p:column>								
-							</p:row>																			
-						</h:panelGrid>
-				</p:dialog>
-			</h:form>
-		</f:view>
-	</h:body>
+
+
+			<p:confirmDialog id="confirmDialog"
+				message="Seguro que quiere eliminar el Rol?"
+				header="Eliminación del Rol" severity="alert"
+				widgetVar="confirmacion">
+
+				<p:commandButton id="confirmsir" value="Si"
+					oncomplete="confirmacion.hide()"
+					actionListener="#{administracionBean.deleteRol}"
+					update="tablaroles :mensajes" />
+				<p:commandButton id="decliner" value="No"
+					onclick="confirmacion.hide()" type="button" />
+
+			</p:confirmDialog>
+
+			<p:confirmDialog id="confirmUsuarioDialog"
+				message="Seguro que quiere eliminar el Usuario?"
+				header="Eliminación del Usuario" severity="alert"
+				widgetVar="confirmacionusuario">
+
+				<p:commandButton id="confirmsiu" value="Si"
+					oncomplete="confirmacionusuario.hide()"
+					actionListener="#{administracionBean.deleteUsuario}"
+					update="tablausuarios :mensajes" />
+				<p:commandButton id="declineu" value="No"
+					onclick="confirmacionusuario.hide()" type="button" />
+
+			</p:confirmDialog>
+
+		</h:form>
+		<h:form id="form2">
+			<p:dialog header="Nuevo Rol" widgetVar="nrDialog" resizable="false"
+				modal="true" showEffect="fade" hideEffect="explode">
+				<h:panelGrid columns="3">
+					<h:outputText value="Nombre:" />
+					<p:inputText id="nomrol" value="#{administracionBean.nombrerol}"
+						required="true" requiredMessage="El nombre de rol es requerido">
+						<f:validateLength minimum="5" />
+					</p:inputText>
+					<p:message id="msgnomrol" for="nomrol" display="icon" />
+					
+					<p:commandButton value="Agregar" icon="ui-icon-plus"
+						style="margin:0" actionListener="#{administracionBean.addRol}"
+						update=":form:tablaroles nomrol msgnomrol :mensajes" />
+					<br />
+					<br />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+		<h:form id="Forma_Usuarios">
+			<p:dialog header="Nuevo Usuario" widgetVar="nusuarioDialog"
+				modal="true" id="dlgusuarion" resizable="false" showEffect="fade"
+				hideEffect="explode">
+				<h:panelGrid columns="3">
+					<h:outputText value="Nombre de Usuario:" />
+					<p:inputText id="nusuario" requiredMessage="El nombre de usuario es requerido"
+						value="#{administracionBean.nombreusuario}" required="true">
+						<f:validateLength minimum="5" />
+					</p:inputText>
+					<p:message id="msgnomusuario" for="nusuario" display="icon" />
+
+					<h:outputText value="Escriba password:" />
+					<p:password id="pwd1" value="#{administracionBean.pwduser}"
+						match="pwd2" label="Password" required="true" validatorMessage="Los 2 password no coinciden"
+						requiredMessage="El password es requerido" feedback="true"
+						weakLabel="Debil" goodLabel="Bueno" strongLabel="Fuerte">						
+					</p:password>
+					<p:message id="msgpwd" for="pwd1" display="icon" />
+
+					<h:outputText value="Re-escriba password:" />
+					<p:password id="pwd2" value="#{administracionBean.pwduser}"
+						label="Re-Password:" required="true" />
+					<br />
+
+					<h:outputText value="Primer Nombre:" />
+					<p:inputText id="primnombre" requiredMessage="El primer nombre es requerido"
+						value="#{administracionBean.primernombre}" required="true">
+						<f:validateLength minimum="2" />
+					</p:inputText>
+					<p:message id="msgpnombre" for="primnombre" display="icon" />
+
+					<h:outputText value="Segundo Nombre" />
+					<p:inputText id="segnombre"
+						value="#{administracionBean.primernombre}" required="false" />
+					<br />
+
+					<h:outputText value="Primer Apellido:" />
+					<p:inputText id="primapellido" requiredMessage="El primer apellido es requerido"
+						value="#{administracionBean.primerapellido}" required="true">
+						<f:validateLength minimum="3" />
+					</p:inputText>
+					<p:message id="msgpapellido" for="primapellido" display="icon" />
+
+					<h:outputText value="Segundo Apellido:" />
+					<p:inputText id="segapellido"
+						value="#{administracionBean.segundoapellido}" required="false" />
+					<br />
+
+					<h:outputText value="Habilitado:" />
+					<p:selectBooleanCheckbox value="#{administracionBean.habilitado}" />
+					<br />
+
+					<br />
+					<p:commandButton value="Agregar" icon="ui-icon-plus"
+						style="margin:0" actionListener="#{administracionBean.addUsuario}"
+						update=":form:tablausuarios nusuario msgnomusuario primnombre msgpnombre primapellido msgpapellido pwd1 msgpwd :mensajes" />
+					<br />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+
+	</f:view>
+</h:body>
 
 </html>

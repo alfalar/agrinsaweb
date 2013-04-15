@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import co.geographs.agrinsa.dao.ConsultasDao;
 import co.geographs.agrinsa.dao.business.Areaxciudad;
-import co.geographs.agrinsa.dao.business.TiposConsulta;
+import co.geographs.agrinsa.dao.business.Areaxvereda;
 import co.geographs.agrinsa.util.FacesUtil;
 import co.geographs.agrinsa.util.SpringUtils;
 
@@ -21,16 +21,31 @@ import co.geographs.agrinsa.util.SpringUtils;
 @SessionScoped
 public class ConsultasBean implements Serializable {
 	private List<SelectItem> tiposconsulta;
-	private List<Areaxciudad> areaxciudad;
 	private String selectedTiposconsulta;
+	//VARIABLES AREA POR CIUDAD
+	private List<Areaxciudad> areaxciudad;	
 	private boolean areaxciudadenabled=false;
+	//VARIABLES AREA POR VEREDA
+	private List<Areaxvereda> areaxvereda;	
+	private boolean areaxveredaenabled=false;
+	
+	
+	
 	public void cambioconsulta() {
-		System.out.println("*******************************:"
-				+ selectedTiposconsulta);
+		ConsultasDao consultasDao = (ConsultasDao) SpringUtils
+				.getBean("consultasDao");
 		if(selectedTiposconsulta.equalsIgnoreCase("areaxciudad")){
+			areaxciudad = consultasDao.getAreaxciudad();
 			areaxciudadenabled=true;
+			areaxveredaenabled=false;
+		}else if(selectedTiposconsulta.equalsIgnoreCase("areaxvereda")){
+			areaxvereda=consultasDao.getAreaxvereda();
+			areaxciudadenabled=false;
+			areaxveredaenabled=true;
+			
 		}else{
 			areaxciudadenabled=false;
+			areaxveredaenabled=false;
 		}
 		
 	}
@@ -67,14 +82,9 @@ public class ConsultasBean implements Serializable {
 	 * @return
 	 */
 	public List<Areaxciudad> getAreaxciudad() {
-		ConsultasDao consultasDao = (ConsultasDao) SpringUtils
-				.getBean("consultasDao");
-		areaxciudad = consultasDao.getAreaxciudad();
+		
 		return areaxciudad;
 	}
-
-	
-
 
 	public String getSelectedTiposconsulta() {
 		return selectedTiposconsulta;
@@ -98,4 +108,17 @@ public class ConsultasBean implements Serializable {
 		this.areaxciudadenabled = areaxciudadenabled;
 	}
 
+	public boolean isAreaxveredaenabled() {
+		return areaxveredaenabled;
+	}
+
+	public void setAreaxveredaenabled(boolean areaxveredaenabled) {
+		this.areaxveredaenabled = areaxveredaenabled;
+	}
+
+	public List<Areaxvereda> getAreaxvereda() {
+		return areaxvereda;
+	}
+
+	
 }

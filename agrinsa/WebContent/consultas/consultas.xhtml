@@ -17,33 +17,69 @@
     			</f:facet>
 				<p:selectOneMenu id="seltiposconsulta" value="#{consultasBean.selectedTiposconsulta}">
 					<p:ajax listener="#{consultasBean.cambioconsulta}"
-							update="panelaxc"/>												
+							update="paneles"/>												
 					<f:selectItems value="#{consultasBean.tiposconsulta}"/>
 				</p:selectOneMenu>
-				<p:panel id="panelaxc">
-					<p:dataTable id="tblareaxciudad" var="cons" paginator="true" rows="10" 
-						rendered="#{consultasBean.areaxciudadenabled}"
-						paginatorAlwaysVisible="false" paginatorPosition="bottom"
-						emptyMessage="No hay registros">
-						<p:column headerText="Ciudad">  
-	            			<h:outputText value="#{cons.ciudad}" />  
-	        			</p:column>  
-						<p:column headerText="Area">  
-	            			<h:outputText value="#{cons.area}" />  
-	        			</p:column>
-					</p:dataTable>
-				</p:panel>
-				<p:panelGrid columns="2" rendered="#{consultasBean.areaxciudadenabled}" >
-					<h:commandLink>  
-					    <p:graphicImage value="/images/excel.png" />  
-					    <p:dataExporter type="xls" target="tblareaxciudad" fileName="areaxciudad"/>  
-					</h:commandLink>  
-				  
-					<h:commandLink>  
-				    	<p:graphicImage value="/images/pdf.png" />  
-				    	<p:dataExporter type="pdf" target="tblareaxciudad" fileName="areaxciudad"/>  
-					</h:commandLink>  
-				</p:panelGrid>
+				<p:outputPanel id="paneles">
+					<p:panel rendered="#{consultasBean.areaxciudadenabled}">
+						<p:dataTable id="tblareaxciudad" var="cons" paginator="true" rows="10" 
+							rendered="#{consultasBean.areaxciudadenabled}"
+							paginatorAlwaysVisible="false" paginatorPosition="bottom"
+							emptyMessage="No hay registros"
+							value="#{consultasBean.areaxciudad}">
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Ciudad"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.ciudad}" />  
+		        			</p:column>  
+							<p:column>
+								<f:facet name="header">
+	         						<h:outputText value="Area(Hec)"/>
+	      						</f:facet>						  
+		            			<h:outputText value="#{cons.area}" />  
+		        			</p:column>
+						</p:dataTable>
+						<h:commandLink rendered="#{consultasBean.areaxciudadenabled}">  
+						    <p:graphicImage value="/images/excel.png" />  
+						    <p:dataExporter type="xls" target="tblareaxciudad" fileName="areaxciudad"/>  
+						</h:commandLink>  
+					  
+						<h:commandLink rendered="#{consultasBean.areaxciudadenabled}">  
+					    	<p:graphicImage value="/images/pdf.png" />  
+					    	<p:dataExporter type="pdf" target="tblareaxciudad" fileName="areaxciudad"/>  
+						</h:commandLink>  
+					</p:panel>
+					<p:panel rendered="#{consultasBean.areaxveredaenabled}">
+						<p:dataTable id="tblareaxvereda" var="cons" paginator="true" rows="10" 
+							rendered="#{consultasBean.areaxveredaenabled}"
+							paginatorAlwaysVisible="false" paginatorPosition="bottom"
+							emptyMessage="No hay registros"
+							value="#{consultasBean.areaxvereda}">
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Vereda"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.vereda}" />  
+		        			</p:column>  
+							<p:column>
+								<f:facet name="header">
+	         						<h:outputText value="Area(Hec)"/>
+	      						</f:facet>						  
+		            			<h:outputText value="#{cons.area}" />  
+		        			</p:column>
+						</p:dataTable>
+						<h:commandLink rendered="#{consultasBean.areaxveredaenabled}">  
+						    <p:graphicImage value="/images/excel.png" />  
+						    <p:dataExporter type="xls" target="tblareaxvereda" fileName="areaxvereda"/>  
+						</h:commandLink>  
+					  
+						<h:commandLink rendered="#{consultasBean.areaxveredaenabled}">  
+					    	<p:graphicImage value="/images/pdf.png" />  
+					    	<p:dataExporter type="pdf" target="tblareaxvereda" fileName="areaxvereda"/>  
+						</h:commandLink>  
+					</p:panel>
+				</p:outputPanel>
 			</p:panelGrid>
 		</h:form>
 	</f:view>
