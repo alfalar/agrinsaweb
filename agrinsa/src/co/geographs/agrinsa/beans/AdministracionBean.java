@@ -134,7 +134,16 @@ public class AdministracionBean {
 
 	public void addUsuario(){
 		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
-		mensaje=usuariosDao.a(nombrerol);
+		Usuarios usuario=new Usuarios();
+		usuario.setUsuario(nombreusuario);
+		usuario.setPassword(pwduser);
+		usuario.setPrimerNombre(primernombre);
+		usuario.setSegundoNombre(segundonombre);
+		usuario.setPrimerApellido(primerapellido);
+		usuario.setSegundoApellido(segundoapellido);
+		usuario.setHabilitado(isHabilitado());
+		
+		mensaje=usuariosDao.addUsuario(usuario);
 			if(mensaje.equalsIgnoreCase("OK")){
 				constantesBean.mostrarMensaje("Rol Agregado", "INFO");	
 			}else{
