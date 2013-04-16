@@ -6,7 +6,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
+import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.model.DashboardColumn;
+import org.primefaces.model.DashboardModel;
+import org.primefaces.model.DefaultDashboardColumn;
+import org.primefaces.model.DefaultDashboardModel;
 
 import co.geographs.agrinsa.dao.UsuariosDao;
 import co.geographs.agrinsa.dao.business.Roles;
@@ -19,6 +24,7 @@ public class AdministracionBean {
 	@ManagedProperty(value="#{constantesBean}")
 	private ConstantesBean constantesBean;
 	
+	private DashboardModel model;  
 	private String mensaje;
 	//VARIABLES ROLES
 	private List<Roles> roles;
@@ -242,5 +248,26 @@ public class AdministracionBean {
     }        
 	
     public void onCancel(RowEditEvent event) {  
-    }  
+    }
+
+	public DashboardModel getModel() {
+		model = new DefaultDashboardModel();  
+		DashboardColumn column1 = new DefaultDashboardColumn();  
+        DashboardColumn column2 = new DefaultDashboardColumn();    
+          
+        column1.addWidget("rolessistema");  
+        column1.addWidget("usuariossistema");  
+        column1.addWidget("recursos");     
+        column2.addWidget("usuariosroles");  
+        column2.addWidget("permisosroles");            
+  
+        model.addColumn(column1);  
+        model.addColumn(column2);  
+  
+		return model;
+	}  
+    
+	public void handleReorder(DashboardReorderEvent event) {  
+    }  	
+    
  }
