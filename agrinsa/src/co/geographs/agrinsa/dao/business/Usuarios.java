@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -61,6 +63,7 @@ public class Usuarios implements java.io.Serializable {
 	}
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "usuario_id", unique = true, nullable = false)
 	public int getUsuarioId() {
 		return this.usuarioId;
@@ -70,7 +73,7 @@ public class Usuarios implements java.io.Serializable {
 		this.usuarioId = usuarioId;
 	}
 
-	@Column(name = "usuario", nullable = false, length = 50)
+	@Column(name = "usuario", nullable = false, length = 50,unique = true)
 	public String getUsuario() {
 		return this.usuario;
 	}

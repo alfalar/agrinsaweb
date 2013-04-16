@@ -41,7 +41,8 @@ public class VisitasDao {
 			Query query = sesion
 					.createSQLQuery(
 							"select * from agrinsagdb.dbo.LOTE_VW a "
-									+ "where a.usuarioid=:usuarioid")
+									+ "where a.usuarioid=:usuarioid "
+									+ "and a.NomLote is not null")
 					.addScalar("Agricultor", Hibernate.STRING)
 					.addScalar("NomLote", Hibernate.STRING)
 					.addScalar("Semestre", Hibernate.STRING)

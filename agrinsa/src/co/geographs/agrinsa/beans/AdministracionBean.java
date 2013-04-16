@@ -145,7 +145,7 @@ public class AdministracionBean {
 		
 		mensaje=usuariosDao.addUsuario(usuario);
 			if(mensaje.equalsIgnoreCase("OK")){
-				constantesBean.mostrarMensaje("Rol Agregado", "INFO");	
+				constantesBean.mostrarMensaje("Usuario Agregado", "INFO");	
 			}else{
 				constantesBean.mostrarMensaje(mensaje, "ERROR");
 			}								
@@ -153,7 +153,17 @@ public class AdministracionBean {
 		nombrerol="";
 	}
 	
-	
+	public void deleteUsuario(){
+		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+		if(selectedUsuario!=null){			
+			mensaje=usuariosDao.deleteUsuario(selectedUsuario);
+			if(mensaje.equalsIgnoreCase("OK")){
+				constantesBean.mostrarMensaje("Usuario Eliminado", "INFO");	
+			}else{
+				constantesBean.mostrarMensaje(mensaje, "ERROR");
+			}			
+		}		
+	}
 	public String getNombreusuario() {
 		return nombreusuario;
 	}
@@ -223,7 +233,7 @@ public class AdministracionBean {
 	public void onEditUsuario(RowEditEvent event) {            
         Usuarios usuario=((Usuarios) event.getObject());
         UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
-        //mensaje=
+        mensaje=usuariosDao.updateUsuario(usuario);
 		if(mensaje.equalsIgnoreCase("OK")){
 			constantesBean.mostrarMensaje("Usuario Actualizado", "INFO");	
 		}else{

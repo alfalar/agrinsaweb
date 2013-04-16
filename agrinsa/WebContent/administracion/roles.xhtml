@@ -12,13 +12,13 @@
 	<f:view>
 		<p:growl id="mensajes" sticky="false" showDetail="true" />
 		<h:form id="form">
-			<p:panelGrid columns="2">
+			<p:panelGrid columns="1">
 				<f:facet name="header">
 					ADMINISTRACION DE ROLES,USUARIOS Y PERMISOS
 				</f:facet>
 				<p:panelGrid>
 					<p:row>
-						<p:column colspan="2">
+						<p:column>
 							<p:dataTable id="tablaroles" var="roles"
 								value="#{administracionBean.roles}" rowKey="#{roles.rolId}"
 								selection="#{administracionBean.selectedRol}"
@@ -53,19 +53,36 @@
 								</f:facet>
 							</p:dataTable>
 						</p:column>
+						<p:column>
+							<p:dataTable id="tablausuariosdelrol" var="usrelrol"
+								selectionMode="single" editable="true">
+								<f:facet name="header">
+									USUARIOS DEL ROL SELECCIONADO
+								</f:facet>
+								
+								<p:column headerText="Id">
+									<h:outputText value="xxx" />
+								</p:column>
+								<p:column headerText="Usuario">									
+									<h:outputText value="yyyyyyyyy" />
+								</p:column>
+								
+							</p:dataTable>
+						</p:column>
 					</p:row>
 					<p:row>
-						<p:column>
-							<p:commandButton type="button" value="Nuevo Rol"
-								icon="ui-icon-plus" style="margin:0" onclick="nrDialog.show()" />
-						</p:column>
-						<p:column>
-							<p:commandButton id="elimrol" value="Eliminar Rol"
-								icon="ui-icon-closethick" style="margin:0"
-								onclick="confirmacion.show()" />
+						<p:column colspan="2">
+							<p:panelGrid columns="2">
+								<p:commandButton type="button" value="Nuevo Rol"
+									icon="ui-icon-plus" style="margin:0" onclick="nrDialog.show()" />
+								<p:commandButton id="elimrol" value="Eliminar Rol"
+									icon="ui-icon-closethick" style="margin:0"
+									onclick="confirmacion.show()" />									
+							</p:panelGrid>
 						</p:column>
 					</p:row>
 				</p:panelGrid>
+				
 				<p:panelGrid>
 					<p:row>
 						<p:column colspan="2">
@@ -102,7 +119,7 @@
 											<h:outputText value="**********" />
 										</f:facet>
 										<f:facet name="input">
-											<p:password id="passwordInput" value="#{usuarios.password}" />
+											<p:inputText id="passwordInput" value="#{usuarios.password}" />
 										</f:facet>
 									</p:cellEditor>
 								</p:column>
@@ -167,7 +184,7 @@
 								onclick="nusuarioDialog.show()" />
 						</p:column>
 						<p:column>
-							<p:commandButton id="elimuser" value="Eliminar Usuario"
+							<p:commandButton id="elimuser" value="Eliminar Usuario"								
 								icon="ui-icon-closethick" style="margin:0"
 								onclick="confirmacionusuario.show()" />
 						</p:column>
@@ -184,7 +201,7 @@
 
 				<p:commandButton id="confirmsir" value="Si"
 					oncomplete="confirmacion.hide()"
-					actionListener="#{administracionBean.deleteRol}"
+					actionListener="#{administracionBean.deleteUsuario}"
 					update="tablaroles :mensajes" />
 				<p:commandButton id="decliner" value="No"
 					onclick="confirmacion.hide()" type="button" />
@@ -259,7 +276,7 @@
 
 					<h:outputText value="Segundo Nombre" />
 					<p:inputText id="segnombre"
-						value="#{administracionBean.primernombre}" required="false" />
+						value="#{administracionBean.segundonombre}" required="false" />
 					<br />
 
 					<h:outputText value="Primer Apellido:" />

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.SessionFactoryImplementor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import co.geographs.agrinsa.dao.business.Roles;
@@ -73,12 +74,41 @@ public class UsuariosDao {
 					.getSessionFactory()).getConnectionProvider()
 					.getConnection().commit();
 			return "OK";
+		} catch (DataIntegrityViolationException e) {
+			return "El nombre de usuario ya existe";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getMessage();
 		}
 	}
 	
+	public String deleteUsuario(Usuarios usuario) {
+		try {						
+			this.hibernateTemplate.delete(usuario);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
+	public String updateUsuario(Usuarios usuario) {
+		try {						
+			this.hibernateTemplate.update(usuario);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
 	/**
 	 * Retorna los recursos permitidos para un usuario
 	 * @param usuario
@@ -137,9 +167,11 @@ public class UsuariosDao {
 					.getSessionFactory()).getConnectionProvider()
 					.getConnection().commit();
 			return "OK";
+		} catch (DataIntegrityViolationException e) {
+			return "El nombre de rol ya existe";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return e.getMessage();
+			return e.getMessage();				
 		}
 	}
 	

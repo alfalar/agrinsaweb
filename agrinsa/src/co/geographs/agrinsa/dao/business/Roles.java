@@ -53,7 +53,7 @@ public class Roles implements java.io.Serializable {
 		this.rolId = rolId;
 	}
 
-	@Column(name = "rol", nullable = false, length = 50)
+	@Column(name = "rol", nullable = false, length = 50,unique = true)
 	public String getRol() {
 		return this.rol;
 	}
