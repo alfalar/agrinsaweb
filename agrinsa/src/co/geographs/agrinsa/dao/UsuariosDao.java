@@ -8,6 +8,9 @@ import org.hibernate.engine.SessionFactoryImplementor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
+import co.geographs.agrinsa.dao.business.MiembrosRol;
+import co.geographs.agrinsa.dao.business.MiembrosRolId;
+import co.geographs.agrinsa.dao.business.Permisos;
 import co.geographs.agrinsa.dao.business.Roles;
 import co.geographs.agrinsa.dao.business.Usuarios;
 import co.geographs.agrinsa.dao.business.UsuariosWS;
@@ -202,6 +205,67 @@ public class UsuariosDao {
 			return e.getMessage();
 		}
 	}
-	
+	/**
+	 * Trae los usuarios de un rol
+	 * @param rolId
+	 * @return
+	 */
+	public List<Usuarios> getUsuariosRol(Roles selectedRol){
+		try{
+			String consulta="select us from MiembrosRol mr, Usuarios us, Roles ro "+
+							"where "+ 
+							"mr.usuarios.usuarioId= us.usuarioId "+
+							"and mr.roles.rolId=ro.rolId "+
+							"and ro.rolId=:rolId";
+			List<Usuarios> usuarios=this.hibernateTemplate.findByNamedParam(consulta, "rolId", selectedRol.getRolId());
+			return usuarios;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 
+	}
+
+	public String addUserToRol(Usuarios usuario,Roles rol){
+		try {
+			MiembrosRol miembro=new MiembrosRol();
+			miembro.setRoles(rol);
+			miembro.setUsuarios(usuario);
+			MiembrosRolId mid= new MiembrosRolId(rol.getRolId(), usuario.getUsuarioId());
+			miembro.setId(mid);
+			this.hibernateTemplate.save(miembro);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();				
+		}		
+	}
+	
+	public String deleteUserFromRol(Usuarios usuario,Roles rol){
+		try {
+			MiembrosRol miembro=new MiembrosRol();
+			miembro.setRoles(rol);
+			miembro.setUsuarios(usuario);
+			MiembrosRolId mid= new MiembrosRolId(rol.getRolId(), usuario.getUsuarioId());
+			miembro.setId(mid);
+			this.hibernateTemplate.delete(miembro);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();				
+		}		
+	}
+	
+	public List<Permisos> getPermisos(){
+		List<Permisos> permisos = this.hibernateTemplate.find("from Permisos");
+		return permisos;
+	}
 }

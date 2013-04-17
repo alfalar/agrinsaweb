@@ -14,6 +14,7 @@ import org.primefaces.model.DefaultDashboardColumn;
 import org.primefaces.model.DefaultDashboardModel;
 
 import co.geographs.agrinsa.dao.UsuariosDao;
+import co.geographs.agrinsa.dao.business.Permisos;
 import co.geographs.agrinsa.dao.business.Roles;
 import co.geographs.agrinsa.dao.business.Usuarios;
 import co.geographs.agrinsa.util.SpringUtils;
@@ -42,6 +43,11 @@ public class AdministracionBean {
 	private String primerapellido;
 	private String segundoapellido;
 	private boolean habilitado=false;	
+	//VARIABLES USUARIOS ROL
+	private List<Usuarios> usuariosrol;
+	//VARIABLES PERMISOS
+	private List<Permisos> recursos;
+	
 	public List<Roles> getRoles() {
 		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
 		roles=usuariosDao.getRoles();
@@ -226,6 +232,19 @@ public class AdministracionBean {
 		this.habilitado = habilitado;
 	}
 
+	
+	public List<Usuarios> getUsuariosrol() {
+		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+		if(this.selectedRol!=null){
+			usuariosrol=usuariosDao.getUsuariosRol(this.selectedRol);	
+		}						
+		return usuariosrol;
+	}
+
+	public void setUsuariosrol(List<Usuarios> usuariosrol) {
+		this.usuariosrol = usuariosrol;
+	}
+
 	public void onEdit(RowEditEvent event) {            
         Roles rol=((Roles) event.getObject());
         UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
@@ -269,5 +288,45 @@ public class AdministracionBean {
     
 	public void handleReorder(DashboardReorderEvent event) {  
     }  	
-    
+      
+	public void addUsertoRol(Usuarios usuarioselec){
+		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+		if(this.selectedRol!=null){
+			mensaje=usuariosDao.addUserToRol(usuarioselec, this.selectedRol);
+			if(mensaje.equalsIgnoreCase("OK")){
+				constantesBean.mostrarMensaje("Usuario agregado al rol", "INFO");	
+			}else{
+				constantesBean.mostrarMensaje(mensaje, "ERROR");
+			}	
+			
+		}else{
+			constantesBean.mostrarMensaje("No hay un rol seleccionado para agregarle este usuario", "INFO");		
+		}
+	}
+	public void deleteUserfromRol(Usuarios usuarioselec){
+		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+		if(this.selectedRol!=null){
+			mensaje=usuariosDao.deleteUserFromRol(usuarioselec, this.selectedRol);
+			if(mensaje.equalsIgnoreCase("OK")){
+				constantesBean.mostrarMensaje("Usuario quitado del rol", "INFO");	
+			}else{
+				constantesBean.mostrarMensaje(mensaje, "ERROR");
+			}	
+			
+		}else{
+			constantesBean.mostrarMensaje("No hay un rol seleccionado para quitarle este usuario", "INFO");		
+		}		
+	}
+
+	public List<Permisos> getRecursos() {
+		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+		recursos= usuariosDao.getPermisos();
+		return recursos;
+	}
+
+	public void setRecursos(List<Permisos> recursos) {
+		this.recursos = recursos;
+	}
+
+	
  }

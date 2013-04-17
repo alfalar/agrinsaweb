@@ -21,12 +21,14 @@ xmlns:p="http://primefaces.org/ui">
 								<p:dataTable id="tablaroles" var="roles"
 								value="#{administracionBean.roles}" rowKey="#{roles.rolId}"
 								selection="#{administracionBean.selectedRol}"
-								selectionMode="single" editable="true">
+								selectionMode="single" editable="true"
+								paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron roles">
 									<p:ajax event="rowEdit" listener="#{administracionBean.onEdit}"
 									update=":mensajes" />
 									<p:ajax event="rowEditCancel"
 									listener="#{administracionBean.onCancel}" update=":mensajes" />
-
+ 									<p:ajax event="rowSelect" update=":form:usuariosroles"/>
+ 									
 									<p:column headerText="Id">
 										<h:outputText value="#{roles.rolId}" />
 									</p:column>
@@ -70,7 +72,8 @@ xmlns:p="http://primefaces.org/ui">
 								value="#{administracionBean.usuarios}"
 								rowKey="#{usuarios.usuarioId}"
 								selection="#{administracionBean.selectedUsuario}"
-								selectionMode="single" editable="true">
+								selectionMode="single" editable="true"
+								paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron usuarios">
 									<p:ajax event="rowEdit"
 									listener="#{administracionBean.onEditUsuario}"
 									update=":mensajes" />
@@ -78,7 +81,7 @@ xmlns:p="http://primefaces.org/ui">
 									listener="#{administracionBean.onCancel}" update=":mensajes" />
 
 									<p:column headerText="Id">
-										<h:outputText value="#{usuarios.usuarioId}" />
+										<h:outputText id="idtxt" value="#{usuarios.usuarioId}" />										  
 									</p:column>
 									<p:column headerText="Nombre de Usuario">
 										<p:cellEditor>
@@ -145,9 +148,15 @@ xmlns:p="http://primefaces.org/ui">
 										</p:cellEditor>
 									</p:column>
 
-									<p:column style="width:6%">
+									<p:column style="width:4%">
 										<p:rowEditor />
 									</p:column>
+									<p:column style="width:4%">
+										<p:commandButton title="Agregar al rol seleccionado"
+												actionListener="#{administracionBean.addUsertoRol(usuarios)}"
+												icon="ui-icon-person" style="margin:0" update=":mensajes :form:usuariosroles"/>
+									</p:column>
+
 									<f:facet name="footer">
 										Total de Usuarios: #{administracionBean.totalusuarios}
 									</f:facet>
@@ -164,27 +173,60 @@ xmlns:p="http://primefaces.org/ui">
 								<p:commandButton id="elimuser" value="Eliminar Usuario"
 								icon="ui-icon-closethick" style="margin:0"
 								onclick="confirmacionusuario.show()" />
-							</p:column>
+							</p:column>							
 						</p:row>
 					</p:panel>
 
 					<p:panel id="recursos" header="Recursos disponibles">
-
-					</p:panel>
-
-					<p:panel id="usuariosroles" header="Usuarios del rol seleccionado">
 						<p:row>
 							<p:column>
-								<p:dataTable id="tablausuariosdelrol" var="usrelrol"
-								selectionMode="single" editable="true">
-
+								<p:dataTable id="tablarecursos" var="recursos"								
+									value="#{administracionBean.recursos}"
+									paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron recursos en el sistema">
 									<p:column headerText="Id">
-										<h:outputText value="xxx" />
+										<h:outputText value="#{recursos.permisoId}" />
+									</p:column>
+									<p:column headerText="Tipo">
+										<h:outputText value="#{recursos.tipo}" />
+									</p:column>
+									<p:column headerText="Opcion">
+										<h:outputText value="#{recursos.opcion}" />
+									</p:column>
+									<p:column headerText="Nombre">
+										<h:outputText value="#{recursos.nombreRecurso}" />
+									</p:column>
+									<p:column headerText="Descripcion">
+										<h:outputText value="#{recursos.descripcion}" />
+									</p:column>									
+								</p:dataTable>
+							</p:column>
+						</p:row>
+					</p:panel>
+
+					<p:panel id="usuariosroles" header="Usuarios del rol seleccionado">  
+						<p:row>
+							<p:column>
+								<p:dataTable id="tablausuariosdelrol" var="usrelrol"								
+									value="#{administracionBean.usuariosrol}"
+									paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron usuarios de este rol">
+									<p:column headerText="Id">
+										<h:outputText value="#{usrelrol.usuarioId}" />
 									</p:column>
 									<p:column headerText="Usuario">
-										<h:outputText value="yyyyyyyyy" />
+										<h:outputText value="#{usrelrol.usuario}" />
 									</p:column>
-
+									<p:column headerText="Nombre">
+										<h:outputText value="#{usrelrol.primerNombre}" />
+									</p:column>
+									<p:column headerText="Apellido">
+										<h:outputText value="#{usrelrol.primerApellido}" />
+									</p:column>
+									<p:column style="width:4%">
+										<p:commandButton title="Quitar del rol seleccionado"
+												actionListener="#{administracionBean.deleteUserfromRol(usrelrol)}"
+												icon="ui-icon-squaresmall-close" style="margin:0" update=":mensajes :form:usuariosroles"/>
+									</p:column>
+									
 								</p:dataTable>
 							</p:column>
 						</p:row>
@@ -194,7 +236,7 @@ xmlns:p="http://primefaces.org/ui">
 
 					</p:panel>
 				</p:dashboard>
-
+			      
 				<p:confirmDialog id="confirmDialog"
 				message="Seguro que quiere eliminar el Rol?"
 				header="Eliminación del Rol" severity="alert"
@@ -303,8 +345,6 @@ xmlns:p="http://primefaces.org/ui">
 					</h:panelGrid>
 				</p:dialog>
 			</h:form>
-
 		</f:view>
 	</h:body>
-
 </html>
