@@ -1,10 +1,12 @@
 package co.geographs.agrinsa.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
 
 import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.event.RowEditEvent;
@@ -12,11 +14,16 @@ import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
 import org.primefaces.model.DefaultDashboardColumn;
 import org.primefaces.model.DefaultDashboardModel;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import co.geographs.agrinsa.dao.ConsultasDao;
 import co.geographs.agrinsa.dao.UsuariosDao;
 import co.geographs.agrinsa.dao.business.Permisos;
+import co.geographs.agrinsa.dao.business.PermisosRol;
 import co.geographs.agrinsa.dao.business.Roles;
 import co.geographs.agrinsa.dao.business.Usuarios;
+import co.geographs.agrinsa.util.FacesUtil;
 import co.geographs.agrinsa.util.SpringUtils;
 
 @ManagedBean(name = "administracionBean")
@@ -47,6 +54,14 @@ public class AdministracionBean {
 	private List<Usuarios> usuariosrol;
 	//VARIABLES PERMISOS
 	private List<Permisos> recursos;
+	//VARIABLES RECURSOS DEL ROL
+	private List<Permisos> recursosrol;
+	private List<SelectItem> tiposrecurso;
+	private Permisos selectedRecurso;
+	private String selectedTiposrecurso;
+	private String recursoopcion;
+	private String recursovalor;
+	private String recursodesc;
 	
 	public List<Roles> getRoles() {
 		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
@@ -265,6 +280,18 @@ public class AdministracionBean {
 			constantesBean.mostrarMensaje(mensaje, "ERROR");
 		}	
     }        
+
+	public void onEditRecurso(RowEditEvent event) {            
+        Permisos permiso=((Permisos) event.getObject());
+        permiso.setTipo(selectedTiposrecurso);
+        UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+        mensaje=usuariosDao.updatePermiso(permiso);
+		if(mensaje.equalsIgnoreCase("OK")){
+			constantesBean.mostrarMensaje("Recurso Actualizado", "INFO");	
+		}else{
+			constantesBean.mostrarMensaje(mensaje, "ERROR");
+		}	
+    }        
 	
     public void onCancel(RowEditEvent event) {  
     }
@@ -326,6 +353,133 @@ public class AdministracionBean {
 
 	public void setRecursos(List<Permisos> recursos) {
 		this.recursos = recursos;
+	}
+
+	public List<Permisos> getRecursosrol() {
+		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+		if(this.selectedRol!=null){
+			recursosrol=usuariosDao.getRecursosRol(this.selectedRol);	
+		}								
+		return recursosrol;
+	}
+
+	public void setRecursosrol(List<Permisos> recursosrol) {
+		this.recursosrol = recursosrol;
+	}
+
+	public void deleteRecursofromRol(Permisos permiso){
+		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+		if(this.selectedRol!=null){
+			mensaje=usuariosDao.deletePermisoFromRol(permiso, this.selectedRol);
+			if(mensaje.equalsIgnoreCase("OK")){
+				constantesBean.mostrarMensaje("Permiso quitado del rol", "INFO");	
+			}else{
+				constantesBean.mostrarMensaje(mensaje, "ERROR");
+			}	
+			
+		}else{
+			constantesBean.mostrarMensaje("No hay un rol seleccionado para quitarle este permiso", "INFO");		
+		}				
+	}
+
+	public void addRecursotoRol(Permisos permiso){
+		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+		if(this.selectedRol!=null){
+			mensaje=usuariosDao.addRecursoToRol(permiso, this.selectedRol);
+			if(mensaje.equalsIgnoreCase("OK")){
+				constantesBean.mostrarMensaje("Recurso agregado al rol", "INFO");	
+			}else{
+				constantesBean.mostrarMensaje(mensaje, "ERROR");
+			}	
+			
+		}else{
+			constantesBean.mostrarMensaje("No hay un rol seleccionado para agregarle este recurso", "INFO");		
+		}
+	}
+
+	public List<SelectItem> getTiposrecurso() {
+		tiposrecurso=new ArrayList<SelectItem>();
+		SelectItem select=new SelectItem("CONSULTA","CONSULTA");
+		tiposrecurso.add(select);
+		select=new SelectItem("GENERAL","GENERAL");
+		tiposrecurso.add(select);
+		return tiposrecurso;
+	}
+
+	public void setTiposrecurso(List<SelectItem> tiposrecurso) {
+		this.tiposrecurso = tiposrecurso;
+	}
+
+	public String getSelectedTiposrecurso() {
+		return selectedTiposrecurso;
+	}
+
+	public void setSelectedTiposrecurso(String selectedTiposrecurso) {
+		this.selectedTiposrecurso = selectedTiposrecurso;
+	}
+	
+	public void addRecurso(){
+		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+		Permisos permiso = new Permisos();
+		permiso.setTipo(selectedTiposrecurso);
+		permiso.setOpcion(recursoopcion);
+		permiso.setNombreRecurso(recursovalor);
+		permiso.setDescripcion(recursodesc);
+		
+		mensaje=usuariosDao.addRecurso(permiso);
+			if(mensaje.equalsIgnoreCase("OK")){
+				constantesBean.mostrarMensaje("Permiso Agregado", "INFO");	
+			}else{
+				constantesBean.mostrarMensaje(mensaje, "ERROR");
+			}								
+		
+		nombrerol="";
+	}
+
+	public String getRecursoopcion() {
+		return recursoopcion;
+	}
+
+	public void setRecursoopcion(String recursoopcion) {
+		this.recursoopcion = recursoopcion;
+	}
+
+	public String getRecursovalor() {
+		return recursovalor;
+	}
+
+	public void setRecursovalor(String recursovalor) {
+		this.recursovalor = recursovalor;
+	}
+
+	public String getRecursodesc() {
+		return recursodesc;
+	}
+
+	public void setRecursodesc(String recursodesc) {
+		this.recursodesc = recursodesc;
+	}
+
+	
+	
+	public Permisos getSelectedRecurso() {
+		return selectedRecurso;
+	}
+
+	public void setSelectedRecurso(Permisos selectedRecurso) {
+		this.selectedRecurso = selectedRecurso;
+	}
+
+	public void deleteRecurso(){
+		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
+		if(selectedRecurso !=null){			
+			mensaje=usuariosDao.deleteRecurso(selectedRecurso);
+			if(mensaje.equalsIgnoreCase("OK")){
+				constantesBean.mostrarMensaje("Recurso Eliminado", "INFO");	
+			}else{
+				constantesBean.mostrarMensaje(mensaje, "ERROR");
+			}			
+		}		
 	}
 
 	

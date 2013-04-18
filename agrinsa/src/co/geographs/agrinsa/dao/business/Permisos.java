@@ -5,6 +5,8 @@ package co.geographs.agrinsa.dao.business;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -34,6 +36,7 @@ public class Permisos implements java.io.Serializable {
 	}
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "permiso_id", unique = true, nullable = false)
 	public int getPermisoId() {
 		return this.permisoId;

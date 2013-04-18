@@ -22,13 +22,15 @@ xmlns:p="http://primefaces.org/ui">
 								value="#{administracionBean.roles}" rowKey="#{roles.rolId}"
 								selection="#{administracionBean.selectedRol}"
 								selectionMode="single" editable="true"
-								paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron roles">
+								paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron roles">
+
 									<p:ajax event="rowEdit" listener="#{administracionBean.onEdit}"
 									update=":mensajes" />
 									<p:ajax event="rowEditCancel"
 									listener="#{administracionBean.onCancel}" update=":mensajes" />
- 									<p:ajax event="rowSelect" update=":form:usuariosroles"/>
- 									
+
+									<p:ajax event="rowSelect" update=":form:usuariosroles :form:permisosroles"/>
+
 									<p:column headerText="Id">
 										<h:outputText value="#{roles.rolId}" />
 									</p:column>
@@ -73,7 +75,7 @@ xmlns:p="http://primefaces.org/ui">
 								rowKey="#{usuarios.usuarioId}"
 								selection="#{administracionBean.selectedUsuario}"
 								selectionMode="single" editable="true"
-								paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron usuarios">
+								paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron usuarios">
 									<p:ajax event="rowEdit"
 									listener="#{administracionBean.onEditUsuario}"
 									update=":mensajes" />
@@ -81,7 +83,7 @@ xmlns:p="http://primefaces.org/ui">
 									listener="#{administracionBean.onCancel}" update=":mensajes" />
 
 									<p:column headerText="Id">
-										<h:outputText id="idtxt" value="#{usuarios.usuarioId}" />										  
+										<h:outputText id="idtxt" value="#{usuarios.usuarioId}" />
 									</p:column>
 									<p:column headerText="Nombre de Usuario">
 										<p:cellEditor>
@@ -153,8 +155,8 @@ xmlns:p="http://primefaces.org/ui">
 									</p:column>
 									<p:column style="width:4%">
 										<p:commandButton title="Agregar al rol seleccionado"
-												actionListener="#{administracionBean.addUsertoRol(usuarios)}"
-												icon="ui-icon-person" style="margin:0" update=":mensajes :form:usuariosroles"/>
+										actionListener="#{administracionBean.addUsertoRol(usuarios)}"
+										icon="ui-icon-person" style="margin:0" update=":mensajes :form:usuariosroles"/>
 									</p:column>
 
 									<f:facet name="footer">
@@ -173,42 +175,101 @@ xmlns:p="http://primefaces.org/ui">
 								<p:commandButton id="elimuser" value="Eliminar Usuario"
 								icon="ui-icon-closethick" style="margin:0"
 								onclick="confirmacionusuario.show()" />
-							</p:column>							
+							</p:column>
 						</p:row>
 					</p:panel>
 
 					<p:panel id="recursos" header="Recursos disponibles">
 						<p:row>
 							<p:column>
-								<p:dataTable id="tablarecursos" var="recursos"								
-									value="#{administracionBean.recursos}"
-									paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron recursos en el sistema">
+								<p:dataTable id="tablarecursos" var="recursos"
+								value="#{administracionBean.recursos}"
+								selectionMode="single" editable="true" rowKey="#{recursos.permisoId}" selection="#{administracionBean.selectedRecurso}"
+								paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron recursos en el sistema">
+									<p:ajax event="rowEdit"
+									listener="#{administracionBean.onEditRecurso}" update=":mensajes" />
+									<p:ajax event="rowEditCancel"
+									listener="#{administracionBean.onCancel}" update=":mensajes" />
+
 									<p:column headerText="Id">
 										<h:outputText value="#{recursos.permisoId}" />
 									</p:column>
 									<p:column headerText="Tipo">
-										<h:outputText value="#{recursos.tipo}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{recursos.tipo}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:selectOneMenu value="#{administracionBean.selectedTiposrecurso}">
+													<f:selectItems value="#{administracionBean.tiposrecurso}"/>
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									<p:column headerText="Opcion">
-										<h:outputText value="#{recursos.opcion}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{recursos.opcion}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText id="opcioninput" value="#{recursos.opcion}" />
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
-									<p:column headerText="Nombre">
-										<h:outputText value="#{recursos.nombreRecurso}" />
+									<p:column headerText="Valor">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{recursos.nombreRecurso}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText id="valorinput" value="#{recursos.nombreRecurso}" />
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									<p:column headerText="Descripcion">
-										<h:outputText value="#{recursos.descripcion}" />
-									</p:column>									
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{recursos.descripcion}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText id="descrinput" value="#{recursos.descripcion}" />
+											</f:facet>
+										</p:cellEditor>
+
+									</p:column>
+									<p:column style="width:6%">
+										<p:rowEditor />
+									</p:column>
+									<p:column style="width:4%">
+										<p:commandButton title="Agregar al rol seleccionado"
+										actionListener="#{administracionBean.addRecursotoRol(recursos)}"
+										icon="ui-icon-plusthick" style="margin:0" update=":mensajes :form:permisosroles"/>
+									</p:column>
 								</p:dataTable>
 							</p:column>
 						</p:row>
-					</p:panel>
-
-					<p:panel id="usuariosroles" header="Usuarios del rol seleccionado">  
 						<p:row>
 							<p:column>
-								<p:dataTable id="tablausuariosdelrol" var="usrelrol"								
-									value="#{administracionBean.usuariosrol}"
-									paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron usuarios de este rol">
+								<p:commandButton type="button" value="Nuevo Recurso"
+								icon="ui-icon-plus" style="margin:0"
+								onclick="nrecursoDialog.show()" />
+							</p:column>
+							<p:column>
+								<p:commandButton id="elimrecurso" value="Eliminar Recurso"
+								icon="ui-icon-closethick" style="margin:0"
+								onclick="confirmacionrecurso.show()" />
+							</p:column>
+
+						</p:row>
+
+					</p:panel>
+
+					<p:panel id="usuariosroles" header="Usuarios del rol seleccionado">
+						<p:row>
+							<p:column>
+								<p:dataTable id="tablausuariosdelrol" var="usrelrol"
+								value="#{administracionBean.usuariosrol}"
+								paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron usuarios de este rol">
 									<p:column headerText="Id">
 										<h:outputText value="#{usrelrol.usuarioId}" />
 									</p:column>
@@ -223,20 +284,39 @@ xmlns:p="http://primefaces.org/ui">
 									</p:column>
 									<p:column style="width:4%">
 										<p:commandButton title="Quitar del rol seleccionado"
-												actionListener="#{administracionBean.deleteUserfromRol(usrelrol)}"
-												icon="ui-icon-squaresmall-close" style="margin:0" update=":mensajes :form:usuariosroles"/>
+										actionListener="#{administracionBean.deleteUserfromRol(usrelrol)}"
+										icon="ui-icon-squaresmall-close" style="margin:0" update=":mensajes :form:usuariosroles"/>
 									</p:column>
-									
+
 								</p:dataTable>
 							</p:column>
 						</p:row>
 					</p:panel>
 
-					<p:panel id="permisosroles" header="Permisos del rol seleccionado">
+					<p:panel id="permisosroles" header="Recursos del rol seleccionado">
+						<p:row>
+							<p:column>
+								<p:dataTable id="tablarecursosdelrol" var="recursosrol"
+								value="#{administracionBean.recursosrol}"
+								paginator="true" rows="10" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron recursos de este rol">
+									<p:column headerText="Id">
+										<h:outputText value="#{recursosrol.permisoId}" />
+									</p:column>
+									<p:column headerText="Recurso">
+										<h:outputText value="#{recursosrol.nombreRecurso}" />
+									</p:column>
+									<p:column style="width:4%">
+										<p:commandButton title="Quitar del rol seleccionado"
+										actionListener="#{administracionBean.deleteRecursofromRol(recursosrol)}"
+										icon="ui-icon-squaresmall-close" style="margin:0" update=":mensajes :form:permisosroles"/>
+									</p:column>
 
+								</p:dataTable>
+							</p:column>
+						</p:row>
 					</p:panel>
 				</p:dashboard>
-			      
+
 				<p:confirmDialog id="confirmDialog"
 				message="Seguro que quiere eliminar el Rol?"
 				header="Eliminación del Rol" severity="alert"
@@ -264,8 +344,23 @@ xmlns:p="http://primefaces.org/ui">
 					onclick="confirmacionusuario.hide()" type="button" />
 
 				</p:confirmDialog>
+
+				<p:confirmDialog id="confirmRecursoDialog"
+				message="Seguro que quiere eliminar el Recurso?"
+				header="Eliminación del Recurso" severity="alert"
+				widgetVar="confirmacionrecurso">
+
+					<p:commandButton id="confirmsire" value="Si"
+					oncomplete="confirmacionrecurso.hide()"
+					actionListener="#{administracionBean.deleteRecurso}"
+					update="tablarecursos :mensajes" />
+					<p:commandButton id="declinere" value="No"
+					onclick="confirmacionrecurso.hide()" type="button" />
+
+				</p:confirmDialog>
+
 			</h:form>
-			
+
 			<h:form id="form2">
 				<p:dialog header="Nuevo Rol" widgetVar="nrDialog" resizable="false"
 				modal="true" showEffect="fade" hideEffect="explode">
@@ -345,6 +440,46 @@ xmlns:p="http://primefaces.org/ui">
 					</h:panelGrid>
 				</p:dialog>
 			</h:form>
+			<h:form id="Forma_Recursos">
+				<p:dialog header="Nuevo recurso" widgetVar="nrecursoDialog"
+				modal="true" id="dlgrecurson" resizable="false" showEffect="fade"
+				hideEffect="explode">
+					<h:panelGrid columns="3">
+						<h:outputText value="Tipo:" />
+						<p:selectOneMenu id="seltiposrecurso" value="#{administracionBean.selectedTiposrecurso}">
+							<f:selectItems value="#{administracionBean.tiposrecurso}"/>
+						</p:selectOneMenu>
+						<br />
+
+						<h:outputText value="Opcion:" />
+						<p:inputText id="recursoopcion" requiredMessage="La opción es requerida"
+						value="#{administracionBean.recursoopcion}" required="true">
+							<f:validateLength minimum="2" />
+						</p:inputText>
+						<p:message id="mspopcre" for="recursoopcion" display="icon" />
+
+						<h:outputText value="Valor:" />
+						<p:inputText id="recursovalor" requiredMessage="El valor es requerido"
+						value="#{administracionBean.recursovalor}" required="true">
+							<f:validateLength minimum="2" />
+						</p:inputText>
+						<p:message id="msrecaval" for="recursovalor" display="icon" />
+
+						<h:outputText value="Descripcion:" />
+						<p:inputText id="recursodesc"
+						value="#{administracionBean.recursodesc}" required="true">
+							<f:validateLength minimum="2" />
+						</p:inputText>
+						<br />
+
+						<p:commandButton value="Agregar" icon="ui-icon-plus"
+						style="margin:0" actionListener="#{administracionBean.addRecurso}"
+						update=":form:tablarecursos recursoopcion mspopcre recursovalor msrecaval :mensajes" />
+						<br />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
 		</f:view>
 	</h:body>
 </html>

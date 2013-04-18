@@ -11,6 +11,8 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import co.geographs.agrinsa.dao.business.MiembrosRol;
 import co.geographs.agrinsa.dao.business.MiembrosRolId;
 import co.geographs.agrinsa.dao.business.Permisos;
+import co.geographs.agrinsa.dao.business.PermisosRol;
+import co.geographs.agrinsa.dao.business.PermisosRolId;
 import co.geographs.agrinsa.dao.business.Roles;
 import co.geographs.agrinsa.dao.business.Usuarios;
 import co.geographs.agrinsa.dao.business.UsuariosWS;
@@ -268,4 +270,98 @@ public class UsuariosDao {
 		List<Permisos> permisos = this.hibernateTemplate.find("from Permisos");
 		return permisos;
 	}
+	
+	public List<Permisos> getRecursosRol(Roles selectedRol){
+		try{
+			String consulta="select permiso from Roles rol,Permisos permiso, PermisosRol permirol "+
+							"where rol.rolId=permirol.id.rolId "+
+							"and permiso.permisoId=permirol.id.permisoId "+
+							"and rol.rolId=:rolId";
+			List<Permisos> permirol=this.hibernateTemplate.findByNamedParam(consulta, "rolId", selectedRol.getRolId());
+			return permirol;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public String deletePermisoFromRol(Permisos permiso,Roles rol){
+		try {
+			PermisosRol permisorol= new PermisosRol();
+			permisorol.setRoles(rol);
+			permisorol.setPermisos(permiso);
+			PermisosRolId  pid= new PermisosRolId(rol.getRolId(), permiso.getPermisoId());
+			permisorol.setId(pid);
+			this.hibernateTemplate.delete(permisorol);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();				
+		}		
+	}
+	
+	public String addRecursoToRol(Permisos permiso,Roles rol){
+		try {
+			PermisosRol permisorol= new PermisosRol();
+			permisorol.setRoles(rol);
+			permisorol.setPermisos(permiso);
+			PermisosRolId  pid= new PermisosRolId(rol.getRolId(), permiso.getPermisoId());
+			permisorol.setId(pid);
+			this.hibernateTemplate.save(permisorol);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();				
+		}		
+	}
+	
+	public String updatePermiso(Permisos permiso) {
+		try {						
+			this.hibernateTemplate.update(permiso);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
+	public String addRecurso(Permisos permiso) {
+		try {
+			this.hibernateTemplate.save(permiso);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
+	public String deleteRecurso(Permisos permiso) {
+		try {						
+			this.hibernateTemplate.delete(permiso);
+			this.hibernateTemplate.flush();
+			((SessionFactoryImplementor) this.hibernateTemplate
+					.getSessionFactory()).getConnectionProvider()
+					.getConnection().commit();
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
 }
