@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.SessionFactoryImplementor;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
@@ -358,6 +359,11 @@ public class UsuariosDao {
 					.getSessionFactory()).getConnectionProvider()
 					.getConnection().commit();
 			return "OK";
+		} catch (ConstraintViolationException e) {
+			return "No se puede eliminar el recurso porque está asignado a un rol ";
+		} catch (DataIntegrityViolationException e) {
+			return "No se puede eliminar el recurso porque está asignado a un rol ";
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getMessage();
