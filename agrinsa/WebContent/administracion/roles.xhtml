@@ -29,7 +29,7 @@ xmlns:p="http://primefaces.org/ui">
 									<p:ajax event="rowEditCancel"
 									listener="#{administracionBean.onCancel}" update=":mensajes" />
 
-									<p:ajax event="rowSelect" update=":form:usuariosroles :form:permisosroles"/>
+									<p:ajax event="rowSelect" update=":form:usuariosroles :form:permisosroles :form:updrol"/>
 
 									<p:column headerText="Id">
 										<h:outputText value="#{roles.rolId}" />
@@ -56,12 +56,12 @@ xmlns:p="http://primefaces.org/ui">
 						</p:row>
 						<p:row>
 							<p:column colspan="2">
-								<p:panelGrid columns="2">
+								<p:panelGrid columns="2" id="updrol">
 									<p:commandButton type="button" value="Nuevo Rol"
-									icon="ui-icon-plus" style="margin:0" onclick="nrDialog.show()" />
-									<p:commandButton id="elimrol" value="Eliminar Rol"
-									icon="ui-icon-closethick" style="margin:0"
-									onclick="confirmacion.show()" />
+										icon="ui-icon-plus" style="margin:0" onclick="nrDialog.show()" />
+									<p:commandButton id="elimrol" value="Eliminar Rol" rendered="#{not empty administracionBean.selectedRol}"
+										icon="ui-icon-closethick" style="margin:0" update="updrol"
+										onclick="confirmacion.show()" />
 								</p:panelGrid>
 							</p:column>
 						</p:row>
@@ -81,7 +81,8 @@ xmlns:p="http://primefaces.org/ui">
 									update=":mensajes" />
 									<p:ajax event="rowEditCancel"
 									listener="#{administracionBean.onCancel}" update=":mensajes" />
-
+									<p:ajax event="rowSelect" update=":form:updusuario"/>
+									
 									<p:column headerText="Id">
 										<h:outputText id="idtxt" value="#{usuarios.usuarioId}" />
 									</p:column>
@@ -166,15 +167,15 @@ xmlns:p="http://primefaces.org/ui">
 							</p:column>
 						</p:row>
 						<p:row>
-							<p:column>
-								<p:commandButton type="button" value="Nuevo Usuario"
-								icon="ui-icon-plus" style="margin:0"
-								onclick="nusuarioDialog.show()" />
-							</p:column>
-							<p:column>
-								<p:commandButton id="elimuser" value="Eliminar Usuario"
-								icon="ui-icon-closethick" style="margin:0"
-								onclick="confirmacionusuario.show()" />
+							<p:column colspan="2">
+								<p:panelGrid columns="2" id="updusuario">
+									<p:commandButton type="button" value="Nuevo Usuario"
+										icon="ui-icon-plus" style="margin:0"
+										onclick="nusuarioDialog.show()" />
+									<p:commandButton id="elimuser" value="Eliminar Usuario"
+										icon="ui-icon-closethick" style="margin:0" rendered="#{not empty administracionBean.selectedUsuario}"
+										onclick="confirmacionusuario.show()" />
+								</p:panelGrid>
 							</p:column>
 						</p:row>
 					</p:panel>
@@ -183,14 +184,15 @@ xmlns:p="http://primefaces.org/ui">
 						<p:row>
 							<p:column>
 								<p:dataTable id="tablarecursos" var="recursos"
-								value="#{administracionBean.recursos}"
+								value="#{administracionBean.recursos}" 
 								selectionMode="single" editable="true" rowKey="#{recursos.permisoId}" selection="#{administracionBean.selectedRecurso}"
 								paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron recursos en el sistema">
 									<p:ajax event="rowEdit"
 									listener="#{administracionBean.onEditRecurso}" update=":mensajes" />
 									<p:ajax event="rowEditCancel"
 									listener="#{administracionBean.onCancel}" update=":mensajes" />
-
+									<p:ajax event="rowSelect" update=":form:updrecursos"/>
+									
 									<p:column headerText="Id">
 										<h:outputText value="#{recursos.permisoId}" />
 									</p:column>
@@ -219,7 +221,7 @@ xmlns:p="http://primefaces.org/ui">
 									<p:column headerText="Valor">
 										<p:cellEditor>
 											<f:facet name="output">
-												<h:outputText value="#{recursos.nombreRecurso}" />
+												<h:outputText value="#{recursos.nombreRecurso}"  />
 											</f:facet>
 											<f:facet name="input">
 												<p:inputText id="valorinput" value="#{recursos.nombreRecurso}" />
@@ -249,15 +251,15 @@ xmlns:p="http://primefaces.org/ui">
 							</p:column>
 						</p:row>
 						<p:row>
-							<p:column>
-								<p:commandButton type="button" value="Nuevo Recurso"
-								icon="ui-icon-plus" style="margin:0"
-								onclick="nrecursoDialog.show()" />
-							</p:column>
-							<p:column>
-								<p:commandButton id="elimrecurso" value="Eliminar Recurso"
-								icon="ui-icon-closethick" style="margin:0"
-								onclick="confirmacionrecurso.show()" />
+							<p:column colspan="2">
+								<p:panelGrid columns="2" id="updrecursos">
+									<p:commandButton type="button" value="Nuevo Recurso"
+										icon="ui-icon-plus" style="margin:0"
+										onclick="nrecursoDialog.show()" />					
+									<p:commandButton id="elimrecurso" value="Eliminar Recurso"
+										icon="ui-icon-closethick" style="margin:0" rendered="#{not empty administracionBean.selectedRecurso}"
+										onclick="confirmacionrecurso.show()" />
+								</p:panelGrid>
 							</p:column>
 
 						</p:row>
@@ -321,13 +323,12 @@ xmlns:p="http://primefaces.org/ui">
 				message="Seguro que quiere eliminar el Rol?"
 				header="Eliminación del Rol" severity="alert"
 				widgetVar="confirmacion">
-
 					<p:commandButton id="confirmsir" value="Si"
-					oncomplete="confirmacion.hide()"
-					actionListener="#{administracionBean.deleteUsuario}"
-					update="tablaroles :mensajes" />
+							oncomplete="confirmacion.hide()"
+							actionListener="#{administracionBean.deleteRol}"
+							update="tablaroles :mensajes" />
 					<p:commandButton id="decliner" value="No"
-					onclick="confirmacion.hide()" type="button" />
+							onclick="confirmacion.hide()" type="button" />
 
 				</p:confirmDialog>
 
@@ -337,11 +338,11 @@ xmlns:p="http://primefaces.org/ui">
 				widgetVar="confirmacionusuario">
 
 					<p:commandButton id="confirmsiu" value="Si"
-					oncomplete="confirmacionusuario.hide()"
-					actionListener="#{administracionBean.deleteUsuario}"
-					update="tablausuarios :mensajes" />
+						oncomplete="confirmacionusuario.hide()"
+						actionListener="#{administracionBean.deleteUsuario}"
+						update="tablausuarios :mensajes" />
 					<p:commandButton id="declineu" value="No"
-					onclick="confirmacionusuario.hide()" type="button" />
+						onclick="confirmacionusuario.hide()" type="button" />
 
 				</p:confirmDialog>
 
@@ -351,12 +352,12 @@ xmlns:p="http://primefaces.org/ui">
 				widgetVar="confirmacionrecurso">
 
 					<p:commandButton id="confirmsire" value="Si"
-					oncomplete="confirmacionrecurso.hide()"
-					actionListener="#{administracionBean.deleteRecurso}"
-					update="tablarecursos :mensajes" />
+						oncomplete="confirmacionrecurso.hide()"
+						actionListener="#{administracionBean.deleteRecurso}"
+						update="tablarecursos :mensajes" />
 					<p:commandButton id="declinere" value="No"
-					onclick="confirmacionrecurso.hide()" type="button" />
-
+						onclick="confirmacionrecurso.hide()" type="button" />
+						
 				</p:confirmDialog>
 
 			</h:form>
@@ -479,7 +480,16 @@ xmlns:p="http://primefaces.org/ui">
 					</h:panelGrid>
 				</p:dialog>
 			</h:form>
-
+			<p:ajaxStatus style="width:100px;height:200px;position:fixed;right:100px;bottom:10px">  
+			    <f:facet name="start">  
+			        <p:graphicImage value="/images/load.gif" />  
+			    </f:facet>  
+			  
+			    <f:facet name="complete">  
+			        <h:outputText value="" />  
+			    </f:facet>  
+			</p:ajaxStatus>  
 		</f:view>
+		
 	</h:body>
 </html>

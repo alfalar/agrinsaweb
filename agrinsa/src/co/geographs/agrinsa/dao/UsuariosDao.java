@@ -96,6 +96,10 @@ public class UsuariosDao {
 					.getSessionFactory()).getConnectionProvider()
 					.getConnection().commit();
 			return "OK";
+		} catch (ConstraintViolationException e) {
+			return "No se puede eliminar el usuario porque está asignado a un rol ";
+		} catch (DataIntegrityViolationException e) {
+			return "No se puede eliminar el usuario porque está asignado a un rol ";			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getMessage();

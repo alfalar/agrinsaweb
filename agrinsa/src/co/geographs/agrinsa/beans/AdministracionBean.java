@@ -184,6 +184,7 @@ public class AdministracionBean {
 		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
 		if(selectedUsuario!=null){			
 			mensaje=usuariosDao.deleteUsuario(selectedUsuario);
+			selectedUsuario=null;
 			if(mensaje.equalsIgnoreCase("OK")){
 				constantesBean.mostrarMensaje("Usuario Eliminado", "INFO");	
 			}else{

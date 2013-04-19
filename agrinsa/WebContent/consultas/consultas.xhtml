@@ -79,6 +79,36 @@
 					    	<p:dataExporter type="pdf" target="tblareaxvereda" fileName="areaxvereda"/>  
 						</h:commandLink>  
 					</p:panel>
+					<p:panel rendered="#{consultasBean.areaxcultivoenabled}">
+						<p:dataTable id="tblareaxcultivo" var="cons" paginator="true" rows="10" 
+							rendered="#{consultasBean.areaxcultivoenabled}"
+							paginatorAlwaysVisible="false" paginatorPosition="bottom"
+							emptyMessage="No hay registros"
+							value="#{consultasBean.areaxcultivo}">
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Cultivo"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.cultivo}" />  
+		        			</p:column>  
+							<p:column>
+								<f:facet name="header">
+	         						<h:outputText value="Area(Hec)"/>
+	      						</f:facet>						  
+		            			<h:outputText value="#{cons.area}" />  
+		        			</p:column>
+						</p:dataTable>
+						<h:commandLink rendered="#{consultasBean.areaxcultivoenabled}">  
+						    <p:graphicImage value="/images/excel.png" />  
+						    <p:dataExporter type="xls" target="tblareaxcultivo" fileName="areaxcultivo"/>  
+						</h:commandLink>  
+					  
+						<h:commandLink rendered="#{consultasBean.areaxcultivoenabled}">  
+					    	<p:graphicImage value="/images/pdf.png" />  
+					    	<p:dataExporter type="pdf" target="tblareaxcultivo" fileName="areaxcultivo"/>  
+						</h:commandLink>  
+					</p:panel>
+					
 				</p:outputPanel>
 			</p:panelGrid>
 		</h:form>

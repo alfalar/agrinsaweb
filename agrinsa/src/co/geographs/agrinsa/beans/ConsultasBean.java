@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import co.geographs.agrinsa.dao.ConsultasDao;
 import co.geographs.agrinsa.dao.business.Areaxciudad;
 import co.geographs.agrinsa.dao.business.Areaxvereda;
+import co.geographs.agrinsa.dao.business.Sembradoporcultivo;
 import co.geographs.agrinsa.util.FacesUtil;
 import co.geographs.agrinsa.util.SpringUtils;
 
@@ -28,7 +29,9 @@ public class ConsultasBean implements Serializable {
 	//VARIABLES AREA POR VEREDA
 	private List<Areaxvereda> areaxvereda;	
 	private boolean areaxveredaenabled=false;
-	
+	//VARIABLES AREA X CULTIVO
+	private boolean areaxcultivoenabled=false;
+	private List<Sembradoporcultivo> areaxcultivo;
 	
 	
 	public void cambioconsulta() {
@@ -38,14 +41,22 @@ public class ConsultasBean implements Serializable {
 			areaxciudad = consultasDao.getAreaxciudad();
 			areaxciudadenabled=true;
 			areaxveredaenabled=false;
+			areaxcultivoenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("areaxvereda")){
 			areaxvereda=consultasDao.getAreaxvereda();
 			areaxciudadenabled=false;
+			areaxcultivoenabled=false;
 			areaxveredaenabled=true;
+		}else if(selectedTiposconsulta.equalsIgnoreCase("totalxcultivo")){
+			areaxcultivo=consultasDao.getSembradoporcultivo();
+			areaxciudadenabled=false;
+			areaxcultivoenabled=true;
+			areaxveredaenabled=false;
 			
 		}else{
 			areaxciudadenabled=false;
 			areaxveredaenabled=false;
+			areaxcultivoenabled=false;
 		}
 		
 	}
@@ -120,5 +131,10 @@ public class ConsultasBean implements Serializable {
 		return areaxvereda;
 	}
 
+	public boolean isAreaxcultivoenabled() {
+		return areaxcultivoenabled;
+	}
+
+	
 	
 }

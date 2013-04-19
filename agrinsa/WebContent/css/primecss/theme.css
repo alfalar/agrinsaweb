@@ -1,6 +1,14 @@
 body {
     margin: 0px;
     padding: 0;
-    font-size: 9px;
+    font-size: 8px;
     color: #616161;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td {
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+    padding: 4px 10px;
+    white-space: normal;
 }
