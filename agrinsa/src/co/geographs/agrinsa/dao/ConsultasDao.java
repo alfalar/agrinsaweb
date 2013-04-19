@@ -13,6 +13,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import co.geographs.agrinsa.dao.business.Areaxciudad;
 import co.geographs.agrinsa.dao.business.Areaxvereda;
+import co.geographs.agrinsa.dao.business.Sembradoporcultivo;
 import co.geographs.agrinsa.dao.business.TiposConsulta;
 
 public class ConsultasDao {
@@ -63,7 +64,11 @@ public class ConsultasDao {
 		while (iterator.hasNext()) {
 				Object[] row = (Object[]) iterator.next();
 				Areaxciudad areaxciudad=new Areaxciudad();
-				areaxciudad.setCiudad(String.valueOf(row[0]));
+				String ciudad=String.valueOf(row[0]);
+				if(ciudad.equalsIgnoreCase("null")){
+					ciudad="INDEFINIDA";
+				}
+				areaxciudad.setCiudad(ciudad);
 				areaxciudad.setArea( ((BigDecimal)row[1]).doubleValue() );
 				arealist.add(areaxciudad);
 		}						
@@ -89,11 +94,50 @@ public class ConsultasDao {
 		while (iterator.hasNext()) {
 				Object[] row = (Object[]) iterator.next();
 				Areaxvereda areaxvereda=new Areaxvereda();
-				areaxvereda.setVereda(String.valueOf(row[0]));
+				String ciudad=String.valueOf(row[0]);
+				if(ciudad.equalsIgnoreCase("null")){
+					ciudad="INDEFINIDA";
+				}	
+				areaxvereda.setVereda(ciudad);
 				areaxvereda.setArea( ((BigDecimal)row[1]).doubleValue() );
 				arealist.add(areaxvereda);
 		}						
 		return arealist;		
 	}
 	
+	public List<Sembradoporcultivo> getSembradoporcultivo(){
+		List<Sembradoporcultivo> arealist=new ArrayList<Sembradoporcultivo>();
+		Session sesion = this.hibernateTemplate.getSessionFactory()
+				.getCurrentSession();
+		String consulta="select tipocultivo.Value as cultivo, SUM(nlote.Area) as areasembrada "+
+				"from agrinsagdb.dbo.LOTE_VW nlote, "+ 
+				"(SELECT * "+
+				"FROM agrinsagdb.dbo.CULTIVOS_VW LEFT OUTER JOIN "+
+				"(SELECT "+
+				   "codedValue.value('Code[1]','nvarchar(max)') AS Code, "+ 
+				   "codedValue.value('Name[1]', 'nvarchar(max)') AS Value "+
+				   "FROM agrinsagdb.dbo.GDB_ITEMS AS items INNER JOIN agrinsagdb.dbo.GDB_ITEMTYPES AS itemtypes "+ 
+				   "ON items.Type = itemtypes.UUID "+
+				   "CROSS APPLY items.Definition.nodes "+
+				   "('/GPCodedValueDomain2/CodedValues/CodedValue') AS CodedValues(codedValue) "+
+				   "WHERE itemtypes.Name = 'Coded Value Domain' "+ 
+				   "AND items.Name = 'DomCultivo') AS CodedValues "+
+				   "ON agrinsagdb.dbo.CULTIVOS_VW.Descripcion = CodedValues.Code) as tipocultivo "+
+				   "where nlote.LoteID=tipocultivo.LoteID "+ 
+				   "group by tipocultivo.Value ";
+		Query query = sesion
+				.createSQLQuery(consulta)
+				.addScalar("cultivo", Hibernate.STRING)
+				.addScalar("areasembrada", Hibernate.BIG_DECIMAL);
+		List<Object> lista=query.list();
+		Iterator iterator = lista.iterator();
+		while (iterator.hasNext()) {
+				Object[] row = (Object[]) iterator.next();
+				Sembradoporcultivo areaxcultivo=new Sembradoporcultivo();
+				areaxcultivo.setCultivo(String.valueOf(row[0]));
+				areaxcultivo.setArea( ((BigDecimal)row[1]).doubleValue() );
+				arealist.add(areaxcultivo);
+		}						
+		return arealist;			
+	}
 }
