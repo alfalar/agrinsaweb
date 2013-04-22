@@ -17,7 +17,7 @@ xmlns:pe="http://primefaces.org/ui/extensions">
         <link rel="stylesheet" type="text/css" href="//serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css" ></link>
         <link rel="stylesheet" type="text/css" href="css/layout.css"></link>
         <link rel="stylesheet" type="text/css" href="css/ExpandoPane.css"/>
-       
+        <link rel="stylesheet" type="text/css" href="css/primecss/theme.css" />
         <!-- BEGIN: SDP -->
         <script type="text/javascript" src="js/djConfig.js"></script>
         <!-- END: SDP -->
@@ -90,11 +90,15 @@ xmlns:pe="http://primefaces.org/ui/extensions">
       <!--BEGIN:AGR-->
 		<div id="preloader" style="z-index: 100;  background:#ffffff;">
 		    <div id="preloaderContent" >
-		        <strong>Actualizando</strong>
-		        <img width="20px" height="20px" src="images/ajax-loader.gif"/><br/>
-		        <strong>Mapa</strong>		        
+		        <img width="50px" height="50px" src="images/load.gif"/><br/>		        
 		    </div>
 		</div>      
+       <div id="VentanaAdministracion">
+           <div id="divVentanaAdministracion"></div>
+       </div>
+       <div id="VentanaConsultas">
+           <div id="divVentanaConsultas"></div>
+       </div>
       
        <!--END:AGR-->
       <div id="bottomPane" dojotype="dijit.layout.ContentPane" region="bottom"

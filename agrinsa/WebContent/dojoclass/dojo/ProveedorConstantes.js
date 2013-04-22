@@ -11,11 +11,7 @@ dojo.declare("dojoclass.dojo.ProveedorConstantes", null, {
 	getConstantesGenerales : function() {
 		try {
 			getConstantes();
-			var handle = dojo
-					.connect(
-							proveedorConstantes,
-							'onCustomEvent',
-							function(argument) {
+			var handle = dojo.connect(proveedorConstantes,'onCustomEvent',function(argument) {
 								dojo.disconnect(handle);	
 								for ( var j = 0; j < argument.length; j++) {
 									var llave = argument[j].opcion;
@@ -23,6 +19,10 @@ dojo.declare("dojoclass.dojo.ProveedorConstantes", null, {
 									console.log(llave+":"+valor);
 									if(llave=="MAPA_BASE"){
 										mapa_base=valor;
+									}else if(llave=="MENU_ADMINISTRACION"){
+										menu_admon=valor;
+									}else if(llave=="MENU_CONSULTAS"){
+										menu_consultas=valor;
 									}
 								}
 								

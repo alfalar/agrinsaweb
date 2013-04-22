@@ -12,3 +12,15 @@ body {
     padding: 4px 10px;
     white-space: normal;
 }
+
+.administracionIcon {
+    background-image: url("../../images/administrar.png");
+    height: 16px;
+    width: 16px;
+}
+
+.consultasIcon {
+    background-image: url("../../images/consultas.png");
+    height: 16px;
+    width: 16px;
+}
