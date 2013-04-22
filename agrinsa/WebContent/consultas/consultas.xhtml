@@ -5,7 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-
+	<link rel="stylesheet" type="text/css" href="../css/primecss/theme.css" />
 </h:head>
 
 <h:body>
@@ -106,6 +106,142 @@
 						<h:commandLink rendered="#{consultasBean.areaxcultivoenabled}">  
 					    	<p:graphicImage value="/images/pdf.png" />  
 					    	<p:dataExporter type="pdf" target="tblareaxcultivo" fileName="areaxcultivo"/>  
+						</h:commandLink>  
+					</p:panel>
+					<p:panel rendered="#{consultasBean.areaxvariedadenabled}">
+						<p:dataTable id="tblareaxvariedad" var="cons" paginator="true" rows="10" 
+							rendered="#{consultasBean.areaxvariedadenabled}"
+							paginatorAlwaysVisible="false" paginatorPosition="bottom"
+							emptyMessage="No hay registros"
+							value="#{consultasBean.areaxvariedad}">
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Cultivo"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.cultivo}" />  
+		        			</p:column> 
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Variedad"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.variedad}" />  
+		        			</p:column>  
+							<p:column>
+								<f:facet name="header">
+	         						<h:outputText value="Area(Hec)"/>
+	      						</f:facet>						  
+		            			<h:outputText value="#{cons.area}" />  
+		        			</p:column>
+						</p:dataTable>
+						<h:commandLink rendered="#{consultasBean.areaxvariedadenabled}">  
+						    <p:graphicImage value="/images/excel.png" />  
+						    <p:dataExporter type="xls" target="tblareaxvariedad" fileName="areaxvariedad"/>  
+						</h:commandLink>  
+					  
+						<h:commandLink rendered="#{consultasBean.areaxvariedadenabled}">  
+					    	<p:graphicImage value="/images/pdf.png" />  
+					    	<p:dataExporter type="pdf" target="tblareaxvariedad" fileName="areaxvariedad"/>  
+						</h:commandLink>  
+					</p:panel>
+					<p:panel rendered="#{consultasBean.estadoenabled}">
+						<p:dataTable id="tblestado" var="cons" paginator="true" rows="10" 
+							rendered="#{consultasBean.estadoenabled}"
+							paginatorAlwaysVisible="false" paginatorPosition="bottom"
+							emptyMessage="No hay registros"
+							value="#{consultasBean.estado}">
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Lotes Activos"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.activos}" />  
+		        			</p:column> 
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Lotes Inactivos"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.inactivos}" />  
+		        			</p:column>  
+						</p:dataTable>
+						<h:commandLink rendered="#{consultasBean.estadoenabled}">  
+						    <p:graphicImage value="/images/excel.png" />  
+						    <p:dataExporter type="xls" target="tblestado" fileName="estadolote"/>  
+						</h:commandLink>  
+					  
+						<h:commandLink rendered="#{consultasBean.estadoenabled}">  
+					    	<p:graphicImage value="/images/pdf.png" />  
+					    	<p:dataExporter type="pdf" target="tblestado" fileName="estadolote"/>  
+						</h:commandLink>  
+					</p:panel>
+					<p:panel rendered="#{consultasBean.lotxvenxareaenabled}">
+						<p:dataTable id="tbllotxvenxarea" var="cons" paginator="true" rows="10" 
+							rendered="#{consultasBean.lotxvenxareaenabled}"
+							paginatorAlwaysVisible="false" paginatorPosition="bottom"
+							emptyMessage="No hay registros"
+							value="#{consultasBean.lotxvenxarea}">
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Vendedor"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.vendedor}" />  
+		        			</p:column> 
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Numero de Lotes"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.lotes}" />  
+		        			</p:column>
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Area (Hec)"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.area}" />  
+		        			</p:column>  
+		        			  
+						</p:dataTable>
+						<h:commandLink rendered="#{consultasBean.lotxvenxareaenabled}">  
+						    <p:graphicImage value="/images/excel.png" />  
+						    <p:dataExporter type="xls" target="tbllotxvenxarea" fileName="lotexareaxvendedor"/>  
+						</h:commandLink>  
+					  
+						<h:commandLink rendered="#{consultasBean.lotxvenxareaenabled}">  
+					    	<p:graphicImage value="/images/pdf.png" />  
+					    	<p:dataExporter type="pdf" target="tbllotxvenxarea" fileName="lotexareaxvendedor"/>  
+						</h:commandLink>  
+					</p:panel>
+					<p:panel rendered="#{consultasBean.lotxentxareaenabled}">
+						<p:dataTable id="tbllotxentidad" var="cons" paginator="true" rows="10" 
+							rendered="#{consultasBean.lotxentxareaenabled}"
+							paginatorAlwaysVisible="false" paginatorPosition="bottom"
+							emptyMessage="No hay registros"
+							value="#{consultasBean.lotxentxarea}">
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Entidad"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.vendedor}" />  
+		        			</p:column> 
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Numero de Lotes"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.lotes}" />  
+		        			</p:column>
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Area (Hec)"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.area}" />  
+		        			</p:column>  
+		        			  
+						</p:dataTable>
+						<h:commandLink rendered="#{consultasBean.lotxentxareaenabled}">  
+						    <p:graphicImage value="/images/excel.png" />  
+						    <p:dataExporter type="xls" target="tbllotxentidad" fileName="lotexentidad"/>  
+						</h:commandLink>  
+					  
+						<h:commandLink rendered="#{consultasBean.lotxentxareaenabled}">  
+					    	<p:graphicImage value="/images/pdf.png" />  
+					    	<p:dataExporter type="pdf" target="tbllotxentidad" fileName="lotexentidad"/>  
 						</h:commandLink>  
 					</p:panel>
 					
