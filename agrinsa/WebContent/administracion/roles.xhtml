@@ -5,17 +5,17 @@ xmlns:h="http://java.sun.com/jsf/html"
 xmlns:f="http://java.sun.com/jsf/core"
 xmlns:p="http://primefaces.org/ui">
 	<h:head>
-		<link rel="stylesheet" type="text/css" href="../css/primecss/theme.css" />
+		<link rel="stylesheet" type="text/css" href="../css/primecss/themeadmon.css" />
 	</h:head>
 
 	<h:body>
 		<f:view>
 			<p:growl id="mensajes" sticky="false" showDetail="true" />
 			<h:form id="form">
-				<p:dashboard id="board" model="#{administracionBean.model}">
+				<p:dashboard id="board" model="#{administracionBean.model}" style="margin: 0 auto;" >
 					<p:ajax event="reorder" listener="#{administracionBean.handleReorder}" update=":mensajes" />
 
-					<p:panel id="rolessistema" header="Roles del sistema">
+					<p:panel id="rolessistema" header="Roles del sistema" style="width:700px">
 						<p:row>
 							<p:column>
 								<p:dataTable id="tablaroles" var="roles"
@@ -67,7 +67,7 @@ xmlns:p="http://primefaces.org/ui">
 						</p:row>
 					</p:panel>
 
-					<p:panel id="usuariossistema" header="Usuarios del sistema">
+					<p:panel id="usuariossistema" header="Usuarios del sistema" style="width:700px">
 						<p:row>
 							<p:column colspan="2">
 								<p:dataTable id="tablausuarios" var="usuarios"
@@ -180,11 +180,11 @@ xmlns:p="http://primefaces.org/ui">
 						</p:row>
 					</p:panel>
 
-					<p:panel id="recursos" header="Recursos disponibles">
+					<p:panel id="recursos" header="Recursos disponibles" style="width:700px">
 						<p:row>
 							<p:column>
 								<p:dataTable id="tablarecursos" var="recursos"
-								value="#{administracionBean.recursos}" 
+								value="#{administracionBean.recursos}" resizableColumns="true"
 								selectionMode="single" editable="true" rowKey="#{recursos.permisoId}" selection="#{administracionBean.selectedRecurso}"
 								paginator="true" rows="5" paginatorAlwaysVisible="false" paginatorPosition="bottom" emptyMessage="No se encontraron recursos en el sistema">
 									<p:ajax event="rowEdit"
@@ -193,10 +193,10 @@ xmlns:p="http://primefaces.org/ui">
 									listener="#{administracionBean.onCancel}" update=":mensajes" />
 									<p:ajax event="rowSelect" update=":form:updrecursos"/>
 									
-									<p:column headerText="Id">
+									<p:column headerText="Id" width="10">
 										<h:outputText value="#{recursos.permisoId}" />
 									</p:column>
-									<p:column headerText="Tipo">
+									<p:column headerText="Tipo" width="50">
 										<p:cellEditor>
 											<f:facet name="output">
 												<h:outputText value="#{recursos.tipo}" />
@@ -208,7 +208,7 @@ xmlns:p="http://primefaces.org/ui">
 											</f:facet>
 										</p:cellEditor>
 									</p:column>
-									<p:column headerText="Opcion">
+									<p:column headerText="Opcion" width="100">
 										<p:cellEditor>
 											<f:facet name="output">
 												<h:outputText value="#{recursos.opcion}" />
@@ -218,12 +218,12 @@ xmlns:p="http://primefaces.org/ui">
 											</f:facet>
 										</p:cellEditor>
 									</p:column>
-									<p:column headerText="Valor">
+									<p:column headerText="Valor" >
 										<p:cellEditor>
-											<f:facet name="output">
+											<f:facet name="output">												
 												<h:outputText value="#{recursos.nombreRecurso}"  />
 											</f:facet>
-											<f:facet name="input">
+											<f:facet name="input">												
 												<p:inputText id="valorinput" value="#{recursos.nombreRecurso}" />
 											</f:facet>
 										</p:cellEditor>
@@ -239,10 +239,10 @@ xmlns:p="http://primefaces.org/ui">
 										</p:cellEditor>
 
 									</p:column>
-									<p:column style="width:6%">
+									<p:column width="20">
 										<p:rowEditor />
 									</p:column>
-									<p:column style="width:4%">
+									<p:column width="20">
 										<p:commandButton title="Asignar al rol seleccionado"
 										actionListener="#{administracionBean.addRecursotoRol(recursos)}"
 										icon="ui-icon-plusthick" style="margin:0" update=":mensajes :form:permisosroles"/>
@@ -266,7 +266,7 @@ xmlns:p="http://primefaces.org/ui">
 
 					</p:panel>
 
-					<p:panel id="usuariosroles" header="Usuarios del rol seleccionado">
+					<p:panel id="usuariosroles" header="Usuarios del rol seleccionado" style="width:300px">
 						<p:row>
 							<p:column>
 								<p:dataTable id="tablausuariosdelrol" var="usrelrol"
@@ -295,7 +295,7 @@ xmlns:p="http://primefaces.org/ui">
 						</p:row>
 					</p:panel>
 
-					<p:panel id="permisosroles" header="Recursos del rol seleccionado">
+					<p:panel id="permisosroles" header="Recursos del rol seleccionado" style="width:300px">
 						<p:row>
 							<p:column>
 								<p:dataTable id="tablarecursosdelrol" var="recursosrol"
@@ -305,7 +305,7 @@ xmlns:p="http://primefaces.org/ui">
 										<h:outputText value="#{recursosrol.permisoId}" />
 									</p:column>
 									<p:column headerText="Recurso">
-										<h:outputText value="#{recursosrol.nombreRecurso}" />
+										<h:outputText value="#{recursosrol.opcion}" />
 									</p:column>
 									<p:column style="width:4%">
 										<p:commandButton title="Quitar del rol seleccionado"

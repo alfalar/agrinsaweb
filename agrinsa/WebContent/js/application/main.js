@@ -16,7 +16,7 @@ dojo.ready(function(){
         //specify an owner for the app - used by the print option. The default value will be the web map's owner
         owner: '',
         //Specify a color theme for the app. Valid options are gray,blue,purple,green and orange
-        theme: 'green',
+        theme: 'blue',
         //Optional tools - set to false to hide the tool
         //set to false to hide the zoom slider on the map 
         displayslider: true,

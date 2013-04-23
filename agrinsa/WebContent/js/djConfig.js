@@ -29,5 +29,5 @@ var measure;
 var i18n;
 var proveedorConstantes;
 var mapa_base;
-var menu_admon;
-var menu_consultas;
+var menu_admon=undefined;
+var menu_consultas=undefined;

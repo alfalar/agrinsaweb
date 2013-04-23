@@ -506,12 +506,25 @@ function initUI(response) {
 		addPrint();
 	}
 	//console.log(menu_admon+" ----> "+menu_consultas);
-	if (menu_admon == undefined) {
+	if (menu_admon != undefined) {
 		addVentanaAdministracion();
 	}
-	if (menu_consultas == undefined) {
+	if (menu_consultas != undefined) {
 		addVentanaConsultas();
 	}
+	var toggleButtonSalir = new dijit.form.Button({
+		label : "Salir",
+		title : "Salir",
+		id : "toggleButtonSalir",
+		iconClass : "salirIcon"
+	});
+
+	dojo.connect(toggleButtonSalir, "onClick", function() {
+		location.href="j_spring_security_logout";
+	});
+
+	dojo.byId('webmap-toolbar-center').appendChild(toggleButtonSalir.domNode);
+
 	dojo.byId('webmap-toolbar-left').innerHTML = configOptions.title;
 	// END:AGR
 
@@ -1768,11 +1781,11 @@ function hideLoading(error) {
 function addVentanaAdministracion() {
 	var fp = new dojox.layout.FloatingPane(
 			{
-				title : "Administracion",
+				title : "Administracion de Roles",
 				resizable : false,
-				dockable : true,
+				dockable : false,
 				closable : false,
-				style : "position:absolute;top:100px;left:0px;width:1000px;height:600px;z-index:100;visibility:hidden",
+				style : "position:absolute;top:0px;left:0px;width:95%;height:80%;z-index:100;visibility:hidden",
 				id : 'vntadmon',
 				region : 'none'
 			}, dojo.byId('VentanaAdministracion'));
@@ -1787,7 +1800,7 @@ function addVentanaAdministracion() {
 					innerHTML : esri.substitute({close_title : i18n.panel.close.title,
 												 close_alt : i18n.panel.close.label
 												},
-							'<a alt=${close_alt} title=${close_title} href="JavaScript:showVentanaAdministracion();"><img  src="images/close.png"/></a>')
+							'<a alt=${close_alt} title=${close_title} href="JavaScript:showVentanaAdministracion();"><br/><img  src="images/close.png"/></a>')
 					}, titlePane);
 
 	var tc = new dijit.layout.ContentPane({
@@ -1804,14 +1817,14 @@ function addVentanaAdministracion() {
 	}));
 	
 	
-	var toggleButtonAdmon = new dijit.form.ToggleButton({
+	var toggleButtonAdmon = new dijit.form.Button({
 		label : "Administrar Usuarios",
 		title : "Administrar Usuarios",
 		id : "toggleButtonAdmon",
 		iconClass : "administracionIcon"
 	});
 
-	dojo.connect(toggleButton, "onClick", function() {
+	dojo.connect(toggleButtonAdmon, "onClick", function() {
 		showVentanaAdministracion();
 	});
 
@@ -1831,11 +1844,11 @@ function showVentanaAdministracion() {
 function addVentanaConsultas() {
 	var fp = new dojox.layout.FloatingPane(
 			{
-				title : "Consultas",
+				title : "Informes",
 				resizable : false,
-				dockable : true,
+				dockable : false,
 				closable : false,
-				style : "position:absolute;top:100px;left:0px;width:550px;height:550px;z-index:100;visibility:hidden;",
+				style : "position:absolute;top:100px;left:400px;width:400px;height:400px;z-index:100;visibility:hidden;",
 				id : 'vntconsultas',
 				region : 'none'
 			}, dojo.byId('VentanaConsultas'));
@@ -1850,7 +1863,7 @@ function addVentanaConsultas() {
 					innerHTML : esri.substitute({close_title : i18n.panel.close.title,
 												 close_alt : i18n.panel.close.label
 												},
-							'<a alt=${close_alt} title=${close_title} href="JavaScript:showVentanaConsultas();"><img  src="images/close.png"/></a>')
+							'<a alt=${close_alt} title=${close_title} href="JavaScript:showVentanaConsultas();"><br/><img  src="images/close.png"/></a>')
 					}, titlePane);
 
 	var tc = new dijit.layout.ContentPane({
@@ -1866,7 +1879,7 @@ function addVentanaConsultas() {
 		"id" : "admonFrame"
 	}));
 	
-	var toggleButtonConsultas = new dijit.form.ToggleButton({
+	var toggleButtonConsultas = new dijit.form.Button({
 		label : "Informes",
 		title : "Informes",
 		id : "toggleButtonConsultas",

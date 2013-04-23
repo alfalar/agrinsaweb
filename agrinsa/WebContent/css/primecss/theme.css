@@ -1,7 +1,7 @@
 body {
     margin: 0px;
     padding: 0;
-    font-size: 8px;
+    font-size: 10px;
     color: #616161;
 }
 
@@ -23,4 +23,15 @@ body {
     background-image: url("../../images/consultas.png");
     height: 16px;
     width: 16px;
+}
+
+.salirIcon {
+    background-image: url("../../images/salir.png");
+    height: 16px;
+    width: 16px;
+}
+.dojoxFloatingPaneTitle {
+    background: url("../images/blue/toolbar_bg.png") repeat-x scroll 0 0 #6788A2;
+    left:0px;
+    top:0px;
 }

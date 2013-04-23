@@ -16,7 +16,6 @@ xmlns:pe="http://primefaces.org/ui/extensions">
         <link rel="stylesheet" type="text/css" href="//serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/dojo/dojox/layout/resources/floatingpane.css"></link>
         <link rel="stylesheet" type="text/css" href="//serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css" ></link>
         <link rel="stylesheet" type="text/css" href="css/layout.css"></link>
-        <link rel="stylesheet" type="text/css" href="css/ExpandoPane.css"/>
         <link rel="stylesheet" type="text/css" href="css/primecss/theme.css" />
         <!-- BEGIN: SDP -->
         <script type="text/javascript" src="js/djConfig.js"></script>
@@ -83,6 +82,13 @@ xmlns:pe="http://primefaces.org/ui/extensions">
             </div>
             <!--Floating window contains the time slider-->
             <div id="timeFloater" style='display:none;'></div>
+		       <div id="VentanaAdministracion">
+		           <div id="divVentanaAdministracion"></div>
+		       </div>
+		       <div id="VentanaConsultas">
+		           <div id="divVentanaConsultas"></div>
+		       </div>
+            
           </div>
           <!--end Map section-->
         </div>
@@ -93,12 +99,6 @@ xmlns:pe="http://primefaces.org/ui/extensions">
 		        <img width="50px" height="50px" src="images/load.gif"/><br/>		        
 		    </div>
 		</div>      
-       <div id="VentanaAdministracion">
-           <div id="divVentanaAdministracion"></div>
-       </div>
-       <div id="VentanaConsultas">
-           <div id="divVentanaConsultas"></div>
-       </div>
       
        <!--END:AGR-->
       <div id="bottomPane" dojotype="dijit.layout.ContentPane" region="bottom"
