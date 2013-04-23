@@ -31,3 +31,6 @@ var proveedorConstantes;
 var mapa_base;
 var menu_admon=undefined;
 var menu_consultas=undefined;
+var tidentify;
+var tabladecontenido;
+var serviciosgeograficos=new Array();

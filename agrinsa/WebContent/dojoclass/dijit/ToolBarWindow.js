@@ -42,9 +42,9 @@ dojo.declare("dojoclass.dijit.ToolBarWindow", [dijit._Widget, dijit._Templated],
                   		"</div>\r\n  "+
                   		"<div data-dojo-type=\"dijit.form.Button\" id=\"pan\" data-dojo-props=\"iconClass:'panIcon', onClick:function(){navToolbar.activate(esri.toolbars.Navigation.PAN);}\">"+ 
                   		"</div>\r\n  "+
-                  		"<div data-dojo-type=\"dijit.form.Button\" id=\"identificar\" data-dojo-props=\"iconClass:'identificarIcon', onClick:function(){alert('TODO:VENTANA DE IDENTIFICAR ');}\">"+
+                  		"<div data-dojo-type=\"dijit.form.Button\" id=\"identificar\" data-dojo-props=\"iconClass:'identificarIcon', onClick:function(){showIdentify();}\">"+
                   		"</div>\r\n "+                                    
-                  		"<div data-dojo-type=\"dijit.form.Button\" id=\"capas\" data-dojo-props=\"iconClass:'capasIcon', onClick:function(){alert('TODO:VENTANA DE CAPAS ');}\">"+
+                  		"<div data-dojo-type=\"dijit.form.Button\" id=\"capas\" data-dojo-props=\"iconClass:'capasIcon', onClick:function(){showToc();}\">"+
                   		"</div>\r\n "+                                    
                   	"</div>\r\n  "+
                   	"<div id=\"${id}\" style=\"width: 100%; height: 100%;\">\r\n      "+                                    

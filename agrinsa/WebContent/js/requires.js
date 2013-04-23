@@ -7,4 +7,6 @@ dojo.require("utilities.App");
 //BEGIN:SDP 
 dojo.require("dojoclass.dijit.ToolBarWindow");
 dojo.require("dojoclass.dojo.ProveedorConstantes");
+dojo.require("dojoclass.dijit.TOC");
+dojo.require("dojoclass.dijit.Identify");
 //END:SDP

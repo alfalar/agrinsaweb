@@ -16,13 +16,21 @@ dojo.declare("dojoclass.dojo.ProveedorConstantes", null, {
 								for ( var j = 0; j < argument.length; j++) {
 									var llave = argument[j].opcion;
 									var valor = argument[j].nombreRecurso;
+									var tipo=argument[j].tipo;
+									var descripcion=argument[j].descripcion;
 									console.log(llave+":"+valor);
 									if(llave=="MAPA_BASE"){
 										mapa_base=valor;
 									}else if(llave=="MENU_ADMINISTRACION"){
 										menu_admon=valor;
 									}else if(llave=="MENU_CONSULTAS"){
-										menu_consultas=valor;
+										menu_consultas=valor;	
+									}else if(llave=="SERVICIO_GEOGRAFICO"){
+										var objeto=new Object();
+										objeto.tipo=tipo;
+										objeto.servicio=valor;
+										objeto.descripcion=descripcion;
+										serviciosgeograficos.push(objeto);
 									}
 								}
 								

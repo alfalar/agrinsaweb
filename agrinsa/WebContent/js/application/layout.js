@@ -203,7 +203,8 @@ function createMap(webmapitem) {
 				configOptions.description = response.itemInfo.item.description;
 			}
 		}
-		initialExtent = response.map.extent;
+		//initialExtent = response.map.extent;
+		initialExtent = new esri.geometry.Extent(-80,-4,-72,13, new esri.SpatialReference({ wkid:4326 }));
 		if (configOptions.extent) {
 			var extent = new esri.geometry.Extent(dojo
 					.fromJson(configOptions.extent));
@@ -525,6 +526,32 @@ function initUI(response) {
 
 	dojo.byId('webmap-toolbar-center').appendChild(toggleButtonSalir.domNode);
 
+	addTocWidget();
+	addIdentifyWidget();
+	//CARGA LOS SERVICIOS GEOGRAFICOS
+	for ( var i = 0; i < serviciosgeograficos.length; i++) {	  
+		var objeto=serviciosgeograficos[i];
+		if (objeto.tipo == "TILED") {
+			var tilayer = new esri.layers.ArcGISTiledMapServiceLayer(objeto.servicio);
+		    dojo.connect(tilayer, "onError", function(evt) {
+		    	setMensaje("No se pudo cargar la capa geografica " +objeto.descripcion+".Por favor revise que el servicio este disponible ","ERROR");									    										    	
+		    });
+			tilayer.visible = true;									
+			tilayer.id = objeto.descripcion;
+			tilayer.opacity = 0.6;
+			map.addLayer(tilayer);
+		} else if (objeto.tipo == "DYNAMIC") {
+			var dynlayer = new esri.layers.ArcGISDynamicMapServiceLayer(objeto.servicio);
+		    dojo.connect(dynlayer, "onError", function(evt) {
+		    	setMensaje("No se pudo cargar la capa geografica " +objeto.descripcion+".Por favor revise que el servicio este disponible","ERROR");									    										    	
+		    });
+		    dynlayer.visible = true;
+			dynlayer.id = objeto.descripcion;
+			dynlayer.opacity = 0.6;
+			map.addLayer(dynlayer);
+		}
+	}
+	
 	dojo.byId('webmap-toolbar-left').innerHTML = configOptions.title;
 	// END:AGR
 
@@ -1899,5 +1926,98 @@ function showVentanaConsultas() {
 		dijit.byId('vntconsultas').show();
 	} else {
 		dijit.byId('vntconsultas').hide();
+	}
+}
+
+function addTocWidget() {
+	var fp = new dojox.layout.FloatingPane(
+			{
+				title : "Capas",
+				resizable : false,
+				dockable : false,
+				closable : false,
+				region : 'none',
+				style : "position:absolute;bottom:30px;right:30px;width:300px;height:500px;z-index:110;visibility:visible;",
+				id : 'tocontent'
+			}, dojo.byId('toc'));
+	fp.startup();
+
+	var titlePane = dojo.query('#tocontent .dojoxFloatingPaneTitle')[0];
+
+	var closeDiv = dojo
+			.create(
+					'div',
+					{
+						id : "closeBtn",
+						innerHTML : esri
+								.substitute(
+										{
+											close_title : i18n.panel.close.title,
+											close_alt : i18n.panel.close.label
+										},
+										'<a alt=${close_alt} title=${close_title} href="JavaScript:showToc();"><br/><img  src="images/close.png"/></a>')
+					}, titlePane);
+	tabladecontenido = new dojoclass.dijit.TOC({
+		map : map,
+		id : 'tocagr',
+		aplanado : false,
+		slider : true				
+	}, 'tocDiv');
+	tabladecontenido.startup();
+}
+
+function showToc() {
+	if (typeof dijit.byId('tocontent') == "undefined") {
+		// crea la tabla de contenido
+		addTocWidget();
+	} else {
+		if (dojo.byId('tocontent').style.visibility === 'hidden') {
+			dijit.byId('tocontent').show();
+		} else {
+			dijit.byId('tocontent').hide();
+		}
+	}
+}
+
+function addIdentifyWidget() {
+	var fp = new dojox.layout.FloatingPane(
+			{
+				title : "Identificar",
+				resizable : false,
+				dockable : false,
+				closable : false,
+				region : 'none',
+				style : "position:absolute;bottom:300px;right:30px;width:350px;height:70px;z-index:110;visibility:hidden;",
+				id : 'identifywid'
+			}, dojo.byId('identify'));
+	fp.startup();
+
+	var titlePane = dojo.query('#identifywid .dojoxFloatingPaneTitle')[0];
+
+	var closeDiv = dojo
+			.create('div',{id : "closeBtn",innerHTML : esri.substitute({
+						close_title : i18n.panel.close.title,
+						close_alt : i18n.panel.close.label},
+						'<a alt=${close_alt} title=${close_title} href="JavaScript:showIdentify();"><br/><img  src="images/close.png"/></a>')
+					}, titlePane);
+
+	tidentify = new dojoclass.dijit.Identify({
+		map : map,
+		id : 'identifyagr',
+		camposexcluidos: "SHAPE,OBJECTID,SHAPE.LEN",
+	}, 'identifyDiv');
+	tidentify.startup();
+}
+
+function showIdentify() {
+	if (typeof dijit.byId('identifywid') == "undefined") {
+		addIdentifyWidget();
+	} else {
+		if (dojo.byId('identifywid').style.visibility === 'hidden') {
+			dijit.byId('identifywid').show();
+		} else {
+			dijit.byId('identifywid').hide();
+			tidentify.hide();
+		}
 	}
 }
