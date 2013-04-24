@@ -529,9 +529,13 @@ function initUI(response) {
 	addTocWidget();
 	addIdentifyWidget();
 	//CARGA LOS SERVICIOS GEOGRAFICOS
-	for ( var i = 0; i < serviciosgeograficos.length; i++) {	  
+	for ( var i = 0; i < serviciosgeograficos.length; i++) {
+		console.log(objeto.tipo);
+		console.log(objeto.servicio);
+		console.log(objeto.descripcion);
 		var objeto=serviciosgeograficos[i];
 		if (objeto.tipo == "TILED") {
+			console.log("ES TILED");
 			var tilayer = new esri.layers.ArcGISTiledMapServiceLayer(objeto.servicio);
 		    dojo.connect(tilayer, "onError", function(evt) {
 		    	setMensaje("No se pudo cargar la capa geografica " +objeto.descripcion+".Por favor revise que el servicio este disponible ","ERROR");									    										    	
@@ -540,7 +544,9 @@ function initUI(response) {
 			tilayer.id = objeto.descripcion;
 			tilayer.opacity = 0.6;
 			map.addLayer(tilayer);
+			console.log("TILED CARGADO");
 		} else if (objeto.tipo == "DYNAMIC") {
+			console.log("ES DYNAMIC");
 			var dynlayer = new esri.layers.ArcGISDynamicMapServiceLayer(objeto.servicio);
 		    dojo.connect(dynlayer, "onError", function(evt) {
 		    	setMensaje("No se pudo cargar la capa geografica " +objeto.descripcion+".Por favor revise que el servicio este disponible","ERROR");									    										    	
@@ -549,6 +555,7 @@ function initUI(response) {
 			dynlayer.id = objeto.descripcion;
 			dynlayer.opacity = 0.6;
 			map.addLayer(dynlayer);
+			console.log("DYNAMIC CARGADO");
 		}
 	}
 	

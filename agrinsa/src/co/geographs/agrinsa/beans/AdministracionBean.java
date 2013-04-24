@@ -404,6 +404,11 @@ public class AdministracionBean {
 		tiposrecurso.add(select);
 		select=new SelectItem("GENERAL","GENERAL");
 		tiposrecurso.add(select);
+		select=new SelectItem("GENERAL","GENERAL");
+		tiposrecurso.add(select);
+		select=new SelectItem("SERVICIO_GEOGRAFICO","SERVICIO_GEOGRAFICO");
+		tiposrecurso.add(select);
+
 		return tiposrecurso;
 	}
 
