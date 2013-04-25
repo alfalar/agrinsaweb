@@ -47,7 +47,7 @@
 					  
 						<h:commandLink rendered="#{consultasBean.areaxciudadenabled}">  
 					    	<p:graphicImage value="/images/pdf.png" />  
-					    	<p:dataExporter type="pdf" target="tblareaxciudad" fileName="areaxciudad"/>  
+					    	<p:dataExporter type="pdf" target="tblareaxciudad" fileName="areaxciudad" preProcessor="#{consultasBean.preProcessPDF}"/>  
 						</h:commandLink>  
 					</p:panel>
 					<p:panel rendered="#{consultasBean.areaxveredaenabled}">

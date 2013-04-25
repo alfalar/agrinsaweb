@@ -14,6 +14,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import co.geographs.agrinsa.dao.business.Areaxciudad;
 import co.geographs.agrinsa.dao.business.Areaxvereda;
 import co.geographs.agrinsa.dao.business.Estadolotes;
+import co.geographs.agrinsa.dao.business.Lotes;
 import co.geographs.agrinsa.dao.business.Sembradoporcultivo;
 import co.geographs.agrinsa.dao.business.Sembradoporvariedad;
 import co.geographs.agrinsa.dao.business.TiposConsulta;
@@ -324,4 +325,32 @@ public class ConsultasDao {
 		return arealist;			
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<Lotes> getAlertasCorte(){
+		List<Lotes> proximoscorte=new ArrayList<Lotes>();
+		Session sesion = this.hibernateTemplate.getSessionFactory()
+				.getCurrentSession();
+		String consulta="select lotes.LoteID,lotes.NomLote,lotes.FecCorteReal "+
+						"from agrinsagdb.dbo.LOTE_VW lotes "+
+						"where lotes.FecCorteReal between GETDATE() and DATEADD(DAY, +15, GETDATE())";
+		Query query = sesion
+				.createSQLQuery(consulta)
+				.addScalar("LoteID", Hibernate.INTEGER)
+				.addScalar("NomLote", Hibernate.STRING)
+				.addScalar("FecCorteReal", Hibernate.STRING);		
+		List<Object> lista=query.list();
+		Iterator iterator = lista.iterator();
+		while (iterator.hasNext()) {
+				Object[] row = (Object[]) iterator.next();
+				Lotes lote=new Lotes();
+				lote.setLoteid((Integer)row[0]);
+				lote.setNomlote((String)row[1]);
+				lote.setFeccorte((String)row[2]);
+				proximoscorte.add(lote);
+		}
+		return proximoscorte;
+	}
 }

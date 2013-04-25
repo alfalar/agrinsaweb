@@ -1,12 +1,16 @@
 package co.geographs.agrinsa.beans;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletContext;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +19,17 @@ import co.geographs.agrinsa.dao.ConsultasDao;
 import co.geographs.agrinsa.dao.business.Areaxciudad;
 import co.geographs.agrinsa.dao.business.Areaxvereda;
 import co.geographs.agrinsa.dao.business.Estadolotes;
+import co.geographs.agrinsa.dao.business.Lotes;
 import co.geographs.agrinsa.dao.business.Sembradoporcultivo;
 import co.geographs.agrinsa.dao.business.Sembradoporvariedad;
 import co.geographs.agrinsa.dao.business.Totallotesxareaxvendedor;
 import co.geographs.agrinsa.util.FacesUtil;
 import co.geographs.agrinsa.util.SpringUtils;
+
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Image;
 
 @ManagedBean(name = "consultasBean")
 @SessionScoped
@@ -47,7 +57,8 @@ public class ConsultasBean implements Serializable {
 	//VARIABLES LOTES X ENTIDAD X AREA
 	private boolean lotxentxareaenabled=false;
 	private List<Totallotesxareaxvendedor> lotxentxarea;
-	
+	//ALERTA DE CORTE
+	private List<Lotes> proximoscorte;
 	
 	public void cambioconsulta() {
 		ConsultasDao consultasDao = (ConsultasDao) SpringUtils
@@ -240,5 +251,28 @@ public class ConsultasBean implements Serializable {
 	public List<Totallotesxareaxvendedor> getLotxentxarea() {
 		return lotxentxarea;
 	}
+	
+	
+	public List<Lotes> getProximoscorte() {
+		ConsultasDao consultasDao = (ConsultasDao) SpringUtils
+				.getBean("consultasDao");
+		proximoscorte=consultasDao.getAlertasCorte();
+		return proximoscorte;
+	}
+
+	public void setProximoscorte(List<Lotes> proximoscorte) {
+		this.proximoscorte = proximoscorte;
+	}
+
+	public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {  
+	    Document pdf = (Document) document; 	    
+	    pdf.open();  	    
+	  
+	    ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();  
+	    String logo = servletContext.getRealPath("") + File.separator + "images" + File.separator + "logo_agrinsa_peq.jpg";  
+	  
+	    pdf.add(Image.getInstance(logo)); 
+	}  	
+	
 	
 }

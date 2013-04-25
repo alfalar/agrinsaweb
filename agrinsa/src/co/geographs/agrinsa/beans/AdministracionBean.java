@@ -14,16 +14,11 @@ import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
 import org.primefaces.model.DefaultDashboardColumn;
 import org.primefaces.model.DefaultDashboardModel;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import co.geographs.agrinsa.dao.ConsultasDao;
 import co.geographs.agrinsa.dao.UsuariosDao;
 import co.geographs.agrinsa.dao.business.Permisos;
-import co.geographs.agrinsa.dao.business.PermisosRol;
 import co.geographs.agrinsa.dao.business.Roles;
 import co.geographs.agrinsa.dao.business.Usuarios;
-import co.geographs.agrinsa.util.FacesUtil;
 import co.geographs.agrinsa.util.SpringUtils;
 
 @ManagedBean(name = "administracionBean")
@@ -404,8 +399,6 @@ public class AdministracionBean {
 		tiposrecurso.add(select);
 		select=new SelectItem("GENERAL","GENERAL");
 		tiposrecurso.add(select);
-		select=new SelectItem("GENERAL","GENERAL");
-		tiposrecurso.add(select);
 		select=new SelectItem("SERVICIO_GEOGRAFICO","SERVICIO_GEOGRAFICO");
 		tiposrecurso.add(select);
 
@@ -488,5 +481,4 @@ public class AdministracionBean {
 		}		
 	}
 
-	
  }

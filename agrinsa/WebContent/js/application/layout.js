@@ -520,6 +520,7 @@ function initUI(response) {
 		iconClass : "salirIcon"
 	});
 
+	addAlertas();
 	dojo.connect(toggleButtonSalir, "onClick", function() {
 		location.href="j_spring_security_logout";
 	});
@@ -1819,7 +1820,7 @@ function addVentanaAdministracion() {
 				resizable : false,
 				dockable : false,
 				closable : false,
-				style : "position:absolute;top:0px;left:0px;width:95%;height:80%;z-index:100;visibility:hidden",
+				style : "position:absolute;top:0px;left:10px;width:90%;height:80%;z-index:100;visibility:hidden",
 				id : 'vntadmon',
 				region : 'none'
 			}, dojo.byId('VentanaAdministracion'));
@@ -2025,6 +2026,71 @@ function showIdentify() {
 		} else {
 			dijit.byId('identifywid').hide();
 			tidentify.hide();
+		}
+	}
+}
+
+function addAlertas() {
+	var fp = new dojox.layout.FloatingPane(
+			{
+				title : "Alertas de Corte",
+				resizable : false,
+				dockable : false,
+				closable : false,
+				style : "position:absolute;top:100px;left:400px;width:400px;height:400px;z-index:100;visibility:visible;",
+				id : 'vntalertas',
+				region : 'none'
+			}, dojo.byId('alerta'));
+
+	fp.startup();
+
+	var titlePane = dojo.query('#vntalertas .dojoxFloatingPaneTitle')[0];
+
+	var closeDiv = dojo
+			.create('div',{
+					id : "closeBtn",
+					innerHTML : esri.substitute({close_title : i18n.panel.close.title,
+												 close_alt : i18n.panel.close.label
+												},
+							'<a alt=${close_alt} title=${close_title} href="JavaScript:showAlertas();"><br/><img  src="images/close.png"/></a>')
+					}, titlePane);
+
+	var tc = new dijit.layout.ContentPane({
+		title : "Alertas de Corte",
+		id : "alertasvnt",
+		style : "width:100%;height:100%;",
+		region : 'center'
+	}, "alertaDiv");
+
+	tc.set("content", dojo.create("iframe", {
+		"src" : "consultas/alertascorte.jsf",
+		"style" : "border:0; width: 100%; height: 100%",
+		"id" : "alertasFrame"
+	}));
+	
+	var toggleButtonAlertas = new dijit.form.Button({
+		label : "Alertas de Corte",
+		title : "Alertas de Corte",
+		id : "toggleButtonAlertas",
+		iconClass : "alertaIcon"
+	});
+
+	dojo.connect(toggleButtonAlertas, "onClick", function() {
+		showVentanaAlertas();
+	});
+
+	dojo.byId('webmap-toolbar-center').appendChild(toggleButtonAlertas.domNode);
+
+}
+
+function showAlertas() {
+	if (typeof dijit.byId('vntalertas') == "undefined") {
+		addAlertas();
+	} else {
+		if (dojo.byId('vntalertas').style.visibility === 'hidden') {
+			dijit.byId('vntalertas').show();
+		} else {
+			dijit.byId('vntalertas').hide();			
 		}
 	}
 }

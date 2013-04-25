@@ -30,6 +30,13 @@ body {
     height: 16px;
     width: 16px;
 }
+
+.alertaIcon {
+    background-image: url("../../images/alerta.png");
+    height: 16px;
+    width: 16px;
+}
+
 .dojoxFloatingPaneTitle {
     background: url("../images/blue/toolbar_bg.png") repeat-x scroll 0 0 #6788A2;
     left:0px;

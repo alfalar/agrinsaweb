@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<link rel="stylesheet" type="text/css" href="../css/primecss/theme.css" />
+</h:head>
+
+<h:body>
+	<f:view>
+		<h:form id="form">
+			<p:panelGrid columns="1" style="margin: 0 auto;">
+				<f:facet name="header">
+       				Alerta de Corte
+    			</f:facet>				
+					<p:panel>
+						<p:dataTable id="tblalertas" var="cons" paginator="true" rows="10" 							
+							paginatorAlwaysVisible="false" paginatorPosition="bottom"
+							emptyMessage="No hay registros"
+							value="#{consultasBean.proximoscorte}">
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Id"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.loteid}" />  
+		        			</p:column>  
+							<p:column>
+								<f:facet name="header">
+	         						<h:outputText value="Nombre Lote"/>
+	      						</f:facet>						  
+		            			<h:outputText value="#{cons.nomlote}" />  
+		        			</p:column>
+							<p:column>
+								<f:facet name="header">
+	         						<h:outputText value="Fecha de Corte"/>
+	      						</f:facet>						  
+		            			<h:outputText value="#{cons.feccorte}" />  
+		        			</p:column>
+		        			
+						</p:dataTable>
+					</p:panel>									
+			</p:panelGrid>
+		</h:form>
+	</f:view>
+</h:body>
+
+</html>
