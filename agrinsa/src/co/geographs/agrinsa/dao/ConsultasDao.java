@@ -18,6 +18,7 @@ import co.geographs.agrinsa.dao.business.Lotes;
 import co.geographs.agrinsa.dao.business.Sembradoporcultivo;
 import co.geographs.agrinsa.dao.business.Sembradoporvariedad;
 import co.geographs.agrinsa.dao.business.TiposConsulta;
+import co.geographs.agrinsa.dao.business.Totalhxaxe;
 import co.geographs.agrinsa.dao.business.Totallotesxareaxvendedor;
 
 public class ConsultasDao {
@@ -353,4 +354,37 @@ public class ConsultasDao {
 		}
 		return proximoscorte;
 	}
+	
+	/**
+	 * Total Hectareas por agricultor por etapa
+	 * @return
+	 */
+	public List<Totalhxaxe> getHxaxe(){
+		List<Totalhxaxe> hxaxelist=new ArrayList<Totalhxaxe>();
+		Session sesion = this.hibernateTemplate.getSessionFactory()
+				.getCurrentSession();
+		String consulta="select cultivos.EtapaCultivo as Etapa,lotes.Agricultor as Agricultor,"+
+						"SUM(lotes.Area) as areasembrada from "+
+						"agrinsagdb.dbo.LOTE_VW lotes,agrinsagdb.dbo.CULTIVOS_VW cultivos "+
+						"where "+
+						"lotes.LoteID=cultivos.LoteID "+
+						"group by cultivos.EtapaCultivo,lotes.Agricultor";
+		Query query = sesion
+				.createSQLQuery(consulta)
+				.addScalar("Etapa", Hibernate.STRING)
+				.addScalar("Agricultor", Hibernate.STRING)
+				.addScalar("areasembrada", Hibernate.BIG_DECIMAL);
+		List<Object> lista=query.list();
+		Iterator iterator = lista.iterator();
+		while (iterator.hasNext()) {
+				Object[] row = (Object[]) iterator.next();
+				Totalhxaxe total=new Totalhxaxe();				
+				total.setEtapa((String)row[0]);
+				total.setAgricultor((String)row[1]);
+				total.setArea(((BigDecimal)row[2]).doubleValue());
+				hxaxelist.add(total);
+		}						
+		return hxaxelist;		
+	}
+	
 }

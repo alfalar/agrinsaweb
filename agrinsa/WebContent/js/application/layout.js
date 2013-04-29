@@ -203,8 +203,8 @@ function createMap(webmapitem) {
 				configOptions.description = response.itemInfo.item.description;
 			}
 		}
-		//initialExtent = response.map.extent;
-		initialExtent = new esri.geometry.Extent(-80,-4,-72,13, new esri.SpatialReference({ wkid:4326 }));
+		initialExtent = response.map.extent;
+		//initialExtent = new esri.geometry.Extent(-80,-4,-72,13, new esri.SpatialReference({ wkid:4326 }));
 		if (configOptions.extent) {
 			var extent = new esri.geometry.Extent(dojo
 					.fromJson(configOptions.extent));
@@ -1945,7 +1945,7 @@ function addTocWidget() {
 				dockable : false,
 				closable : false,
 				region : 'none',
-				style : "position:absolute;bottom:30px;right:30px;width:300px;height:500px;z-index:110;visibility:visible;",
+				style : "position:absolute;top:100px;right:30px;width:300px;height:500px;z-index:110;visibility:visible;",
 				id : 'tocontent'
 			}, dojo.byId('toc'));
 	fp.startup();
@@ -2076,7 +2076,7 @@ function addAlertas() {
 	});
 
 	dojo.connect(toggleButtonAlertas, "onClick", function() {
-		showVentanaAlertas();
+		showAlertas();
 	});
 
 	dojo.byId('webmap-toolbar-center').appendChild(toggleButtonAlertas.domNode);
