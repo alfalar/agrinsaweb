@@ -334,7 +334,7 @@ public class ConsultasDao {
 		List<Lotes> proximoscorte=new ArrayList<Lotes>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select lotes.LoteID,lotes.NomLote,lotes.FecCorteReal "+
+		String consulta="select lotes.LoteID,lotes.NomLote,CONVERT(VARCHAR(10), lotes.FecCorteReal, 103) AS FecCorteReal "+
 						"from agrinsagdb.dbo.LOTE_VW lotes "+
 						"where lotes.FecCorteReal between GETDATE() and DATEADD(DAY, +15, GETDATE())";
 		Query query = sesion
@@ -349,6 +349,7 @@ public class ConsultasDao {
 				Lotes lote=new Lotes();
 				lote.setLoteid((Integer)row[0]);
 				lote.setNomlote((String)row[1]);
+				
 				lote.setFeccorte((String)row[2]);
 				proximoscorte.add(lote);
 		}
@@ -378,8 +379,33 @@ public class ConsultasDao {
 		Iterator iterator = lista.iterator();
 		while (iterator.hasNext()) {
 				Object[] row = (Object[]) iterator.next();
-				Totalhxaxe total=new Totalhxaxe();				
-				total.setEtapa((String)row[0]);
+				Totalhxaxe total=new Totalhxaxe();
+				int etapa=4;
+				try{
+					etapa=Integer.parseInt((String)row[0]);	
+				}catch(Exception e){}				
+				String etapastr="";
+				switch(etapa){
+					case -1:
+						etapastr="0(-30-0)";
+						break;
+					case 0:
+						etapastr="1(1-30)";
+						break;		
+					case 1:
+						etapastr="2(31-60)";
+						break;
+					case 2:
+						etapastr="3(61-90)";
+						break;
+					case 3:
+						etapastr="4(91+)";
+						break;
+					default:
+						etapastr="";
+						break;												
+				}
+				total.setEtapa(etapastr);
 				total.setAgricultor((String)row[1]);
 				total.setArea(((BigDecimal)row[2]).doubleValue());
 				hxaxelist.add(total);
@@ -387,4 +413,59 @@ public class ConsultasDao {
 		return hxaxelist;		
 	}
 	
+	/**
+	 * Total Hectareas por etapa
+	 * @return
+	 */
+	public List<Totalhxaxe> getTotalxEtapa(){
+		List<Totalhxaxe> totxetapalist=new ArrayList<Totalhxaxe>();
+		Session sesion = this.hibernateTemplate.getSessionFactory()
+				.getCurrentSession();
+		String consulta="select cultivos.EtapaCultivo as Etapa,"+
+						"SUM(lotes.Area) as areasembrada from "+
+						"agrinsagdb.dbo.LOTE_VW lotes,agrinsagdb.dbo.CULTIVOS_VW cultivos "+
+						"where "+
+						"lotes.LoteID=cultivos.LoteID "+
+						"group by cultivos.EtapaCultivo";
+		Query query = sesion
+				.createSQLQuery(consulta)
+				.addScalar("Etapa", Hibernate.STRING)				
+				.addScalar("areasembrada", Hibernate.BIG_DECIMAL);
+		List<Object> lista=query.list();
+		Iterator iterator = lista.iterator();
+		while (iterator.hasNext()) {
+				Object[] row = (Object[]) iterator.next();
+				Totalhxaxe total=new Totalhxaxe();
+				int etapa=4;
+				try{
+					etapa=Integer.parseInt((String)row[0]);	
+				}catch(Exception e){}				
+				String etapastr="";
+				switch(etapa){
+					case -1:
+						etapastr="0(-30-0)";
+						break;
+					case 0:
+						etapastr="1(1-30)";
+						break;		
+					case 1:
+						etapastr="2(31-60)";
+						break;
+					case 2:
+						etapastr="3(61-90)";
+						break;
+					case 3:
+						etapastr="4(91+)";
+						break;
+					default:
+						etapastr="";
+						break;												
+				}
+				total.setEtapa(etapastr);
+				total.setAgricultor("");
+				total.setArea(((BigDecimal)row[1]).doubleValue());
+				totxetapalist.add(total);
+		}						
+		return totxetapalist;		
+	}	
 }

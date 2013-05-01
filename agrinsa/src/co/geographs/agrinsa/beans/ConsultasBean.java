@@ -63,6 +63,10 @@ public class ConsultasBean implements Serializable {
 	//TOTAL HECTAREAS X AGRICULTOR X ETAPA
 	private boolean hxaxeenabled=false;
 	private List<Totalhxaxe> hxaxe;
+	//TOTAL HECTAREAS X ETAPA
+	private boolean hecxetapaenabled=false;
+	private List<Totalhxaxe> hecxetapa;
+	
 	
 	
 	public void cambioconsulta() {
@@ -78,6 +82,7 @@ public class ConsultasBean implements Serializable {
 			lotxvenxareaenabled=false;
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
+			hecxetapaenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("areaxvereda")){
 			areaxvereda=consultasDao.getAreaxvereda();
 			areaxciudadenabled=false;
@@ -88,6 +93,7 @@ public class ConsultasBean implements Serializable {
 			lotxvenxareaenabled=false;
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
+			hecxetapaenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("totalxcultivo")){
 			areaxcultivo=consultasDao.getSembradoporcultivo();
 			areaxciudadenabled=false;
@@ -98,6 +104,7 @@ public class ConsultasBean implements Serializable {
 			lotxvenxareaenabled=false;
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
+			hecxetapaenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("totalxvariedad")){
 			areaxvariedad=consultasDao.getSembradoporvariedad();
 			areaxciudadenabled=false;
@@ -108,6 +115,7 @@ public class ConsultasBean implements Serializable {
 			lotxvenxareaenabled=false;
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
+			hecxetapaenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("TOTALACTINACT")){
 			estado=consultasDao.getEstadolotes();
 			areaxciudadenabled=false;
@@ -118,6 +126,7 @@ public class ConsultasBean implements Serializable {
 			lotxvenxareaenabled=false;
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
+			hecxetapaenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("TOTALXAREAXVEND")){
 			lotxvenxarea=consultasDao.getTotalLotesxAreaxVendedor();
 			areaxciudadenabled=false;
@@ -128,6 +137,7 @@ public class ConsultasBean implements Serializable {
 			lotxvenxareaenabled=true;	
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
+			hecxetapaenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("TOTALXENTIDAD")){
 			lotxentxarea=consultasDao.getTotalLotesEntidad();
 			areaxciudadenabled=false;
@@ -138,6 +148,7 @@ public class ConsultasBean implements Serializable {
 			lotxvenxareaenabled=false;	
 			lotxentxareaenabled=true;	
 			hxaxeenabled=false;
+			hecxetapaenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("THXAXE")){
 			hxaxe=consultasDao.getHxaxe();
 			areaxciudadenabled=false;
@@ -147,7 +158,20 @@ public class ConsultasBean implements Serializable {
 			estadoenabled=false;	
 			lotxvenxareaenabled=false;	
 			lotxentxareaenabled=false;	
-			hxaxeenabled=true;			
+			hxaxeenabled=true;	
+			hecxetapaenabled=false;
+		}else if(selectedTiposconsulta.equalsIgnoreCase("TOTALRANGOFECHA")){
+			hecxetapa=consultasDao.getTotalxEtapa();
+			areaxciudadenabled=false;
+			areaxcultivoenabled=false;
+			areaxveredaenabled=false;
+			areaxvariedadenabled=false;	
+			estadoenabled=false;	
+			lotxvenxareaenabled=false;	
+			lotxentxareaenabled=false;	
+			hxaxeenabled=false;	
+			hecxetapaenabled=true;
+			
 		}else{
 			areaxvariedadenabled=false;
 			areaxciudadenabled=false;
@@ -157,6 +181,7 @@ public class ConsultasBean implements Serializable {
 			lotxvenxareaenabled=false;
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
+			hecxetapaenabled=false;
 		}
 		
 	}
@@ -282,6 +307,15 @@ public class ConsultasBean implements Serializable {
 
 	public List<Totalhxaxe> getHxaxe() {
 		return hxaxe;
+	}
+
+	
+	public boolean isHecxetapaenabled() {
+		return hecxetapaenabled;
+	}
+
+	public List<Totalhxaxe> getHecxetapa() {
+		return hecxetapa;
 	}
 
 	public List<Lotes> getProximoscorte() {

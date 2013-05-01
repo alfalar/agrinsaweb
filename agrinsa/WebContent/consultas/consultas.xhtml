@@ -281,10 +281,51 @@
 					    	<p:dataExporter type="pdf" target="tbltotxaxaxe" fileName="Hectxetapaxagricultor"/>  
 						</h:commandLink>  
 					</p:panel>
+
+					<p:panel rendered="#{consultasBean.hecxetapaenabled}">
+						<p:dataTable id="tblhecxet" var="cons" paginator="true" rows="10" 
+							rendered="#{consultasBean.hecxetapaenabled}"
+							paginatorAlwaysVisible="false" paginatorPosition="bottom"
+							emptyMessage="No hay registros"
+							value="#{consultasBean.hecxetapa}">
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Etapa"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.etapa}" />  
+		        			</p:column> 
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Area (Hec)"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.area}" />  
+		        			</p:column>  
+		        			  
+						</p:dataTable>
+						<h:commandLink rendered="#{consultasBean.hecxetapaenabled}">  
+						    <p:graphicImage value="/images/excel.png" />  
+						    <p:dataExporter type="xls" target="tblhecxet" fileName="Hectxetapa"/>  
+						</h:commandLink>  
+					  
+						<h:commandLink rendered="#{consultasBean.hecxetapaenabled}">  
+					    	<p:graphicImage value="/images/pdf.png" />  
+					    	<p:dataExporter type="pdf" target="tblhecxet" fileName="Hectxetapa"/>  
+						</h:commandLink>  
+					</p:panel>
 					
 				</p:outputPanel>
 			</p:panelGrid>
 		</h:form>
+			<p:ajaxStatus style="width:50px;height:50px;position:fixed;right:25px;bottom:25px">  
+			    <f:facet name="start">  
+			        <p:graphicImage value="/images/load.gif" width="50px" height="50px" />  
+			    </f:facet>  
+			  
+			    <f:facet name="complete">  
+			        <h:outputText value="" />  
+			    </f:facet>  
+			</p:ajaxStatus>  
+		
 	</f:view>
 </h:body>
 

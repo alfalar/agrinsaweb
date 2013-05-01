@@ -34,7 +34,7 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
   climapa:null,
   constructor: function (params, srcNodeRef) {
      this.map = params.map;
-
+     this.camposexcluidos=params.camposexcluidos;
 
   },
   startup: function () {	  
@@ -66,10 +66,9 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 		  map.graphics.clear();
 		  var numeroresultados=0;
 		  esri.show(loading);
-		  var lysidentificados=false;
+		  var lysidentificados=false;		  
 		  for ( var j = 0; j <  map.layerIds.length; j++) {
 			  var layer = map.getLayer(map.layerIds[j]);
-			  if (typeof layer == esri.layers.ArcGISDynamicMapServiceLayer ){
 				  lysidentificados=true;
 			      identifyTask = new esri.tasks.IdentifyTask(layer.url);
 			      identifyParams = new esri.tasks.IdentifyParameters();
@@ -83,7 +82,7 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 			      identifyTask.execute(identifyParams, function(idResults) {			    	  
 			    	  numeroresultados++;
 			    	  for ( var i = 0; i < idResults.length; i++) {	    		  
-			    		  resultados.push(idResults[i]);	    		  
+			    		  resultados.push(idResults[i]);	
 			    	  }
 			    	  //console.log("idResults.length:"+idResults.length); 
 			    	  if(numeroresultados>= map.layerIds.length){
@@ -127,13 +126,14 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 					    			  html+="</tr>";				    			  				    				  
 					    			  var atributos=result.feature.attributes;
 					    			  for (var key in atributos) {
+					    				  //console.log("---------->"+key);
 					    				  if (atributos.hasOwnProperty(key)) {
-					    					  key=key.toUpperCase();
+					    					  //
 					    					  if(atributos[key]=="Null" || atributos[key]==undefined ){
-					    						  atributos[key]="";
-					    					  }
-					    					  //console.log(key + " -> " + atributos[key]+ " ->"+camposexcluidos);
-					    					  if(camposexcluidos.indexOf(key)==-1){
+					    						  atributos[key]="&nbsp";
+					    					  }					    					  
+					    					  //console.log(key + " -> " + atributos[key]);
+					    					  if(tidentify.camposexcluidos.indexOf(key.toUpperCase())==-1){
 								    			  html+="<tr>";
 								    			  html+="<td "+clase+"  align=\"center\">"+key+"</td>";			    				  
 								    			  html+="<td "+clase+"  align=\"center\">"+atributos[key]+"</td>";
@@ -156,7 +156,7 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 			    		  esri.hide(loading);
 			    	  }
 			      });		  	  		  				  
-			  }			  
+			  			  
 		  }	
 		  if(lysidentificados==false){
 			  setMensaje("No hay capas para identificar","INFO");

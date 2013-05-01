@@ -529,12 +529,13 @@ function initUI(response) {
 
 	addTocWidget();
 	addIdentifyWidget();
-	//CARGA LOS SERVICIOS GEOGRAFICOS
+	//CARGA LOS SERVICIOS GEOGRAFICOS	
 	for ( var i = 0; i < serviciosgeograficos.length; i++) {
+		var objeto=serviciosgeograficos[i];
 		console.log(objeto.tipo);
 		console.log(objeto.servicio);
 		console.log(objeto.descripcion);
-		var objeto=serviciosgeograficos[i];
+
 		if (objeto.tipo == "TILED") {
 			console.log("ES TILED");
 			var tilayer = new esri.layers.ArcGISTiledMapServiceLayer(objeto.servicio);
@@ -699,7 +700,7 @@ function updateLinkUrls() {
 				+ configOptions.bitly.login + "&apiKey="
 				+ configOptions.bitly.key + "&longUrl="
 				+ encodeURIComponent(link) + "&format=json";
-		console.log(url);
+		//console.log(url);
 		esri.request({
 			url : url,
 			handleAs : "json",
@@ -2012,7 +2013,7 @@ function addIdentifyWidget() {
 	tidentify = new dojoclass.dijit.Identify({
 		map : map,
 		id : 'identifyagr',
-		camposexcluidos: "SHAPE,OBJECTID,SHAPE.LEN",
+		camposexcluidos: "SHAPE,OBJECTID,SHAPE.LEN,SHAPE_AREA,SHAPE_LENGTH",
 	}, 'identifyDiv');
 	tidentify.startup();
 }
@@ -2037,7 +2038,7 @@ function addAlertas() {
 				resizable : false,
 				dockable : false,
 				closable : false,
-				style : "position:absolute;top:100px;left:400px;width:400px;height:400px;z-index:100;visibility:visible;",
+				style : "position:absolute;top:100px;left:400px;width:400px;height:400px;z-index:100;visibility:hidden;",
 				id : 'vntalertas',
 				region : 'none'
 			}, dojo.byId('alerta'));
