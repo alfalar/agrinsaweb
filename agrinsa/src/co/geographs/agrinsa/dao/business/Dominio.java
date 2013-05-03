@@ -3,7 +3,7 @@ package co.geographs.agrinsa.dao.business;
 public class Dominio {
 	private int code;
 	private String value;
-
+	private String dominio;
 	
 	public Dominio() {
 		super();
@@ -30,6 +30,14 @@ public class Dominio {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public String getDominio() {
+		return dominio;
+	}
+
+	public void setDominio(String dominio) {
+		this.dominio = dominio;
 	}
 
 }

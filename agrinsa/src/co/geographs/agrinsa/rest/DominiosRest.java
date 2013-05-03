@@ -30,9 +30,9 @@ public class DominiosRest {
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public List<Dominio> getUsuarios(@FormParam("dominio") String dominio) {
+	public List<Dominio> getUsuarios() {
 		constantes = (ConstantesDao)SpringUtils.getBean("constantesDao");
-		List<Dominio> dominioslist=constantes.getValoresDominio(dominio);
+		List<Dominio> dominioslist=constantes.getValoresDominio();
 		return dominioslist;
 	}
 }
