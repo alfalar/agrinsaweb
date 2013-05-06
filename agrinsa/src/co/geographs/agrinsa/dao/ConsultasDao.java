@@ -63,7 +63,7 @@ public class ConsultasDao {
 						"from LOTE_VW nlote "+
 						"group by nlote.CiudadID";
 		*/
-		String consulta="select nlote.Value as ciudad, SUM(nlote.Area) as areasembrada "+
+		String consulta="select nlote.Value as ciudad, SUM(nlote.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
 				"from "+ 
 				"(SELECT * "+
 				"FROM agrinsagdb.dbo.LOTE_VW LEFT OUTER JOIN  "+
@@ -106,11 +106,28 @@ public class ConsultasDao {
 		List<Areaxvereda> arealist=new ArrayList<Areaxvereda>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select nlote.Vereda as vereda, SUM(nlote.Area) as areasembrada "+
-						"from LOTE_VW nlote "+
-						"group by nlote.Vereda";
+		String consulta="select nlote.Value as ciudad,nlote.Vereda as vereda, SUM(nlote.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
+				"from "+ 
+				"(SELECT * "+
+				"FROM agrinsagdb.dbo.LOTE_VW LEFT OUTER JOIN  "+
+				"(SELECT "+
+				   "codedValue.value('Code[1]','nvarchar(max)') AS Code, "+ 
+				   "codedValue.value('Name[1]', 'nvarchar(max)') AS Value "+
+				   "FROM agrinsagdb.dbo.GDB_ITEMS AS items INNER JOIN agrinsagdb.dbo.GDB_ITEMTYPES AS itemtypes "+ 
+				   "ON items.Type = itemtypes.UUID "+
+				   "CROSS APPLY items.Definition.nodes "+
+				   "('/GPCodedValueDomain2/CodedValues/CodedValue') AS CodedValues(codedValue) "+
+				   "WHERE itemtypes.Name = 'Coded Value Domain' "+ 
+				   "AND items.Name = 'DomMunicipio') AS CodedValues "+
+				   "ON agrinsagdb.dbo.LOTE_VW.CiudadID = CodedValues.Code) as nlote "+
+				   "group by nlote.Vereda,nlote.Value ";		
+		
+		//String consulta="select nlote.Vereda as vereda, SUM(nlote.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
+		//				"from LOTE_VW nlote "+
+		//				"group by nlote.Vereda";
 		Query query = sesion
 				.createSQLQuery(consulta)
+				.addScalar("ciudad", Hibernate.STRING)
 				.addScalar("vereda", Hibernate.STRING)
 				.addScalar("areasembrada", Hibernate.BIG_DECIMAL);
 		List<Object> lista=query.list();
@@ -122,8 +139,17 @@ public class ConsultasDao {
 				if(ciudad.equalsIgnoreCase("null")){
 					ciudad="INDEFINIDA";
 				}	
-				areaxvereda.setVereda(ciudad);
-				areaxvereda.setArea( ((BigDecimal)row[1]).doubleValue() );
+				String vereda=String.valueOf(row[1]);
+				if(vereda.equalsIgnoreCase("null")){
+					vereda="INDEFINIDA";
+				}	
+				double area=0;
+				if(row[2]!=null){
+					area=((BigDecimal)row[2]).doubleValue();
+				}
+				areaxvereda.setCiudad(ciudad);
+				areaxvereda.setVereda(vereda);
+				areaxvereda.setArea(area);
 				arealist.add(areaxvereda);
 		}						
 		return arealist;		
@@ -133,7 +159,7 @@ public class ConsultasDao {
 		List<Sembradoporcultivo> arealist=new ArrayList<Sembradoporcultivo>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select tipocultivo.Value as cultivo, SUM(nlote.Area) as areasembrada "+
+		String consulta="select tipocultivo.Value as cultivo, SUM(nlote.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
 				"from agrinsagdb.dbo.LOTE_VW nlote, "+ 
 				"(SELECT * "+
 				"FROM agrinsagdb.dbo.CULTIVOS_VW LEFT OUTER JOIN "+
@@ -169,7 +195,7 @@ public class ConsultasDao {
 		List<Sembradoporvariedad> arealist=new ArrayList<Sembradoporvariedad>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select cultivos.Value as cultivo, variedad.Value as variedad,SUM(lote.Area) as areasembrada from "+ 
+		String consulta="select cultivos.Value as cultivo, variedad.Value as variedad,SUM(lote.agrinsagdb_DBO_LoteV_Area) as areasembrada from "+ 
 						"agrinsagdb.dbo.LOTE_VW lote,"+
 						"(SELECT * "+
 							"FROM agrinsagdb.dbo.CULTIVOS_VW LEFT OUTER JOIN "+
@@ -236,9 +262,18 @@ public class ConsultasDao {
 		Iterator iterator = lista.iterator();
 		while (iterator.hasNext()) {
 				Object[] row = (Object[]) iterator.next();
-				Estadolotes estado=new Estadolotes();				
-				estado.setActivos((Integer)row[0]);
-				estado.setInactivos((Integer)row[1]);
+				Estadolotes estado=new Estadolotes();	
+				int activos=0;
+				if(row[0]!=null){
+					activos=(Integer)row[0];
+				}
+				int inactivos=0;
+				if(row[1]!=null){
+					inactivos=(Integer)row[1];
+				}
+				
+				estado.setActivos(activos);
+				estado.setInactivos(inactivos);
 				estadolist.add(estado);
 		}						
 		return estadolist;		
@@ -248,7 +283,7 @@ public class ConsultasDao {
 		List<Totallotesxareaxvendedor> arealist=new ArrayList<Totallotesxareaxvendedor>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select lotes.Value as vendedor,COUNT(lotes.LoteID) as nlotes, SUM(lotes.Area) as areasembrada "+
+		String consulta="select lotes.Value as vendedor,COUNT(lotes.LoteID) as nlotes, SUM(lotes.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
 						"from "+
 						"(SELECT * "+
 							"FROM agrinsagdb.dbo.LOTE_VW LEFT OUTER JOIN "+ 
@@ -289,7 +324,7 @@ public class ConsultasDao {
 		List<Totallotesxareaxvendedor> arealist=new ArrayList<Totallotesxareaxvendedor>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select lotes.Value as entidad,COUNT(lotes.LoteID) as nlotes, SUM(lotes.Area) as areasembrada "+
+		String consulta="select lotes.Value as entidad,COUNT(lotes.LoteID) as nlotes, SUM(lotes.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
 						"from "+
 						"(SELECT * "+
 							"FROM agrinsagdb.dbo.LOTE_VW LEFT OUTER JOIN "+ 
@@ -365,7 +400,7 @@ public class ConsultasDao {
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
 		String consulta="select cultivos.EtapaCultivo as Etapa,lotes.Agricultor as Agricultor,"+
-						"SUM(lotes.Area) as areasembrada from "+
+						"SUM(lotes.agrinsagdb_DBO_LoteV_Area) as areasembrada from "+
 						"agrinsagdb.dbo.LOTE_VW lotes,agrinsagdb.dbo.CULTIVOS_VW cultivos "+
 						"where "+
 						"lotes.LoteID=cultivos.LoteID "+
@@ -422,7 +457,7 @@ public class ConsultasDao {
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
 		String consulta="select cultivos.EtapaCultivo as Etapa,"+
-						"SUM(lotes.Area) as areasembrada from "+
+						"SUM(lotes.agrinsagdb_DBO_LoteV_Area) as areasembrada from "+
 						"agrinsagdb.dbo.LOTE_VW lotes,agrinsagdb.dbo.CULTIVOS_VW cultivos "+
 						"where "+
 						"lotes.LoteID=cultivos.LoteID "+

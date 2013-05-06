@@ -111,7 +111,7 @@ dojo.ready(function(){
         leftpanewidth: 228,
         //Restrict the map's extent to the initial extent of the web map. When true users
         //will not be able to pan/zoom outside the initial extent.
-        constrainmapextent: true,
+        constrainmapextent: false,
         //Provide an image and url for a logo that will be displayed as a clickable image 
         //in the lower right corner of the map. If nothing is specified then the esri logo will appear.
         customlogo: {

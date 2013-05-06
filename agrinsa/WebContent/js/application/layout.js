@@ -181,7 +181,7 @@ function createMap(webmapitem) {
 	};
 
 	// END:AGR
-
+	//initialExtent = new esri.geometry.Extent(-80,-4,-72,13, new esri.SpatialReference({ wkid:102100 }));
 	var mapDeferred = esri.arcgis.utils.createMap(webmap, "map", {
 		mapOptions : {
 			slider : configOptions.displaySlider,
@@ -189,7 +189,8 @@ function createMap(webmapitem) {
 			wrapAround180 : !configOptions.constrainmapextent,
 			showAttribution : true,
 			// set wraparound to false if the extent is limited.
-			logo : !configOptions.customlogo.image
+			logo : !configOptions.customlogo.image,
+			//extent:initialExtent
 		// hide esri logo if custom logo is provided
 		},
 		ignorePopups : false,
@@ -204,7 +205,8 @@ function createMap(webmapitem) {
 			}
 		}
 		initialExtent = response.map.extent;
-		//initialExtent = new esri.geometry.Extent(-80,-4,-72,13, new esri.SpatialReference({ wkid:4326 }));
+		
+		
 		if (configOptions.extent) {
 			var extent = new esri.geometry.Extent(dojo
 					.fromJson(configOptions.extent));
@@ -356,6 +358,7 @@ function initUI(response) {
 		esri.show(dojo.byId('bottomPane'));
 		createElevationProfileTools();
 	}
+	console.log("------->"+configOptions.displaybookmarks);
 	if (configOptions.displaybookmarks === true) {
 		addBookmarks(response);
 	}
@@ -542,7 +545,7 @@ function initUI(response) {
 		    dojo.connect(tilayer, "onError", function(evt) {
 		    	setMensaje("No se pudo cargar la capa geografica " +objeto.descripcion+".Por favor revise que el servicio este disponible ","ERROR");									    										    	
 		    });
-			tilayer.visible = true;									
+			tilayer.visible = false;									
 			tilayer.id = objeto.descripcion;
 			tilayer.opacity = 0.6;
 			map.addLayer(tilayer);
@@ -553,7 +556,7 @@ function initUI(response) {
 		    dojo.connect(dynlayer, "onError", function(evt) {
 		    	setMensaje("No se pudo cargar la capa geografica " +objeto.descripcion+".Por favor revise que el servicio este disponible","ERROR");									    										    	
 		    });
-		    dynlayer.visible = true;
+		    dynlayer.visible = false;
 			dynlayer.id = objeto.descripcion;
 			dynlayer.opacity = 0.6;
 			map.addLayer(dynlayer);
@@ -571,6 +574,7 @@ function initUI(response) {
 					// changed
 	dojo.connect(map, "onUpdateStart", showLoading);
 	dojo.connect(map, "onUpdateEnd", hideLoading);
+	showEscalaNumerica();
 }
 
 function displayLeftPanel() {
@@ -790,10 +794,16 @@ function addBasemapGalleryMenu() {
 	cp.set('content', basemapMenu.domNode);
 
 	dojo.connect(basemapGallery, 'onLoad', function() {
+		var urlt="";
 		var menu = dijit.byId("basemapMenu")
 		dojo.forEach(basemapGallery.basemaps, function(basemap) {
 			// Add a menu item for each basemap, when the menu items are
 			// selected
+			//console.log("------------>"+basemap.thumbnailUrl);
+			//console.log("------------>"+basemap.url);
+			if(urlt==""){
+				urlt=basemap.thumbnailUrl;
+			}
 			menu.addChild(new utilities.custommenu({
 				label : basemap.title,
 				iconClass : "menuIcon",
@@ -803,6 +813,27 @@ function addBasemapGalleryMenu() {
 				}
 			}));
 		});
+		var layerimgssgr = new esri.dijit.BasemapLayer({
+			url:"http://agespserv03e:6080/arcgis/rest/services/Imagenes/MapServer"
+		});
+
+		var imagesBasemap = new esri.dijit.Basemap({
+			layers:[layerimgssgr],
+			title:"Imagenes Agrinsa",
+			id:"imgagr",
+			thumbnailUrl:urlt
+		});
+		basemapGallery.add(imagesBasemap);
+
+		menu.addChild(new utilities.custommenu({
+			label : "Imagenes Agrinsa",
+			iconClass : "menuIcon",
+			iconSrc : urlt,
+			onClick : function() {
+				basemapGallery.select("imgagr");
+			}
+		}));
+		
 	});
 
 	var button = new dijit.form.DropDownButton({
@@ -868,6 +899,7 @@ function addBasemapGallery() {
 // add any bookmarks to the application
 function addBookmarks(info) {
 	// does the web map have any bookmarks
+	console.log("boormarks");
 	if (info.itemInfo.itemData.bookmarks) {
 		var bookmarks = new esri.dijit.Bookmarks({
 			map : map,
@@ -1812,6 +1844,7 @@ function showLoading() {
 function hideLoading(error) {
 	esri.hide(loading);
 	map.showZoomSlider();
+	showEscalaNumerica
 }
 
 function addVentanaAdministracion() {
@@ -1996,7 +2029,7 @@ function addIdentifyWidget() {
 				dockable : false,
 				closable : false,
 				region : 'none',
-				style : "position:absolute;bottom:300px;right:30px;width:350px;height:70px;z-index:110;visibility:hidden;",
+				style : "position:absolute;bottom:300px;right:300px;width:350px;height:70px;z-index:110;visibility:hidden;",
 				id : 'identifywid'
 			}, dojo.byId('identify'));
 	fp.startup();
@@ -2013,7 +2046,7 @@ function addIdentifyWidget() {
 	tidentify = new dojoclass.dijit.Identify({
 		map : map,
 		id : 'identifyagr',
-		camposexcluidos: "SHAPE,OBJECTID,SHAPE.LEN,SHAPE_AREA,SHAPE_LENGTH",
+		camposexcluidos: 'SHAPE,OBJECTID,SHAPE.LEN,SHAPE_AREA,SHAPE_LENGTH'
 	}, 'identifyDiv');
 	tidentify.startup();
 }
@@ -2094,4 +2127,9 @@ function showAlertas() {
 			dijit.byId('vntalertas').hide();			
 		}
 	}
+}
+
+
+function showEscalaNumerica() {
+	dojo.byId("infoscale").innerHTML = "Escala 1:" + Math.round(map.getScale() * 100) / 100;
 }
