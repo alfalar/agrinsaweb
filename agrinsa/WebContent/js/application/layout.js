@@ -784,10 +784,29 @@ function addBasemapGalleryMenu() {
 		id : 'basemapMenu'
 	});
 
+	var basemaps = [];
+	var basemapAerial = new esri.dijit.Basemap({
+        layers: [new esri.dijit.BasemapLayer({
+          type: "BingMapsAerial"
+        })],
+        id: "bmAerial",
+        title: "Aerial"
+   });
+	basemaps.push(basemapAerial);
+	var layerimgssgr = new esri.dijit.BasemapLayer({
+		url:"http://agespserv03e:6080/arcgis/rest/services/Imagenes/MapServer"
+	});
+
+	var imagesBasemap = new esri.dijit.Basemap({
+		layers:[layerimgssgr],
+		title:"Imagenes Agrinsa",
+		id:"imgagr"
+	});
+	basemaps.push(imagesBasemap);
 	// if a bing maps key is provided - display bing maps too.
 	var basemapGallery = new esri.dijit.BasemapGallery({
 		showArcGISBasemaps : true,
-		basemapsGroup : basemapGroup,
+		basemaps:basemaps,
 		bingMapsKey : configOptions.bingmapskey,
 		map : map
 	});
@@ -799,7 +818,7 @@ function addBasemapGalleryMenu() {
 		dojo.forEach(basemapGallery.basemaps, function(basemap) {
 			// Add a menu item for each basemap, when the menu items are
 			// selected
-			//console.log("------------>"+basemap.thumbnailUrl);
+			console.log("------------>"+basemap.id);
 			//console.log("------------>"+basemap.url);
 			if(urlt==""){
 				urlt=basemap.thumbnailUrl;
@@ -809,30 +828,12 @@ function addBasemapGalleryMenu() {
 				iconClass : "menuIcon",
 				iconSrc : basemap.thumbnailUrl,
 				onClick : function() {
+					console.log("---++++------>"+basemap.id);
 					basemapGallery.select(basemap.id);
 				}
 			}));
 		});
-		var layerimgssgr = new esri.dijit.BasemapLayer({
-			url:"http://agespserv03e:6080/arcgis/rest/services/Imagenes/MapServer"
-		});
-
-		var imagesBasemap = new esri.dijit.Basemap({
-			layers:[layerimgssgr],
-			title:"Imagenes Agrinsa",
-			id:"imgagr",
-			thumbnailUrl:urlt
-		});
-		basemapGallery.add(imagesBasemap);
-
-		menu.addChild(new utilities.custommenu({
-			label : "Imagenes Agrinsa",
-			iconClass : "menuIcon",
-			iconSrc : urlt,
-			onClick : function() {
-				basemapGallery.select("imgagr");
-			}
-		}));
+		
 		
 	});
 
