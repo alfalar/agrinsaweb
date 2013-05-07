@@ -173,7 +173,7 @@ function createMap(webmapitem) {
 				"opacity" : 1,
 				"visibility" : true,
 				"id" : "mapa_base",
-				"url" : mapa_base
+				"type" : "BingMapsAerial"
 			} ],
 			"title" : "Mapa base"
 		},
