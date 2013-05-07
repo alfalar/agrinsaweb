@@ -155,6 +155,7 @@ public class VisitasDao {
 				query.executeUpdate();				
 			}
 			conection.commit();
+			conection.close();
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -395,7 +395,7 @@ public class AdministracionBean {
 
 	public List<SelectItem> getTiposrecurso() {
 		tiposrecurso=new ArrayList<SelectItem>();
-		SelectItem select=new SelectItem("CONSULTA","CONSULTA");
+		SelectItem select=new SelectItem("CONSULTAS","CONSULTAS");
 		tiposrecurso.add(select);
 		select=new SelectItem("GENERAL","GENERAL");
 		tiposrecurso.add(select);

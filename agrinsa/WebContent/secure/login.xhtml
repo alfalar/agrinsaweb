@@ -5,14 +5,13 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<link rel="stylesheet" type="text/css" href="../css/primecss/theme.css" />
+	<link rel="stylesheet" type="text/css" href="/agrinsa/css/primecss/theme.css" />
 </h:head>
 
 <h:body>
 	<f:view>
 		<h:form id="form">
-			<h:panelGrid id="pggrid" style="margin: 0 auto;" columns="1">
-				<h:graphicImage value="/images/logo_agrinsa.jpg" />
+			<h:panelGrid id="pggrid" style="margin-top:40%;margin-left:40%;" columns="1">				
 				<h:panelGrid style="vertical-align: middle; font-size: 14px; text-align: center;border:1" columns="2">
 					<h:outputText value="Usuario: " />
 					<p:inputText id="usuario" value="#{loginBean.userName}" />

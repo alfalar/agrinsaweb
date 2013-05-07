@@ -77,7 +77,7 @@ dojo.ready(function(){
         //hide left panel on initial startup. 2
         leftPanelVisibility: true,
         //If the webmap uses Bing Maps data, you will need to provide your Bing Maps Key
-        bingmapskey: "Akt3ZoeZ089qyG3zWQZSWpwV3r864AHStal7Aon21-Fyxwq_KdydAH32LTwhieA8",
+        bingmapskey: "AveykoqqYwXEdK7uu1opSWLfQ-xYOar4gaS8sM5HdODZCR78OCGVynrlxu16bdg6",
         //Modify this to point to your sharing service URL if you are using the portal
         sharingurl: "",
         //specify a group in ArcGIS.com that contains the basemaps to display in the basemap gallery
@@ -111,7 +111,7 @@ dojo.ready(function(){
         leftpanewidth: 228,
         //Restrict the map's extent to the initial extent of the web map. When true users
         //will not be able to pan/zoom outside the initial extent.
-        constrainmapextent: true,
+        constrainmapextent: false,
         //Provide an image and url for a logo that will be displayed as a clickable image 
         //in the lower right corner of the map. If nothing is specified then the esri logo will appear.
         customlogo: {

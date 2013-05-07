@@ -1,5 +1,6 @@
 package co.geographs.agrinsa.dao;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,9 +77,11 @@ public class UsuariosDao {
 		try {
 			this.hibernateTemplate.save(usuario);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (DataIntegrityViolationException e) {
 			return "El nombre de usuario ya existe";
@@ -92,9 +95,11 @@ public class UsuariosDao {
 		try {						
 			this.hibernateTemplate.delete(usuario);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (ConstraintViolationException e) {
 			return "No se puede eliminar el usuario porque está asignado a un rol ";
@@ -110,9 +115,11 @@ public class UsuariosDao {
 		try {						
 			this.hibernateTemplate.update(usuario);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -173,10 +180,11 @@ public class UsuariosDao {
 			rol.setRol(nombrerol);
 			this.hibernateTemplate.save(rol);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
-			return "OK";
+					.getConnection();
+			con.commit();
+			con.close();			return "OK";
 		} catch (DataIntegrityViolationException e) {
 			return "El nombre de rol ya existe";
 		} catch (Exception e) {
@@ -189,9 +197,11 @@ public class UsuariosDao {
 		try {						
 			this.hibernateTemplate.delete(rol);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -203,9 +213,11 @@ public class UsuariosDao {
 		try {						
 			this.hibernateTemplate.update(rol);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -242,9 +254,11 @@ public class UsuariosDao {
 			miembro.setId(mid);
 			this.hibernateTemplate.save(miembro);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -261,9 +275,11 @@ public class UsuariosDao {
 			miembro.setId(mid);
 			this.hibernateTemplate.delete(miembro);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -298,9 +314,11 @@ public class UsuariosDao {
 			permisorol.setId(pid);
 			this.hibernateTemplate.delete(permisorol);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -317,9 +335,11 @@ public class UsuariosDao {
 			permisorol.setId(pid);
 			this.hibernateTemplate.save(permisorol);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -331,9 +351,11 @@ public class UsuariosDao {
 		try {						
 			this.hibernateTemplate.update(permiso);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -345,9 +367,11 @@ public class UsuariosDao {
 		try {
 			this.hibernateTemplate.save(permiso);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -359,9 +383,11 @@ public class UsuariosDao {
 		try {						
 			this.hibernateTemplate.delete(permiso);
 			this.hibernateTemplate.flush();
-			((SessionFactoryImplementor) this.hibernateTemplate
+			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
-					.getConnection().commit();
+					.getConnection();
+			con.commit();
+			con.close();
 			return "OK";
 		} catch (ConstraintViolationException e) {
 			return "No se puede eliminar el recurso porque está asignado a un rol ";

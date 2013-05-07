@@ -12,13 +12,17 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 		<property name="resourceRef"><value>false</value></property> <property name="jndiName"> 
 		<value>jdbc/UnibanDS</value> </property> </bean> -->
 	<!-- Datasource: Para desarrollo BD SQLServer -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
-		<property name="url"
-			value="jdbc:sqlserver://localhost:1433;databaseName=agrinsagdb" />
-		<property name="username" value="agrinsa" />
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+		<property name="jdbcUrl" value="jdbc:sqlserver://localhost:1433;databaseName=agrinsagdb" />
+		<property name="user" value="agrinsa" />
 		<property name="password" value="agrinsa2013" />
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="20" />
+		<property name="acquireIncrement" value="1" />
+		<property name="idleConnectionTestPeriod" value="100" />
+		<property name="maxStatements" value="0" />
+		<property name="checkoutTimeout" value="60000"/> 		
 	</bean>
 
 	<!-- Hibernate -->

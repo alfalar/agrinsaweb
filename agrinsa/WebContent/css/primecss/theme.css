@@ -2,7 +2,9 @@ body {
     margin: 0px;
     padding: 0;
     font-size: 10px;
-    color: #616161;
+    color: #fff;
+    background-image: url("../../images/Fondo.jpg");
+    background-size: 100%;
 }
 
 .ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td {
@@ -41,4 +43,9 @@ body {
     background: url("../images/blue/toolbar_bg.png") repeat-x scroll 0 0 #6788A2;
     left:0px;
     top:0px;
+}
+
+.ui-growl {
+	left:10px;
+	top:200px;
 }

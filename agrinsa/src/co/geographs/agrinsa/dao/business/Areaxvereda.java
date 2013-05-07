@@ -1,6 +1,7 @@
 package co.geographs.agrinsa.dao.business;
 
 public class Areaxvereda {
+	private String ciudad;
 	private String vereda;
 	private double area;
 	
@@ -25,6 +26,12 @@ public class Areaxvereda {
 	}
 	public void setArea(double area) {
 		this.area = area;
+	}
+	public String getCiudad() {
+		return ciudad;
+	}
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
 	}
 	
 	

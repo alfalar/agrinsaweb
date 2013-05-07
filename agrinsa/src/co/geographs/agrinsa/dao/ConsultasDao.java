@@ -63,7 +63,7 @@ public class ConsultasDao {
 						"from LOTE_VW nlote "+
 						"group by nlote.CiudadID";
 		*/
-		String consulta="select nlote.Value as ciudad, SUM(nlote.Area) as areasembrada "+
+		String consulta="select nlote.Value as ciudad, SUM(nlote.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
 				"from "+ 
 				"(SELECT * "+
 				"FROM agrinsagdb.dbo.LOTE_VW LEFT OUTER JOIN  "+
@@ -106,11 +106,28 @@ public class ConsultasDao {
 		List<Areaxvereda> arealist=new ArrayList<Areaxvereda>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select nlote.Vereda as vereda, SUM(nlote.Area) as areasembrada "+
-						"from LOTE_VW nlote "+
-						"group by nlote.Vereda";
+		String consulta="select nlote.Value as ciudad,nlote.Vereda as vereda, SUM(nlote.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
+				"from "+ 
+				"(SELECT * "+
+				"FROM agrinsagdb.dbo.LOTE_VW LEFT OUTER JOIN  "+
+				"(SELECT "+
+				   "codedValue.value('Code[1]','nvarchar(max)') AS Code, "+ 
+				   "codedValue.value('Name[1]', 'nvarchar(max)') AS Value "+
+				   "FROM agrinsagdb.dbo.GDB_ITEMS AS items INNER JOIN agrinsagdb.dbo.GDB_ITEMTYPES AS itemtypes "+ 
+				   "ON items.Type = itemtypes.UUID "+
+				   "CROSS APPLY items.Definition.nodes "+
+				   "('/GPCodedValueDomain2/CodedValues/CodedValue') AS CodedValues(codedValue) "+
+				   "WHERE itemtypes.Name = 'Coded Value Domain' "+ 
+				   "AND items.Name = 'DomMunicipio') AS CodedValues "+
+				   "ON agrinsagdb.dbo.LOTE_VW.CiudadID = CodedValues.Code) as nlote "+
+				   "group by nlote.Vereda,nlote.Value ";		
+		
+		//String consulta="select nlote.Vereda as vereda, SUM(nlote.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
+		//				"from LOTE_VW nlote "+
+		//				"group by nlote.Vereda";
 		Query query = sesion
 				.createSQLQuery(consulta)
+				.addScalar("ciudad", Hibernate.STRING)
 				.addScalar("vereda", Hibernate.STRING)
 				.addScalar("areasembrada", Hibernate.BIG_DECIMAL);
 		List<Object> lista=query.list();
@@ -122,8 +139,17 @@ public class ConsultasDao {
 				if(ciudad.equalsIgnoreCase("null")){
 					ciudad="INDEFINIDA";
 				}	
-				areaxvereda.setVereda(ciudad);
-				areaxvereda.setArea( ((BigDecimal)row[1]).doubleValue() );
+				String vereda=String.valueOf(row[1]);
+				if(vereda.equalsIgnoreCase("null")){
+					vereda="INDEFINIDA";
+				}	
+				double area=0;
+				if(row[2]!=null){
+					area=((BigDecimal)row[2]).doubleValue();
+				}
+				areaxvereda.setCiudad(ciudad);
+				areaxvereda.setVereda(vereda);
+				areaxvereda.setArea(area);
 				arealist.add(areaxvereda);
 		}						
 		return arealist;		
@@ -133,7 +159,7 @@ public class ConsultasDao {
 		List<Sembradoporcultivo> arealist=new ArrayList<Sembradoporcultivo>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select tipocultivo.Value as cultivo, SUM(nlote.Area) as areasembrada "+
+		String consulta="select tipocultivo.Value as cultivo, SUM(nlote.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
 				"from agrinsagdb.dbo.LOTE_VW nlote, "+ 
 				"(SELECT * "+
 				"FROM agrinsagdb.dbo.CULTIVOS_VW LEFT OUTER JOIN "+
@@ -169,7 +195,7 @@ public class ConsultasDao {
 		List<Sembradoporvariedad> arealist=new ArrayList<Sembradoporvariedad>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select cultivos.Value as cultivo, variedad.Value as variedad,SUM(lote.Area) as areasembrada from "+ 
+		String consulta="select cultivos.Value as cultivo, variedad.Value as variedad,SUM(lote.agrinsagdb_DBO_LoteV_Area) as areasembrada from "+ 
 						"agrinsagdb.dbo.LOTE_VW lote,"+
 						"(SELECT * "+
 							"FROM agrinsagdb.dbo.CULTIVOS_VW LEFT OUTER JOIN "+
@@ -236,9 +262,18 @@ public class ConsultasDao {
 		Iterator iterator = lista.iterator();
 		while (iterator.hasNext()) {
 				Object[] row = (Object[]) iterator.next();
-				Estadolotes estado=new Estadolotes();				
-				estado.setActivos((Integer)row[0]);
-				estado.setInactivos((Integer)row[1]);
+				Estadolotes estado=new Estadolotes();	
+				int activos=0;
+				if(row[0]!=null){
+					activos=(Integer)row[0];
+				}
+				int inactivos=0;
+				if(row[1]!=null){
+					inactivos=(Integer)row[1];
+				}
+				
+				estado.setActivos(activos);
+				estado.setInactivos(inactivos);
 				estadolist.add(estado);
 		}						
 		return estadolist;		
@@ -248,7 +283,7 @@ public class ConsultasDao {
 		List<Totallotesxareaxvendedor> arealist=new ArrayList<Totallotesxareaxvendedor>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select lotes.Value as vendedor,COUNT(lotes.LoteID) as nlotes, SUM(lotes.Area) as areasembrada "+
+		String consulta="select lotes.Value as vendedor,COUNT(lotes.LoteID) as nlotes, SUM(lotes.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
 						"from "+
 						"(SELECT * "+
 							"FROM agrinsagdb.dbo.LOTE_VW LEFT OUTER JOIN "+ 
@@ -289,7 +324,7 @@ public class ConsultasDao {
 		List<Totallotesxareaxvendedor> arealist=new ArrayList<Totallotesxareaxvendedor>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select lotes.Value as entidad,COUNT(lotes.LoteID) as nlotes, SUM(lotes.Area) as areasembrada "+
+		String consulta="select lotes.Value as entidad,COUNT(lotes.LoteID) as nlotes, SUM(lotes.agrinsagdb_DBO_LoteV_Area) as areasembrada "+
 						"from "+
 						"(SELECT * "+
 							"FROM agrinsagdb.dbo.LOTE_VW LEFT OUTER JOIN "+ 
@@ -334,7 +369,7 @@ public class ConsultasDao {
 		List<Lotes> proximoscorte=new ArrayList<Lotes>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta="select lotes.LoteID,lotes.NomLote,lotes.FecCorteReal "+
+		String consulta="select lotes.LoteID,lotes.NomLote,CONVERT(VARCHAR(10), lotes.FecCorteReal, 103) AS FecCorteReal "+
 						"from agrinsagdb.dbo.LOTE_VW lotes "+
 						"where lotes.FecCorteReal between GETDATE() and DATEADD(DAY, +15, GETDATE())";
 		Query query = sesion
@@ -349,6 +384,7 @@ public class ConsultasDao {
 				Lotes lote=new Lotes();
 				lote.setLoteid((Integer)row[0]);
 				lote.setNomlote((String)row[1]);
+				
 				lote.setFeccorte((String)row[2]);
 				proximoscorte.add(lote);
 		}
@@ -364,7 +400,7 @@ public class ConsultasDao {
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
 		String consulta="select cultivos.EtapaCultivo as Etapa,lotes.Agricultor as Agricultor,"+
-						"SUM(lotes.Area) as areasembrada from "+
+						"SUM(lotes.agrinsagdb_DBO_LoteV_Area) as areasembrada from "+
 						"agrinsagdb.dbo.LOTE_VW lotes,agrinsagdb.dbo.CULTIVOS_VW cultivos "+
 						"where "+
 						"lotes.LoteID=cultivos.LoteID "+
@@ -378,8 +414,33 @@ public class ConsultasDao {
 		Iterator iterator = lista.iterator();
 		while (iterator.hasNext()) {
 				Object[] row = (Object[]) iterator.next();
-				Totalhxaxe total=new Totalhxaxe();				
-				total.setEtapa((String)row[0]);
+				Totalhxaxe total=new Totalhxaxe();
+				int etapa=4;
+				try{
+					etapa=Integer.parseInt((String)row[0]);	
+				}catch(Exception e){}				
+				String etapastr="";
+				switch(etapa){
+					case -1:
+						etapastr="0(-30-0)";
+						break;
+					case 0:
+						etapastr="1(1-30)";
+						break;		
+					case 1:
+						etapastr="2(31-60)";
+						break;
+					case 2:
+						etapastr="3(61-90)";
+						break;
+					case 3:
+						etapastr="4(91+)";
+						break;
+					default:
+						etapastr="";
+						break;												
+				}
+				total.setEtapa(etapastr);
 				total.setAgricultor((String)row[1]);
 				total.setArea(((BigDecimal)row[2]).doubleValue());
 				hxaxelist.add(total);
@@ -387,4 +448,59 @@ public class ConsultasDao {
 		return hxaxelist;		
 	}
 	
+	/**
+	 * Total Hectareas por etapa
+	 * @return
+	 */
+	public List<Totalhxaxe> getTotalxEtapa(){
+		List<Totalhxaxe> totxetapalist=new ArrayList<Totalhxaxe>();
+		Session sesion = this.hibernateTemplate.getSessionFactory()
+				.getCurrentSession();
+		String consulta="select cultivos.EtapaCultivo as Etapa,"+
+						"SUM(lotes.agrinsagdb_DBO_LoteV_Area) as areasembrada from "+
+						"agrinsagdb.dbo.LOTE_VW lotes,agrinsagdb.dbo.CULTIVOS_VW cultivos "+
+						"where "+
+						"lotes.LoteID=cultivos.LoteID "+
+						"group by cultivos.EtapaCultivo";
+		Query query = sesion
+				.createSQLQuery(consulta)
+				.addScalar("Etapa", Hibernate.STRING)				
+				.addScalar("areasembrada", Hibernate.BIG_DECIMAL);
+		List<Object> lista=query.list();
+		Iterator iterator = lista.iterator();
+		while (iterator.hasNext()) {
+				Object[] row = (Object[]) iterator.next();
+				Totalhxaxe total=new Totalhxaxe();
+				int etapa=4;
+				try{
+					etapa=Integer.parseInt((String)row[0]);	
+				}catch(Exception e){}				
+				String etapastr="";
+				switch(etapa){
+					case -1:
+						etapastr="0(-30-0)";
+						break;
+					case 0:
+						etapastr="1(1-30)";
+						break;		
+					case 1:
+						etapastr="2(31-60)";
+						break;
+					case 2:
+						etapastr="3(61-90)";
+						break;
+					case 3:
+						etapastr="4(91+)";
+						break;
+					default:
+						etapastr="";
+						break;												
+				}
+				total.setEtapa(etapastr);
+				total.setAgricultor("");
+				total.setArea(((BigDecimal)row[1]).doubleValue());
+				totxetapalist.add(total);
+		}						
+		return totxetapalist;		
+	}	
 }

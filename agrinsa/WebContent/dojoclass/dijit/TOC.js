@@ -524,8 +524,10 @@ dojo.declare("dojoclass.dijit._TOCNode", [dijit._Widget, dijit._Templated], {
           }, this);
           this.layer._definitionExpression = '';
         }
-        this.rootLayer.setLayerDefinitions(this._getLayerDefs(), true);
-        this.rootLayer.setVisibleLayers(this._getVisibleLayers(), true);
+        try{
+            this.rootLayer.setLayerDefinitions(this._getLayerDefs(), true);
+            this.rootLayer.setVisibleLayers(this._getVisibleLayers(), true);        	
+        }catch(a){}
         this.rootLayerTOC._refreshLayer();
         
       } else if (this.rootLayer) {

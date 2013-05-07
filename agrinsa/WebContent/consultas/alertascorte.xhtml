@@ -5,7 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<link rel="stylesheet" type="text/css" href="../css/primecss/theme.css" />
+	<link rel="stylesheet" type="text/css" href="../css/primecss/themeadmon.css" />
 </h:head>
 
 <h:body>
@@ -18,7 +18,7 @@
 					<p:panel>
 						<p:dataTable id="tblalertas" var="cons" paginator="true" rows="10" 							
 							paginatorAlwaysVisible="false" paginatorPosition="bottom"
-							emptyMessage="No hay registros"
+							emptyMessage="No hay alertas de corte"
 							value="#{consultasBean.proximoscorte}">
 							<p:column>  
 								<f:facet name="header">
