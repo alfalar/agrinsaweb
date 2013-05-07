@@ -181,7 +181,7 @@ function createMap(webmapitem) {
 	};
 
 	// END:AGR
-	//initialExtent = new esri.geometry.Extent(-80,-4,-72,13, new esri.SpatialReference({ wkid:102100 }));
+	//
 	var mapDeferred = esri.arcgis.utils.createMap(webmap, "map", {
 		mapOptions : {
 			slider : configOptions.displaySlider,
@@ -189,7 +189,7 @@ function createMap(webmapitem) {
 			wrapAround180 : !configOptions.constrainmapextent,
 			showAttribution : true,
 			// set wraparound to false if the extent is limited.
-			logo : !configOptions.customlogo.image,
+			logo : !configOptions.customlogo.image,			
 			//extent:initialExtent
 		// hide esri logo if custom logo is provided
 		},
@@ -205,7 +205,7 @@ function createMap(webmapitem) {
 			}
 		}
 		initialExtent = response.map.extent;
-		
+		//initialExtent = new esri.geometry.Extent(-80,-4,-72,13, new esri.SpatialReference({ wkid:102100 }));
 		
 		if (configOptions.extent) {
 			var extent = new esri.geometry.Extent(dojo
@@ -790,7 +790,8 @@ function addBasemapGalleryMenu() {
           type: "BingMapsAerial"
         })],
         id: "bmAerial",
-        title: "Aerial"
+        title: "Bing Maps",
+        thumbnailUrl:"/agrinsa/images/bing.jpg"
    });
 	basemaps.push(basemapAerial);
 	var layerimgssgr = new esri.dijit.BasemapLayer({
@@ -802,7 +803,7 @@ function addBasemapGalleryMenu() {
 		title:"Imagenes Agrinsa",
 		id:"imgagr"
 	});
-	basemaps.push(imagesBasemap);
+	//basemaps.push(imagesBasemap);
 	// if a bing maps key is provided - display bing maps too.
 	var basemapGallery = new esri.dijit.BasemapGallery({
 		showArcGISBasemaps : true,
