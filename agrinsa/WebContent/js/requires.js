@@ -9,4 +9,5 @@ dojo.require("dojoclass.dijit.ToolBarWindow");
 dojo.require("dojoclass.dojo.ProveedorConstantes");
 dojo.require("dojoclass.dijit.TOC");
 dojo.require("dojoclass.dijit.Identify");
+dojo.require("dojoclass.dijit.Bookmarks");
 //END:SDP

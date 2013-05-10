@@ -46,6 +46,10 @@ xmlns:pe="http://primefaces.org/ui/extensions">
 -->
   <h:body class="claro">
   	<p:growl id="mensajes" showDetail="true"/>
+  	<p:idleMonitor>  
+    	<p:ajax event="idle" listener="#{monitorBean.idleListener}" update="mensajes" />  
+    	<p:ajax event="active" listener="#{monitorBean.activeListener}" update="mensajes" />  
+	</p:idleMonitor>  
   	<ui:include src="Remotes.xhtml" />
     <div id="bc" data-dojo-type="dijit.layout.BorderContainer" data-dojo-props="design:'headline', gutters:false"
     style="width:100%; height:100%;padding:0;">

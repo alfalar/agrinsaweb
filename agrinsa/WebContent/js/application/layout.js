@@ -68,7 +68,7 @@ function initMap(options) {
 	configOptions.embed = (configOptions.embed === "true" || configOptions.embed === true) ? true
 			: false;
 	configOptions.leftpanelvisible = (configOptions.leftpanelvisible === "true" || configOptions.leftpanelvisible === true) ? true
-			: false;
+			: false;		
 }
 
 function createApp() {
@@ -204,9 +204,7 @@ function createMap(webmapitem) {
 				configOptions.description = response.itemInfo.item.description;
 			}
 		}
-		initialExtent = response.map.extent;
-		//initialExtent = new esri.geometry.Extent(-80,-4,-72,13, new esri.SpatialReference({ wkid:102100 }));
-		
+		initialExtent = response.map.extent;				
 		if (configOptions.extent) {
 			var extent = new esri.geometry.Extent(dojo
 					.fromJson(configOptions.extent));
@@ -249,7 +247,7 @@ function createMap(webmapitem) {
 				initUI(response);
 			});
 		}
-		map.setExtent(initialExtent);
+		//map.setExtent(initialExtent);
 	});
 
 	mapDeferred
@@ -358,7 +356,7 @@ function initUI(response) {
 		esri.show(dojo.byId('bottomPane'));
 		createElevationProfileTools();
 	}
-	console.log("------->"+configOptions.displaybookmarks);
+	//console.log("------->"+configOptions.displaybookmarks);
 	if (configOptions.displaybookmarks === true) {
 		addBookmarks(response);
 	}
@@ -565,6 +563,8 @@ function initUI(response) {
 	}
 	
 	dojo.byId('webmap-toolbar-left').innerHTML = configOptions.title;
+	var extent = new esri.geometry.Extent(-80,-4.5,-65,14, new esri.SpatialReference({ wkid:4326 }));
+	map.setExtent(extent);
 	// END:AGR
 
 	// resize the border container
@@ -794,16 +794,6 @@ function addBasemapGalleryMenu() {
         thumbnailUrl:"/agrinsa/images/bing.jpg"
    });
 	basemaps.push(basemapAerial);
-	var layerimgssgr = new esri.dijit.BasemapLayer({
-		url:"http://agespserv03e:6080/arcgis/rest/services/Imagenes/MapServer"
-	});
-
-	var imagesBasemap = new esri.dijit.Basemap({
-		layers:[layerimgssgr],
-		title:"Imagenes Agrinsa",
-		id:"imgagr"
-	});
-	//basemaps.push(imagesBasemap);
 	// if a bing maps key is provided - display bing maps too.
 	var basemapGallery = new esri.dijit.BasemapGallery({
 		showArcGISBasemaps : true,
@@ -819,7 +809,7 @@ function addBasemapGalleryMenu() {
 		dojo.forEach(basemapGallery.basemaps, function(basemap) {
 			// Add a menu item for each basemap, when the menu items are
 			// selected
-			console.log("------------>"+basemap.id);
+			//console.log("------------>"+basemap.id);
 			//console.log("------------>"+basemap.url);
 			if(urlt==""){
 				urlt=basemap.thumbnailUrl;
@@ -829,7 +819,7 @@ function addBasemapGalleryMenu() {
 				iconClass : "menuIcon",
 				iconSrc : basemap.thumbnailUrl,
 				onClick : function() {
-					console.log("---++++------>"+basemap.id);
+					//console.log("---++++------>"+basemap.id);
 					basemapGallery.select(basemap.id);
 				}
 			}));
@@ -901,10 +891,11 @@ function addBasemapGallery() {
 // add any bookmarks to the application
 function addBookmarks(info) {
 	// does the web map have any bookmarks
-	console.log("boormarks");
-	if (info.itemInfo.itemData.bookmarks) {
-		var bookmarks = new esri.dijit.Bookmarks({
+	//console.log("boormarks");
+	//if (info.itemInfo.itemData.bookmarks) {
+		bookmarks = new dojoclass.dijit.Bookmarks({
 			map : map,
+			editable: true,
 			bookmarks : info.itemInfo.itemData.bookmarks
 		}, dojo.create("div"));
 
@@ -926,7 +917,7 @@ function addBookmarks(info) {
 		});
 
 		dojo.byId('webmap-toolbar-center').appendChild(button.domNode);
-	}
+	//}
 
 }
 // Create a menu with a list of operational layers. Each menu item contains a

@@ -34,3 +34,4 @@ var menu_consultas=undefined;
 var tidentify;
 var tabladecontenido;
 var serviciosgeograficos=new Array();
+var bookmarks;

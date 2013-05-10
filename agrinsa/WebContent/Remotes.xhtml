@@ -25,6 +25,19 @@
 				<pe:methodParam name="tipo" />
 			</pe:remoteCommand>
 
+			<pe:remoteCommand name="addMarcador"
+				actionListener="#{marcadoresBean.addMarcador}"
+				update=":mensajes">
+				<pe:methodSignature parameters="java.lang.String" />
+				<pe:methodParam name="marcador" />
+			</pe:remoteCommand>
+			
+			<pe:remoteCommand name="getMarcadores"
+				actionListener="#{marcadoresBean.getMarcadores}"
+				oncomplete="bookmarks.hcgetMarcadores(xhr, status, args)"
+				update=":mensajes">
+			</pe:remoteCommand>
+
 		</h:form>
 	</f:view>
 	<script type="text/javascript">

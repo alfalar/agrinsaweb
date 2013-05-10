@@ -15,8 +15,8 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 		<property name="jdbcUrl" value="jdbc:sqlserver://localhost:1433;databaseName=agrinsagdb" />
-		<property name="user" value="agrinsa" />
-		<property name="password" value="agrinsa2013" />
+		<property name="user" value="sa" />
+		<property name="password" value="sa2013" />
 		<property name="minPoolSize" value="5" />
 		<property name="maxPoolSize" value="20" />
 		<property name="acquireIncrement" value="1" />
@@ -47,6 +47,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 				<value>co.geographs.agrinsa.dao.business.MiembrosRol</value>
 				<value>co.geographs.agrinsa.dao.business.Permisos</value>
 				<value>co.geographs.agrinsa.dao.business.PermisosRol</value>
+				<value>co.geographs.agrinsa.dao.business.Marcadores</value>
 			</list>
 		</property>
 	</bean>
@@ -67,6 +68,10 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	
 	
 	<bean id="consultasDao" class="co.geographs.agrinsa.dao.ConsultasDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="marcadoresDao" class="co.geographs.agrinsa.dao.MarcadoresDao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

@@ -23,6 +23,7 @@
 		<param-name>primefaces.THEME</param-name>
 		<param-value>casablanca</param-value>
 	</context-param>
+		
 	<filter>
 		<filter-name>filterChainProxy</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -92,7 +93,7 @@
 		<location>/error.xhtml</location>
 	</error-page>
 	<session-config>
-		<session-timeout>120</session-timeout>
+		<session-timeout>30</session-timeout>
 	</session-config>
 	<context-param>
 		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
