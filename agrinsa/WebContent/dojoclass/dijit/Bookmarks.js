@@ -284,13 +284,13 @@ define("dojoclass/dijit/Bookmarks", ["dijit", "dojo", "dojox", "dojo/require!esr
         _salvar: function () {  
         	var data=new Array();
             _2.forEach(this.bookmarks, function (bookmark, idx) {
-            	var esta=false;
+            	/*var esta=false;
                 _2.forEach(this.initBookmarks, function (bookmarkinicial, idx) {             
                 	if(bookmark.name==bookmarkinicial.name){
                 		esta=true;                		
                 	}                    
                 }, this);
-                if(esta==false){
+                if(esta==false){*/
 	               	 //LLEVARLOS A LA DB   
                    var objeto=new Object();
                    var bookmarkagr=bookmark.extent.xmin+";"+bookmark.extent.ymin+";"+bookmark.extent.xmax+";"+bookmark.extent.ymax+";"+bookmark.name;
@@ -298,7 +298,7 @@ define("dojoclass/dijit/Bookmarks", ["dijit", "dojo", "dojox", "dojo/require!esr
                    objeto.marcador=bookmarkagr;
                    data.push(objeto);
 	               this.initBookmarks.push(bookmark);
-               }                
+               //}                
             }, this);
             var datajson = dojo.toJson(data);	
             addMarcador(datajson);

@@ -41,7 +41,7 @@ public class MarcadoresDao {
 		}
 	}
 	
-	public String deleteMarcador(Marcadores marcador) {
+	public String deleteMarcador() {
 		try {		
 			Connection conection = ((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()

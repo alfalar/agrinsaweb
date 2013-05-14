@@ -27,6 +27,7 @@ public class MarcadoresBean {
 	public void addMarcador(String marcador) {		
 		List<Marcadores> data = new Gson().fromJson(marcador, new TypeToken<List<Marcadores>>(){}.getType());		
 		MarcadoresDao marcadoresdao=(MarcadoresDao)SpringUtils.getBean("marcadoresDao");
+		marcadoresdao.deleteMarcador();
 		for(Marcadores s: data){		
 			System.out.println("MARCADOR ID="+s.getMarcadorId());
 			String mensaje=marcadoresdao.addMarcador(s);
