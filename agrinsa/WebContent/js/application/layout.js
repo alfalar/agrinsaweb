@@ -351,15 +351,16 @@ function initUI(response) {
 	} else {
 		esri.hide(dojo.byId('floater'));
 	}
+	
+	if (configOptions.displaybookmarks === true) {
+		addBookmarks();
+	} 	
 	if (configOptions.displayelevation && configOptions.displaymeasure) {
 
 		esri.show(dojo.byId('bottomPane'));
 		createElevationProfileTools();
 	}
 	//console.log("------->"+configOptions.displaybookmarks);
-	if (configOptions.displaybookmarks === true) {
-		addBookmarks(response);
-	}
 	if (configOptions.displayoverviewmap === true) {
 		// add the overview map - with initial visibility set to false.
 		addOverview(false);
@@ -499,8 +500,7 @@ function initUI(response) {
 		createSocialLinks();
 	}
 
-	// BEGIN:AGR
-
+	// BEGIN:AGR	
 	if (configOptions.displayInformationWindow === true) {
 		addToolbarWindow(true);
 	}
@@ -574,7 +574,7 @@ function initUI(response) {
 					// changed
 	dojo.connect(map, "onUpdateStart", showLoading);
 	dojo.connect(map, "onUpdateEnd", hideLoading);
-	showEscalaNumerica();
+	showEscalaNumerica();	
 }
 
 function displayLeftPanel() {
@@ -889,14 +889,12 @@ function addBasemapGallery() {
 }
 
 // add any bookmarks to the application
-function addBookmarks(info) {
-	// does the web map have any bookmarks
-	//console.log("boormarks");
-	//if (info.itemInfo.itemData.bookmarks) {
+function addBookmarks() {
+	  
 		bookmarks = new dojoclass.dijit.Bookmarks({
 			map : map,
 			editable: true,
-			bookmarks : info.itemInfo.itemData.bookmarks
+			bookmarks : marcadoresiniciales
 		}, dojo.create("div"));
 
 		dojo.connect(bookmarks, "onClick", function() {
@@ -917,7 +915,12 @@ function addBookmarks(info) {
 		});
 
 		dojo.byId('webmap-toolbar-center').appendChild(button.domNode);
-	//}
+		console.log(map.spatialReference.isWebMercator());
+		s = "XMin: "+ map.extent.xmin
+	      +" YMin: " + map.extent.ymin
+	      +" XMax: " + map.extent.xmax
+	      +" YMax: " + map.extent.ymax;
+		console.log(s);
 
 }
 // Create a menu with a list of operational layers. Each menu item contains a
@@ -2125,4 +2128,26 @@ function showAlertas() {
 
 function showEscalaNumerica() {
 	dojo.byId("infoscale").innerHTML = "Escala 1:" + Math.round(map.getScale() * 100) / 100;
+}
+
+function hcgetMarcadores(xhr, status, args){        	
+	console.log(args.listamarcadores);
+	var listado=dojo.fromJson(args.listamarcadores);
+	//console.log(listado.length+ " MARCADORES");
+	marcadoresiniciales=new Array();        	
+	for(var i=0;i<listado.length;i++){		
+		var bookmark=listado[i].marcador;
+		var id=listado[i].marcadorId;
+		console.log("MARCADOR_ID=:"+id);
+		var valores=bookmark.split(";");
+		var extent = new esri.geometry.Extent(valores[0],valores[1],valores[2],valores[3], new esri.SpatialReference({ wkid:102100 }));
+		var name=valores[4];
+		var bitem = new dojoclass.dijit.BookmarkItem({
+            name: name,
+            extent: extent,
+            id: id
+        });
+		marcadoresiniciales.push(bitem);        		
+	}
+	createApp();     	
 }

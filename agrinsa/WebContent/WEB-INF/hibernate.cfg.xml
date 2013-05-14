@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
- <session-factory name="">
-  <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-  <property name="hibernate.connection.password">agrinsa2013</property>
-  <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=agrinsagdb</property>
-  <property name="hibernate.connection.username">agrinsa</property>
-  <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
-  <mapping class="co.geographs.agrinsa.dao.business.Usuarios"/>
-  <mapping class="co.geographs.agrinsa.dao.business.Roles"/>
-  <mapping class="co.geographs.agrinsa.dao.business.Permisos"/>
-  <mapping class="co.geographs.agrinsa.dao.business.PermisosRol"/>
-  <mapping class="co.geographs.agrinsa.dao.business.MiembrosRol"/>
- </session-factory>
+    <session-factory name="agrinsa">
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.password">sa2013</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=agrinsagdb</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+    </session-factory>
 </hibernate-configuration>

@@ -2,10 +2,11 @@ define("dojoclass/dijit/Bookmarks", ["dijit", "dojo", "dojox", "dojo/require!esr
     _2.provide("dojoclass.dijit.Bookmarks");
     _2.require("esri.map");
     _2.require("esri.geometry");
-    _2.declare("esri.dijit.BookmarkItem", null, {
+    _2.declare("dojoclass.dijit.BookmarkItem", null, {
         constructor: function (_4) {
             this.name = _4.name;
             this.extent = _4.extent;
+            this.id= _4.id;
         },
         toJson: function () {
             var _5 = {};
@@ -18,6 +19,7 @@ define("dojoclass/dijit/Bookmarks", ["dijit", "dojo", "dojox", "dojo/require!esr
                 ymin: _6.ymin
             };
             _5.name = this.name;
+            _5.id=this.id;
             return _5;
         }
     });
@@ -34,20 +36,20 @@ define("dojoclass/dijit/Bookmarks", ["dijit", "dojo", "dojox", "dojo/require!esr
             _2.addClass(this.bookmarkTable, "esriBookmarkTable");
             this.bookmarkDomNode.appendChild(this.bookmarkTable);
             _8 = _2.byId(_8);
-            _8.appendChild(this.bookmarkDomNode);            
-            getMarcadores();            
+            _8.appendChild(this.bookmarkDomNode);    
+        	this._addInitialBookmarks();
         },
         onClick: function () {},
         onEdit: function () {},
         onRemove: function () {},
         addBookmark: function (_9) {
             var _a;
-            if (_9.declaredClass == "esri.dijit.BookmarkItem") {
+            if (_9.declaredClass == "dojoclass.dijit.BookmarkItem") {
                 _a = _9;
                 this.bookmarks.push(_a);
             } else {
                 var _b = new esri.geometry.Extent(_9.extent);
-                _a = new esri.dijit.BookmarkItem({
+                _a = new dojoclass.dijit.BookmarkItem({
                     name: _9.name,
                     extent: _b
                 });
@@ -165,11 +167,11 @@ define("dojoclass/dijit/Bookmarks", ["dijit", "dojo", "dojox", "dojo/require!esr
                 var _29 = _28.insertCell(0);
                 _29.appendChild(_26);
                 var salvar = _2.create("div", {
-                    innerHTML: "<div>Salvar</div>"
-                    //innerHTML: "<div><a href=\"#\" onclick=\"this._salvar();\">Salvar Bookmarks</a></div>"
+                    //innerHTML: "<div>Salvar</div>"
+                    innerHTML: "<div><a href=\"#\">Salvar Bookmarks</a></div>"
                 });
-                _2.addClass(salvar, "esriBookmarkItem");
-                _2.addClass(salvar, "esriAddBookmark");
+                //_2.addClass(salvar, "esriBookmarkItem");
+                //_2.addClass(salvar, "esriAddBookmark");
                 this._clickHandlers.push(_2.connect(salvar, "onclick", this, this._salvar));
                 //this._mouseOverHandlers.push(_2.connect(salvar, "onmouseover", function () {
                 //    _2.addClass(this, "esriBookmarkHighlight");
@@ -263,7 +265,7 @@ define("dojoclass/dijit/Bookmarks", ["dijit", "dojo", "dojox", "dojo/require!esr
             } else {
                 _37 = _36;
             }
-            var _3f = new esri.dijit.BookmarkItem({
+            var _3f = new dojoclass.dijit.BookmarkItem({
                 "name": _35,
                 "extent": _37
             });
@@ -279,7 +281,8 @@ define("dojoclass/dijit/Bookmarks", ["dijit", "dojo", "dojox", "dojo/require!esr
             this._editBookmarkLabel(e);
            
         },
-        _salvar: function () {           	
+        _salvar: function () {  
+        	var data=new Array();
             _2.forEach(this.bookmarks, function (bookmark, idx) {
             	var esta=false;
                 _2.forEach(this.initBookmarks, function (bookmarkinicial, idx) {             
@@ -288,38 +291,33 @@ define("dojoclass/dijit/Bookmarks", ["dijit", "dojo", "dojox", "dojo/require!esr
                 	}                    
                 }, this);
                 if(esta==false){
-	               	 //LLEVARLOS A LA DB                	
-	                var bookmarkagr = "{"+
-	                     "extent: {"+
-	                         "spatialReference: {"+
-	                            "wkid:4326"+
-	                          "},"+
-	                         "xmin:"+bookmark.extent.xmin+","+
-	                         "ymin:"+bookmark.extent.ymin+","+
-	                         "xmax:"+bookmark.extent.xmax+","+
-	                         "ymax:"+bookmark.extent.xmax+
-	                         "},"+
-	                      "name:"+ bookmark.name+
-	                "}" ;
-	               addMarcador(bookmarkagr);
+	               	 //LLEVARLOS A LA DB   
+                   var objeto=new Object();
+                   var bookmarkagr=bookmark.extent.xmin+";"+bookmark.extent.ymin+";"+bookmark.extent.xmax+";"+bookmark.extent.ymax+";"+bookmark.name;
+                   objeto.marcador_id=bookmark.id;
+                   objeto.marcador=bookmarkagr;
+                   data.push(objeto);
 	               this.initBookmarks.push(bookmark);
                }                
             }, this);
+            var datajson = dojo.toJson(data);	
+            addMarcador(datajson);
         },
-        hcgetMarcadores: function(xhr, status, args){
-        	console.log(args.listamarcadores);
-        	var listado=dojo.fromJson(args.listamarcadores);
-        	for ( var j = 0; j < listado.length; j++) {
-        		var bookmark=listado[j].marcador;
-        		this.initBookmarks.push(bookmark);
-        	}
-        	this._addInitialBookmarks();
-        },
+        
         _onClickHandler: function (_42) {
             var _43 = _42.extent;
             if (!_42.extent.declaredClass) {
                 _43 = new esri.geometry.Extent(_42.extent);
-            }
+            }            
+            _43 = esri.geometry.webMercatorToGeographic(_43);
+            /*
+            s = "XMin: "+ _43.xmin
+	  	      +" YMin: " + _43.ymin
+	  	      +" XMax: " + _43.xmax
+	  	      +" YMax: " + _43.ymax;
+	  		console.log(s);
+	  		console.log(_43.spatialReference.wkid);
+	  		*/
             this.map.setExtent(_43);
             this.onClick();
         }

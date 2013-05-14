@@ -34,7 +34,7 @@
 			
 			<pe:remoteCommand name="getMarcadores"
 				actionListener="#{marcadoresBean.getMarcadores}"
-				oncomplete="bookmarks.hcgetMarcadores(xhr, status, args)"
+				oncomplete="hcgetMarcadores(xhr, status, args)"
 				update=":mensajes">
 			</pe:remoteCommand>
 
@@ -47,6 +47,7 @@
 			//console.log(obj);
 			proveedorConstantes.setValores(obj);
 		}
+		
 	</script>
 </h:body>
 

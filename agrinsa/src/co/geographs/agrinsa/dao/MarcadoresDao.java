@@ -1,8 +1,11 @@
 package co.geographs.agrinsa.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.SessionFactoryImplementor;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -39,14 +42,15 @@ public class MarcadoresDao {
 	}
 	
 	public String deleteMarcador(Marcadores marcador) {
-		try {						
-			this.hibernateTemplate.delete(marcador);
-			this.hibernateTemplate.flush();
-			Connection con=((SessionFactoryImplementor) this.hibernateTemplate
+		try {		
+			Connection conection = ((SessionFactoryImplementor) this.hibernateTemplate
 					.getSessionFactory()).getConnectionProvider()
 					.getConnection();
-			con.commit();
-			con.close();
+			conection.setAutoCommit(false);
+			PreparedStatement query = conection.prepareStatement("delete from Marcadores");
+			query.executeUpdate();			
+			conection.commit();
+			conection.close();
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -34,7 +34,8 @@ dojo.declare("dojoclass.dojo.ProveedorConstantes", null, {
 									}
 								}
 								
-							    createApp();
+							   
+								getMarcadores();
 							});
 		} catch (err) {
 			alert("Error Recuperando lista de constantes generales:"

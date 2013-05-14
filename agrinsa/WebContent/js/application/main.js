@@ -126,7 +126,7 @@ dojo.ready(function(){
         app.init().then(function(options){
     		//CREACION DEL PROVEEDOR DE CONSTANTES
         	proveedorConstantes=new dojoclass.dojo.ProveedorConstantes();
-        	proveedorConstantes.getConstantesGenerales();   
+        	proveedorConstantes.getConstantesGenerales();          	
         	initMap(options);
         });
       });
