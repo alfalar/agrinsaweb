@@ -68,25 +68,39 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 		  esri.show(loading);
 		  var lysidentificados=false;		  
 		  for ( var j = 0; j <  map.layerIds.length; j++) {
-			  var layer = map.getLayer(map.layerIds[j]);
-				  lysidentificados=true;
-				  if(layer.url!=null){
+			  var layer = map.getLayer(map.layerIds[j]);				  
+				  //console.log("El layer es del tipo " + layer.tileInfo);
+				  if(layer.url!=null && typeof layer.tileInfo==="undefined"){
+					  console.log("Entra a identicar "+layer.url);
+					  lysidentificados=true;
+					  var geom = esri.geometry.webMercatorToGeographic(evt.mapPoint);
+					  ///console.log("x:"+geom.x);
+					  //console.log("y:"+geom.y);
+					  var geomextent = esri.geometry.webMercatorToGeographic(map.extent);
+					  //console.log("xmin:"+geomextent.xmin);
+					  //console.log("ymin:"+geomextent.ymin);
+					  //console.log("xmax:"+geomextent.xmax);
+					  //console.log("ymax:"+geomextent.ymax);
+					  
 				      identifyTask = new esri.tasks.IdentifyTask(layer.url);
 				      identifyParams = new esri.tasks.IdentifyParameters();
 				      identifyParams.tolerance = 3;
 				      identifyParams.returnGeometry = true;
-				      identifyParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_VISIBLE;
+				      identifyParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_ALL;
+				      //identifyParams.layerIds = [0];
 				      identifyParams.width  = map.width;
 				      identifyParams.height = map.height;	       
-				      identifyParams.geometry = evt.mapPoint;
-				      identifyParams.mapExtent = map.extent;
+				      identifyParams.geometry = geom;
+				      identifyParams.mapExtent = geomextent;
+				      //var spatialReference = new esri.SpatialReference({wkid:4326});
+				      //identifyParams.spatialReference=spatialReference;
 				      identifyTask.execute(identifyParams, function(idResults) {			    	  
 				    	  numeroresultados++;
 				    	  for ( var i = 0; i < idResults.length; i++) {	    		  
 				    		  resultados.push(idResults[i]);	
 				    	  }
-				    	  //console.log("idResults.length:"+idResults.length); 
-				    	  if(numeroresultados>= map.layerIds.length){
+				    	  console.log("idResults.length:"+idResults.length); 
+				    	  //if(numeroresultados>= map.layerIds.length){
 				    		  console.log("LLEGAN "+resultados.length+ " RESULTADOS");
 				    		  var divcontiene=dojo.create("div");
 				    		  var divcmb=dojo.create("div",{innerHTML: "Seleccione una capa:"});
@@ -155,7 +169,7 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 				    		  map.infoWindow.setContent(divcontiene);    		 
 				    		  map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
 				    		  esri.hide(loading);
-				    	  }
+				    	  //}
 				      });		  	  		  				  					  
 				  }
 			  			  

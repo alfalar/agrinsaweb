@@ -10,5 +10,10 @@
 			<ui:define name="body">
 				<h:outputLabel value="ACCESO DENEGADO" />
 			</ui:define>
+			<ui:define name="sale">				
+				<h:outputLink id="Volver" value="/agrinsa/j_spring_security_logout">
+					<h:outputText value="Volver al Inicio" />
+				</h:outputLink>
+			</ui:define>
 	</ui:composition>
 </html>

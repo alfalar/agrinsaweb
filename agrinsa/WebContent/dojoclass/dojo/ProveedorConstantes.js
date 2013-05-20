@@ -25,6 +25,10 @@ dojo.declare("dojoclass.dojo.ProveedorConstantes", null, {
 										menu_admon=valor;
 									}else if(llave=="MENU_CONSULTAS"){
 										menu_consultas=valor;	
+									}else if(llave=="SERVICIO_GEOMETRIA"){
+										serviciogeometria=valor;	
+									}else if(llave=="SERVICIO_IMPRESION"){
+										servicioimpresion=valor;											
 									}else if(tipo=="SERVICIO_GEOGRAFICO"){										
 										var objeto=new Object();
 										objeto.tipo=llave;

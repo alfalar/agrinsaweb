@@ -172,7 +172,7 @@ function createMap(webmapitem) {
 			"baseMapLayers" : [ {
 				"opacity" : 1,
 				"visibility" : true,
-				"id" : "mapa_base",
+				"id" : "BingMaps",
 				"type" : "BingMapsAerial"
 			} ],
 			"title" : "Mapa base"
@@ -540,23 +540,32 @@ function initUI(response) {
 		if (objeto.tipo == "TILED") {
 			console.log("ES TILED");
 			var tilayer = new esri.layers.ArcGISTiledMapServiceLayer(objeto.servicio);
-		    dojo.connect(tilayer, "onError", function(evt) {
+		    var enerrort=dojo.connect(tilayer, "onError", function(evt) {
+		    	console.log(evt.message);		    	
 		    	setMensaje("No se pudo cargar la capa geografica " +objeto.descripcion+".Por favor revise que el servicio este disponible ","ERROR");									    										    	
 		    });
-			tilayer.visible = false;									
+		    var enokt=dojo.connect(tilayer, "onLoad", function(evt) {
+		    	dojo.disconnect(enerrort);		    										    										    
+		    });
+			tilayer.visible = true;									
 			tilayer.id = objeto.descripcion;
-			tilayer.opacity = 0.6;
+			tilayer.opacity = 1;
 			map.addLayer(tilayer);
 			console.log("TILED CARGADO");
 		} else if (objeto.tipo == "DYNAMIC") {
 			console.log("ES DYNAMIC");
 			var dynlayer = new esri.layers.ArcGISDynamicMapServiceLayer(objeto.servicio);
-		    dojo.connect(dynlayer, "onError", function(evt) {
+		    var enerror=dojo.connect(dynlayer, "onError", function(evt) {
+		    	console.log(evt.message);
 		    	setMensaje("No se pudo cargar la capa geografica " +objeto.descripcion+".Por favor revise que el servicio este disponible","ERROR");									    										    	
 		    });
-		    dynlayer.visible = false;
+		    var enok=dojo.connect(dynlayer, "onLoad", function(evt) {
+		    	dojo.disconnect(enerror);		    										    										    
+		    });
+
+		    dynlayer.visible = true;
 			dynlayer.id = objeto.descripcion;
-			dynlayer.opacity = 0.6;
+			dynlayer.opacity = 1;
 			map.addLayer(dynlayer);
 			console.log("DYNAMIC CARGADO");
 		}
@@ -1028,7 +1037,7 @@ function addPrint() {
 	var printer = new esri.dijit.Print({
 		map : map,
 		templates : templates,
-		url : configOptions.printtask
+		url : servicioimpresion
 	}, dojo.create('span'));
 
 	dojo.query('.esriPrint').addClass('esriPrint');
