@@ -20,6 +20,7 @@ import co.geographs.agrinsa.dao.business.Areaxciudad;
 import co.geographs.agrinsa.dao.business.Areaxvereda;
 import co.geographs.agrinsa.dao.business.Estadolotes;
 import co.geographs.agrinsa.dao.business.Lotes;
+import co.geographs.agrinsa.dao.business.Resumen;
 import co.geographs.agrinsa.dao.business.Sembradoporcultivo;
 import co.geographs.agrinsa.dao.business.Sembradoporvariedad;
 import co.geographs.agrinsa.dao.business.Totalhxaxe;
@@ -31,6 +32,7 @@ import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
 
 @ManagedBean(name = "consultasBean")
 @SessionScoped
@@ -66,6 +68,10 @@ public class ConsultasBean implements Serializable {
 	//TOTAL HECTAREAS X ETAPA
 	private boolean hecxetapaenabled=false;
 	private List<Totalhxaxe> hecxetapa;
+	//RESUMEN
+	private boolean resumenenabled=false;
+	private List<Resumen> listaresumen;
+
 	
 	
 	
@@ -94,6 +100,7 @@ public class ConsultasBean implements Serializable {
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
 			hecxetapaenabled=false;
+			resumenenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("totalxcultivo")){
 			areaxcultivo=consultasDao.getSembradoporcultivo();
 			areaxciudadenabled=false;
@@ -105,6 +112,7 @@ public class ConsultasBean implements Serializable {
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
 			hecxetapaenabled=false;
+			resumenenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("totalxvariedad")){
 			areaxvariedad=consultasDao.getSembradoporvariedad();
 			areaxciudadenabled=false;
@@ -116,6 +124,7 @@ public class ConsultasBean implements Serializable {
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
 			hecxetapaenabled=false;
+			resumenenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("TOTALACTINACT")){
 			estado=consultasDao.getEstadolotes();
 			areaxciudadenabled=false;
@@ -127,6 +136,7 @@ public class ConsultasBean implements Serializable {
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
 			hecxetapaenabled=false;
+			resumenenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("TOTALXAREAXVEND")){
 			lotxvenxarea=consultasDao.getTotalLotesxAreaxVendedor();
 			areaxciudadenabled=false;
@@ -138,6 +148,7 @@ public class ConsultasBean implements Serializable {
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
 			hecxetapaenabled=false;
+			resumenenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("TOTALXENTIDAD")){
 			lotxentxarea=consultasDao.getTotalLotesEntidad();
 			areaxciudadenabled=false;
@@ -149,6 +160,7 @@ public class ConsultasBean implements Serializable {
 			lotxentxareaenabled=true;	
 			hxaxeenabled=false;
 			hecxetapaenabled=false;
+			resumenenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("THXAXE")){
 			hxaxe=consultasDao.getHxaxe();
 			areaxciudadenabled=false;
@@ -160,6 +172,7 @@ public class ConsultasBean implements Serializable {
 			lotxentxareaenabled=false;	
 			hxaxeenabled=true;	
 			hecxetapaenabled=false;
+			resumenenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("TOTALRANGOFECHA")){
 			hecxetapa=consultasDao.getTotalxEtapa();
 			areaxciudadenabled=false;
@@ -171,7 +184,19 @@ public class ConsultasBean implements Serializable {
 			lotxentxareaenabled=false;	
 			hxaxeenabled=false;	
 			hecxetapaenabled=true;
-			
+			resumenenabled=false;
+		}else if(selectedTiposconsulta.equalsIgnoreCase("RESUMEN")){
+			listaresumen=consultasDao.getResumen();
+			areaxciudadenabled=false;
+			areaxcultivoenabled=false;
+			areaxveredaenabled=false;
+			areaxvariedadenabled=false;	
+			estadoenabled=false;	
+			lotxvenxareaenabled=false;	
+			lotxentxareaenabled=false;	
+			hxaxeenabled=false;	
+			hecxetapaenabled=false;
+			resumenenabled=true;
 		}else{
 			areaxvariedadenabled=false;
 			areaxciudadenabled=false;
@@ -182,6 +207,7 @@ public class ConsultasBean implements Serializable {
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
 			hecxetapaenabled=false;
+			resumenenabled=false;
 		}
 		
 	}
@@ -318,6 +344,15 @@ public class ConsultasBean implements Serializable {
 		return hecxetapa;
 	}
 
+
+	public boolean isResumenenabled() {
+		return resumenenabled;
+	}
+
+	public List<Resumen> getListaresumen() {
+		return listaresumen;
+	}
+
 	public List<Lotes> getProximoscorte() {
 		ConsultasDao consultasDao = (ConsultasDao) SpringUtils
 				.getBean("consultasDao");
@@ -329,13 +364,19 @@ public class ConsultasBean implements Serializable {
 		this.proximoscorte = proximoscorte;
 	}
 
-	public void preProcessPDF(Object document) throws IOException, BadElementException, DocumentException {  
+	public void ResumenPDF(Object document) throws IOException, BadElementException, DocumentException {  
 	    Document pdf = (Document) document; 	    
-	    pdf.open();  	    
-	  
+	    pdf.open();	    	    	    
 	    ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();  
-	    String logo = servletContext.getRealPath("") + File.separator + "images" + File.separator + "logo_agrinsa_peq.jpg";  
-	  
+	    String logo = servletContext.getRealPath("") + File.separator + "images" + File.separator + "logo_agrinsa_peq.jpg";  	  
+	    pdf.add(Image.getInstance(logo)); 
+	}  	
+
+	public void GenericPDF(Object document) throws IOException, BadElementException, DocumentException {  
+	    Document pdf = (Document) document; 	    
+	    pdf.open();	    
+	    ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();  
+	    String logo = servletContext.getRealPath("") + File.separator + "images" + File.separator + "logo_agrinsa_peq.jpg";  	  
 	    pdf.add(Image.getInstance(logo)); 
 	}  	
 	

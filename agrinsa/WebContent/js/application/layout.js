@@ -1919,10 +1919,10 @@ function addVentanaConsultas() {
 	var fp = new dojox.layout.FloatingPane(
 			{
 				title : "Informes",
-				resizable : false,
+				resizable : true,
 				dockable : false,
 				closable : false,
-				style : "position:absolute;top:100px;left:400px;width:400px;height:400px;z-index:100;visibility:hidden;",
+				style : "position:absolute;top:100px;left:400px;width:800px;height:400px;z-index:100;visibility:hidden;",
 				id : 'vntconsultas',
 				region : 'none'
 			}, dojo.byId('VentanaConsultas'));

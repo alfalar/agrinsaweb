@@ -3,9 +3,10 @@
 <html xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 <h:head>
-	<link rel="stylesheet" type="text/css" href="../css/primecss/theme.css" />
+	<link rel="stylesheet" type="text/css" href="../css/primecss/themeconsultas.css" />
 </h:head>
 
 <h:body>
@@ -46,8 +47,13 @@
 						</h:commandLink>  
 					  
 						<h:commandLink rendered="#{consultasBean.areaxciudadenabled}">  
-					    	<p:graphicImage value="/images/pdf.png" />  
-					    	<p:dataExporter type="pdf" target="tblareaxciudad" fileName="areaxciudad" preProcessor="#{consultasBean.preProcessPDF}"/>  
+					    	<p:graphicImage value="/images/pdf.png" />    
+					    	<pe:exporter type="pdf" target="tblareaxciudad" fileName="areaxciudad" 
+					    		tableTitle="Total Hectareas sembradas por Ciudad"  
+                     			facetBackground="#527C9D" facetFontSize="10" facetFontColor="#FFFFFF" facetFontStyle="BOLD"  
+                     			cellFontColor="#000000" cellFontSize="6" cellFontStyle="NORMAL"
+					    		preProcessor="#{consultasBean.GenericPDF}"/>  
+
 						</h:commandLink>  
 					</p:panel>
 					<p:panel rendered="#{consultasBean.areaxveredaenabled}">
@@ -83,7 +89,11 @@
 					  
 						<h:commandLink rendered="#{consultasBean.areaxveredaenabled}">  
 					    	<p:graphicImage value="/images/pdf.png" />  
-					    	<p:dataExporter type="pdf" target="tblareaxvereda" fileName="areaxvereda"/>  
+					    	<pe:exporter type="pdf" target="tblareaxvereda" fileName="areaxvereda" 
+					    		tableTitle="Total Hectareas sembradas por Vereda"  
+                     			facetBackground="#527C9D" facetFontSize="10" facetFontColor="#FFFFFF" facetFontStyle="BOLD"  
+                     			cellFontColor="#000000" cellFontSize="6" cellFontStyle="NORMAL"
+					    		preProcessor="#{consultasBean.GenericPDF}"/>  					    	  
 						</h:commandLink>  
 					</p:panel>
 					<p:panel rendered="#{consultasBean.areaxcultivoenabled}">
@@ -112,7 +122,11 @@
 					  
 						<h:commandLink rendered="#{consultasBean.areaxcultivoenabled}">  
 					    	<p:graphicImage value="/images/pdf.png" />  
-					    	<p:dataExporter type="pdf" target="tblareaxcultivo" fileName="areaxcultivo"/>  
+					    	<pe:exporter type="pdf" target="tblareaxcultivo" fileName="tblareaxcultivo" 
+					    		tableTitle="Total Hectareas sembradas por cultivo"  
+                     			facetBackground="#527C9D" facetFontSize="10" facetFontColor="#FFFFFF" facetFontStyle="BOLD"  
+                     			cellFontColor="#000000" cellFontSize="6" cellFontStyle="NORMAL"
+					    		preProcessor="#{consultasBean.GenericPDF}"/>  					    	  
 						</h:commandLink>  
 					</p:panel>
 					<p:panel rendered="#{consultasBean.areaxvariedadenabled}">
@@ -147,7 +161,12 @@
 					  
 						<h:commandLink rendered="#{consultasBean.areaxvariedadenabled}">  
 					    	<p:graphicImage value="/images/pdf.png" />  
-					    	<p:dataExporter type="pdf" target="tblareaxvariedad" fileName="areaxvariedad"/>  
+					    	<pe:exporter type="pdf" target="tblareaxvariedad" fileName="areaxvariedad" 
+					    		tableTitle="Total Hectareas sembradas por variedad"  
+                     			facetBackground="#527C9D" facetFontSize="10" facetFontColor="#FFFFFF" facetFontStyle="BOLD"  
+                     			cellFontColor="#000000" cellFontSize="6" cellFontStyle="NORMAL"
+					    		preProcessor="#{consultasBean.GenericPDF}"/>  
+					    	  
 						</h:commandLink>  
 					</p:panel>
 					<p:panel rendered="#{consultasBean.estadoenabled}">
@@ -175,8 +194,12 @@
 						</h:commandLink>  
 					  
 						<h:commandLink rendered="#{consultasBean.estadoenabled}">  
-					    	<p:graphicImage value="/images/pdf.png" />  
-					    	<p:dataExporter type="pdf" target="tblestado" fileName="estadolote"/>  
+					    	<p:graphicImage value="/images/pdf.png" />    
+					    	<pe:exporter type="pdf" target="tblestado" fileName="estadolote" 
+					    		tableTitle="Total Activos - Inactivos"  
+                     			facetBackground="#527C9D" facetFontSize="10" facetFontColor="#FFFFFF" facetFontStyle="BOLD"  
+                     			cellFontColor="#000000" cellFontSize="6" cellFontStyle="NORMAL"
+					    		preProcessor="#{consultasBean.GenericPDF}"/>  
 						</h:commandLink>  
 					</p:panel>
 					<p:panel rendered="#{consultasBean.lotxvenxareaenabled}">
@@ -211,8 +234,12 @@
 						</h:commandLink>  
 					  
 						<h:commandLink rendered="#{consultasBean.lotxvenxareaenabled}">  
-					    	<p:graphicImage value="/images/pdf.png" />  
-					    	<p:dataExporter type="pdf" target="tbllotxvenxarea" fileName="lotexareaxvendedor"/>  
+					    	<p:graphicImage value="/images/pdf.png" />   
+					    	<pe:exporter type="pdf" target="tbllotxvenxarea" fileName="lotexareaxvendedor" 
+					    		tableTitle="Total lotes por area por vendedor"  
+                     			facetBackground="#527C9D" facetFontSize="10" facetFontColor="#FFFFFF" facetFontStyle="BOLD"  
+                     			cellFontColor="#000000" cellFontSize="6" cellFontStyle="NORMAL"
+					    		preProcessor="#{consultasBean.GenericPDF}"/>  					    	 
 						</h:commandLink>  
 					</p:panel>
 					<p:panel rendered="#{consultasBean.lotxentxareaenabled}">
@@ -247,8 +274,13 @@
 						</h:commandLink>  
 					  
 						<h:commandLink rendered="#{consultasBean.lotxentxareaenabled}">  
-					    	<p:graphicImage value="/images/pdf.png" />  
-					    	<p:dataExporter type="pdf" target="tbllotxentidad" fileName="lotexentidad"/>  
+					    	<p:graphicImage value="/images/pdf.png" />    
+					    	<pe:exporter type="pdf" target="tbllotxentidad" fileName="lotexentidad" 
+					    		tableTitle="Total lotes por area por entidad"  
+                     			facetBackground="#527C9D" facetFontSize="10" facetFontColor="#FFFFFF" facetFontStyle="BOLD"  
+                     			cellFontColor="#000000" cellFontSize="6" cellFontStyle="NORMAL"
+					    		preProcessor="#{consultasBean.GenericPDF}"/>  
+					    	
 						</h:commandLink>  
 					</p:panel>
 
@@ -285,7 +317,11 @@
 					  
 						<h:commandLink rendered="#{consultasBean.hxaxeenabled}">  
 					    	<p:graphicImage value="/images/pdf.png" />  
-					    	<p:dataExporter type="pdf" target="tbltotxaxaxe" fileName="Hectxetapaxagricultor"/>  
+					    	<pe:exporter type="pdf" target="tbltotxaxaxe" fileName="Hectxetapaxagricultor" 
+					    		tableTitle="Total hectareas sembradas por agricultor por etapa"  
+                     			facetBackground="#527C9D" facetFontSize="10" facetFontColor="#FFFFFF" facetFontStyle="BOLD"  
+                     			cellFontColor="#000000" cellFontSize="6" cellFontStyle="NORMAL"
+					    		preProcessor="#{consultasBean.GenericPDF}"/>  					    						    	  
 						</h:commandLink>  
 					</p:panel>
 
@@ -316,7 +352,142 @@
 					  
 						<h:commandLink rendered="#{consultasBean.hecxetapaenabled}">  
 					    	<p:graphicImage value="/images/pdf.png" />  
-					    	<p:dataExporter type="pdf" target="tblhecxet" fileName="Hectxetapa"/>  
+					    	<pe:exporter type="pdf" target="tblhecxet" fileName="Hectxetapa" 
+					    		tableTitle="Total rango fecha"  
+                     			facetBackground="#527C9D" facetFontSize="10" facetFontColor="#FFFFFF" facetFontStyle="BOLD"  
+                     			cellFontColor="#000000" cellFontSize="6" cellFontStyle="NORMAL"
+					    		preProcessor="#{consultasBean.GenericPDF}"/>  
+					    	  
+						</h:commandLink>  
+					</p:panel>
+
+					<p:panel rendered="#{consultasBean.resumenenabled}">
+						<p:dataTable id="tblresumen" var="cons" paginator="true" rows="10" 
+							rendered="#{consultasBean.resumenenabled}"
+							paginatorAlwaysVisible="false" paginatorPosition="bottom"
+							emptyMessage="No hay registros"
+							value="#{consultasBean.listaresumen}">
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Usuario"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.usuario}" />  
+		        			</p:column> 
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Cedula"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.cedula}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Agricultor"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.agricultor}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Sucursal"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.sucursal}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Ciudad"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.ciudad}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Vereda"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.vereda}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Lote"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.nomlote}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Tipo Cultivo"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.tipocultivo}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Area (Hec)"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.area}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Variedad"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.variedad}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Fecha Siembra"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.fecsiembra}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Fecha Corte"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.feccorte}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Edad"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.edad}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Propietario"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.propietario}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Molino"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.molino}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Solicitud"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.estadosolicitud}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Acta"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.acta}" />  
+		        			</p:column>  
+		        			 <p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Vendedor"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.vendedor}" />  
+		        			</p:column>  		        			  
+						</p:dataTable>
+						<h:commandLink rendered="#{consultasBean.resumenenabled}">  
+						    <p:graphicImage value="/images/excel.png" />  
+						    <p:dataExporter type="xls" target="tblresumen" fileName="Resumen"/>  
+						</h:commandLink>  
+					  
+						<h:commandLink rendered="#{consultasBean.resumenenabled}">  
+					    	<p:graphicImage value="/images/pdf.png" />  
+					    	<pe:exporter type="pdf" target="tblresumen" fileName="Resumen" 
+					    		tableTitle="Informe Resumen"  
+                     			facetBackground="#527C9D" facetFontSize="6" facetFontColor="#FFFFFF" facetFontStyle="BOLD"  
+                     			cellFontColor="#000000" cellFontSize="4" cellFontStyle="NORMAL"
+					    		preProcessor="#{consultasBean.ResumenPDF}"/>  
 						</h:commandLink>  
 					</p:panel>
 					
