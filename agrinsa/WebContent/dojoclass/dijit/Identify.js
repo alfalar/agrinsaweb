@@ -69,6 +69,7 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 		  var lysidentificados=false;		  
 		  for ( var j = 0; j <  map.layerIds.length; j++) {
 			  var layer = map.getLayer(map.layerIds[j]);				  
+			  console.log("Identificar en Layer " + layer.id);
 				  //console.log("El layer es del tipo " + layer.tileInfo);
 				  if(layer.url!=null && typeof layer.tileInfo==="undefined"){
 					  console.log("Entra a identicar "+layer.url);
@@ -98,81 +99,51 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 				    	  numeroresultados++;
 				    	  for ( var i = 0; i < idResults.length; i++) {	    		  
 				    		  resultados.push(idResults[i]);	
-				    	  }
-				    	  console.log("idResults.length:"+idResults.length); 
-				    	  //if(numeroresultados>= map.layerIds.length){
-				    		  console.log("LLEGAN "+resultados.length+ " RESULTADOS");
-				    		  var divcontiene=dojo.create("div");
-				    		  var divcmb=dojo.create("div",{innerHTML: "Seleccione una capa:"});
-				    		  var divtabla=dojo.create("div");
-				    		  divcontiene.appendChild(divcmb);	
-				    		  divcontiene.appendChild(divtabla);
-				    		  var arregloCombo=new Array();
-				    		  var arregloyes=new Array();
-				    		  for ( var k = 0; k < resultados.length; k++) {
-				    			  var result=resultados[k];
-				    			  var obj=new Object();
-				    			  obj.id=result.layerName;
-				    			  obj.label=result.layerName;
-				    			  if (arregloyes.indexOf(result.layerName) == -1)
-				    			  {
-					    			  arregloCombo.push(obj);
-					    			  arregloyes.push(result.layerName);			    				 
-				    			  }		    				  
-				    		  }
-				    		  var storecmb = new dojo.store.Memory({data: arregloCombo});
-				    		  var combo = new dijit.form.ComboBox({
-				    			  store:storecmb,
-				    			  searchAttr: "label"
-				    		  });
-				    		  dojo.connect(combo, "onChange", function(value) {
-				    		      var seleccionado=combo.get("value");
-					    		  var html="<table width=\"100%\">";
-					    		  for ( var k = 0; k < resultados.length; k++) {
-					    			  var result=resultados[k];
-					    			  if(k % 2==0){
-					  					clase="class=\"celdaImpar\"";
-					  				  }else{
-					  					clase="class=\"celdaPar\"";
-					  				  }
-					    			  if(seleccionado==result.layerName){
-						    			  html+="<tr>";
-						    			  html+="<td class=\"TitTabla\" colspan=\"2\" align=\"center\">"+result.layerName+"</td>";			    				  
-						    			  html+="</tr>";				    			  				    				  
-						    			  var atributos=result.feature.attributes;
-						    			  for (var key in atributos) {
-						    				  //console.log("---------->"+key);
-						    				  if (atributos.hasOwnProperty(key)) {
-						    					  //
-						    					  if(atributos[key]=="Null" || atributos[key]==undefined ){
-						    						  atributos[key]="&nbsp";
-						    					  }					    					  
-						    					  //console.log(key + " -> " + atributos[key]);
-						    					  if(tidentify.camposexcluidos.indexOf(key.toUpperCase())==-1){
-									    			  html+="<tr>";
-									    			  html+="<td "+clase+"  align=\"center\">"+key+"</td>";			    				  
-									    			  html+="<td "+clase+"  align=\"center\">"+atributos[key]+"</td>";
-									    			  html+="</tr>";			    			  			    						  
-						    					  }
-						    				  }
-						    			  }
-						    			  //html+="<tr>";
-						    			  //html+="<td "+clase+" colspan=\"2\"  align=\"center\"><a href=\"#\" onClick=\"tidentify.showFeature('"+result.feature+"')\">Ver</a></td>";			    				  
-						    			  //html+="</tr>";			    			  			    						  			    			  				    				  
-					    			  }
-					    		  }
-					    		  html+="</table>";
-					    		  divtabla.innerHTML= html;
-				    		  });
-				    		  divcmb.appendChild(combo.domNode);			    		  
-				    		  
-				    		  map.infoWindow.setContent(divcontiene);    		 
-				    		  map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
-				    		  esri.hide(loading);
-				    	  //}
+				    	  } 
+				    	  console.log("LLEGAN "+resultados.length+ " RESULTADOS");
+				    	  var divcontiene=dojo.create("div");
+				    	  var divtabla=dojo.create("div");	
+				    	  divcontiene.appendChild(divtabla);				    		      
+				    	  var html="<table width=\"100%\">";
+					      for ( var k = 0; k < resultados.length; k++) {
+					    	 var result=resultados[k];
+					    	 if(k % 2==0){
+					  			clase="class=\"celdaImpar\"";
+					  		 }else{
+					  			 clase="class=\"celdaPar\"";
+					  	     }
+						     html+="<tr>";
+						     html+="<td class=\"TitTabla\" colspan=\"2\" align=\"center\">"+result.layerName+"</td>";			    				  
+						     html+="</tr>";				    			  				    				  
+						     var atributos=result.feature.attributes;
+						     for (var key in atributos) {
+						    	  //console.log("---------->"+key);
+						    	  if (atributos.hasOwnProperty(key)) {						    
+						    			if(atributos[key]=="Null" || atributos[key]==undefined ){
+						    				  atributos[key]="&nbsp";
+						    			}					    					  
+						    			//console.log(key + " -> " + atributos[key]);
+						    			if(tidentify.camposexcluidos.indexOf(key.toUpperCase())==-1){
+									    	html+="<tr>";
+						    				if(key=="lotes.agrinsagdb_DBO_LoteV_Area"){
+						    					html+="<td "+clase+"  align=\"center\">Area</td>";
+						    				}else{
+						    					html+="<td "+clase+"  align=\"center\">"+key+"</td>";
+						    				}									    										    			  
+									    	html+="<td "+clase+"  align=\"center\">"+atributos[key]+"</td>";
+									    	html+="</tr>";			    			  			    						  
+						    			}
+						    	  }
+						     }
+					    			  
+			    		  }
+					      html+="</table>";
+					      divtabla.innerHTML= html;				    		  			    		  				    		  
+				    	  map.infoWindow.setContent(divcontiene);    		 
+				    	  map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
+				    	  esri.hide(loading);				    	  
 				      });		  	  		  				  					  
-				  }
-			  			  
+				  }			  			  
 		  }	
 		  if(lysidentificados==false){
 			  setMensaje("No hay capas para identificar","INFO");
