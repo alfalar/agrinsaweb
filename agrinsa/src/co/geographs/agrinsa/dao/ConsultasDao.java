@@ -370,22 +370,43 @@ public class ConsultasDao {
 		List<Lotes> proximoscorte = new ArrayList<Lotes>();
 		Session sesion = this.hibernateTemplate.getSessionFactory()
 				.getCurrentSession();
-		String consulta = "select lotes.LoteID,lotes.NomLote,CONVERT(VARCHAR(10), lotes.FecCorteReal, 103) AS FecCorteReal "
-				+ "from agrinsagdb.dbo.LOTE_VW lotes "
-				+ "where lotes.FecCorteReal between GETDATE() and DATEADD(DAY, +15, GETDATE())";
+		String consulta = "select loteso.Agricultor,loteso.NomLote,loteso.Ciudad,loteso.Vereda,"+
+				"SUM(loteso.agrinsagdb_DBO_LoteV_Area) as Hectareas,"+
+				"CONVERT(VARCHAR(10), loteso.FecCorteReal, 103) AS FecCorteReal "+
+				"from "+ 
+					"(SELECT * "+
+						"FROM agrinsagdb.dbo.LOTE_VW LEFT OUTER JOIN "+
+						"(SELECT "+
+						"codedValue.value('Code[1]','nvarchar(max)') AS Code, "+
+						"codedValue.value('Name[1]', 'nvarchar(max)') AS Ciudad "+
+						"FROM agrinsagdb.dbo.GDB_ITEMS AS items INNER JOIN agrinsagdb.dbo.GDB_ITEMTYPES AS itemtypes "+
+						"ON items.Type = itemtypes.UUID "+
+						"CROSS APPLY items.Definition.nodes "+
+						"('/GPCodedValueDomain2/CodedValues/CodedValue') AS CodedValues(codedValue) "+
+						"WHERE itemtypes.Name = 'Coded Value Domain' "+
+						"AND items.Name = 'DomMunicipio') AS CodedValues "+
+						"ON agrinsagdb.dbo.LOTE_VW.CiudadID = CodedValues.Code) as loteso "+
+					"where "+
+					"loteso.FecCorteReal between GETDATE() and DATEADD(DAY, +15, GETDATE()) "+
+					"group by loteso.Ciudad,loteso.Agricultor,loteso.NomLote,loteso.Vereda,loteso.FecCorteReal";
 		Query query = sesion.createSQLQuery(consulta)
-				.addScalar("LoteID", Hibernate.INTEGER)
+				.addScalar("Agricultor", Hibernate.STRING)
 				.addScalar("NomLote", Hibernate.STRING)
+				.addScalar("Ciudad", Hibernate.STRING)
+				.addScalar("Vereda", Hibernate.STRING)
+				.addScalar("Hectareas", Hibernate.STRING)
 				.addScalar("FecCorteReal", Hibernate.STRING);
 		List<Object> lista = query.list();
 		Iterator iterator = lista.iterator();
 		while (iterator.hasNext()) {
 			Object[] row = (Object[]) iterator.next();
 			Lotes lote = new Lotes();
-			lote.setLoteid((Integer) row[0]);
+			lote.setAgricultor((String) row[0]);			
 			lote.setNomlote((String) row[1]);
-
-			lote.setFeccorte((String) row[2]);
+			lote.setCiudad((String) row[2]);
+			lote.setVereda((String) row[3]);
+			lote.setArea((String) row[4]);
+			lote.setFeccorte((String) row[5]);
 			proximoscorte.add(lote);
 		}
 		return proximoscorte;

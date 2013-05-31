@@ -2076,7 +2076,7 @@ function addAlertas() {
 				resizable : false,
 				dockable : false,
 				closable : false,
-				style : "position:absolute;top:100px;left:400px;width:400px;height:400px;z-index:100;visibility:hidden;",
+				style : "position:absolute;top:100px;left:400px;width:500px;height:300px;z-index:100;visibility:hidden;",
 				id : 'vntalertas',
 				region : 'none'
 			}, dojo.byId('alerta'));

@@ -13,6 +13,9 @@ public class Lotes {
 	private String feccorte;
 	private String siembra;
 	private int numvisita;
+	private String area;
+	private String ciudad;
+	private String vereda;
 	
 	public int getLoteid() {
 		return loteid;
@@ -73,6 +76,24 @@ public class Lotes {
 	}
 	public void setNumvisita(int numvisita) {
 		this.numvisita = numvisita;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	public String getCiudad() {
+		return ciudad;
+	}
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+	public String getVereda() {
+		return vereda;
+	}
+	public void setVereda(String vereda) {
+		this.vereda = vereda;
 	}
 	
 	

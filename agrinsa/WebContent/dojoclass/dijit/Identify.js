@@ -61,95 +61,91 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
   identificaToggleButton: function () {
 	  dijit.byNode(this.identifica.domNode).setAttribute("checked", true);
 	  dijit.byNode(this.limpia.domNode).setAttribute("checked", false);
-	  this.clicmapa=dojo.connect(map, "onClick", function(evt){		 
+	  this.clicmapa=dojo.connect(map, "onClick",dojo.hitch(this, function(evt){		 
 		  var resultados=new Array();
 		  map.graphics.clear();
-		  var numeroresultados=0;
-		  esri.show(loading);
-		  var lysidentificados=false;		  
+		  esri.show(loading);	
+		  var identificado=false;
 		  for ( var j = 0; j <  map.layerIds.length; j++) {
-			  var layer = map.getLayer(map.layerIds[j]);				  
-			  console.log("Identificar en Layer " + layer.id);
-				  //console.log("El layer es del tipo " + layer.tileInfo);
-				  if(layer.url!=null && typeof layer.tileInfo==="undefined"){
-					  console.log("Entra a identicar "+layer.url);
-					  lysidentificados=true;
-					  var geom = esri.geometry.webMercatorToGeographic(evt.mapPoint);
-					  ///console.log("x:"+geom.x);
-					  //console.log("y:"+geom.y);
-					  var geomextent = esri.geometry.webMercatorToGeographic(map.extent);
-					  //console.log("xmin:"+geomextent.xmin);
-					  //console.log("ymin:"+geomextent.ymin);
-					  //console.log("xmax:"+geomextent.xmax);
-					  //console.log("ymax:"+geomextent.ymax);
-					  
-				      identifyTask = new esri.tasks.IdentifyTask(layer.url);
-				      identifyParams = new esri.tasks.IdentifyParameters();
-				      identifyParams.tolerance = 3;
-				      identifyParams.returnGeometry = true;
-				      identifyParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_ALL;
-				      //identifyParams.layerIds = [0];
-				      identifyParams.width  = map.width;
-				      identifyParams.height = map.height;	       
-				      identifyParams.geometry = geom;
-				      identifyParams.mapExtent = geomextent;
-				      //var spatialReference = new esri.SpatialReference({wkid:4326});
-				      //identifyParams.spatialReference=spatialReference;
-				      identifyTask.execute(identifyParams, function(idResults) {			    	  
-				    	  numeroresultados++;
-				    	  for ( var i = 0; i < idResults.length; i++) {	    		  
-				    		  resultados.push(idResults[i]);	
-				    	  } 
-				    	  console.log("LLEGAN "+resultados.length+ " RESULTADOS");
-				    	  var divcontiene=dojo.create("div");
-				    	  var divtabla=dojo.create("div");	
-				    	  divcontiene.appendChild(divtabla);				    		      
-				    	  var html="<table width=\"100%\">";
-					      for ( var k = 0; k < resultados.length; k++) {
-					    	 var result=resultados[k];
-					    	 if(k % 2==0){
-					  			clase="class=\"celdaImpar\"";
-					  		 }else{
-					  			 clase="class=\"celdaPar\"";
-					  	     }
-						     html+="<tr>";
-						     html+="<td class=\"TitTabla\" colspan=\"2\" align=\"center\">"+result.layerName+"</td>";			    				  
-						     html+="</tr>";				    			  				    				  
-						     var atributos=result.feature.attributes;
-						     for (var key in atributos) {
-						    	  //console.log("---------->"+key);
-						    	  if (atributos.hasOwnProperty(key)) {						    
-						    			if(atributos[key]=="Null" || atributos[key]==undefined ){
-						    				  atributos[key]="&nbsp";
-						    			}					    					  
-						    			//console.log(key + " -> " + atributos[key]);
-						    			if(tidentify.camposexcluidos.indexOf(key.toUpperCase())==-1){
-									    	html+="<tr>";
-						    				if(key=="lotes.agrinsagdb_DBO_LoteV_Area"){
-						    					html+="<td "+clase+"  align=\"center\">Area</td>";
-						    				}else{
-						    					html+="<td "+clase+"  align=\"center\">"+key+"</td>";
-						    				}									    										    			  
-									    	html+="<td "+clase+"  align=\"center\">"+atributos[key]+"</td>";
-									    	html+="</tr>";			    			  			    						  
-						    			}
-						    	  }
-						     }
-					    			  
-			    		  }
-					      html+="</table>";
-					      divtabla.innerHTML= html;				    		  			    		  				    		  
-				    	  map.infoWindow.setContent(divcontiene);    		 
-				    	  map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
-				    	  esri.hide(loading);				    	  
-				      });		  	  		  				  					  
-				  }			  			  
-		  }	
-		  if(lysidentificados==false){
-			  setMensaje("No hay capas para identificar","INFO");
-			  esri.hide(loading);
-		  }
-	  });
+			  var layer = map.getLayer(map.layerIds[j]);		
+			  if(layer.id==idtematicos){
+				  identificado=true;
+				  console.log("Identificar en Layer " + layer.id);								  
+				  var geom = esri.geometry.webMercatorToGeographic(evt.mapPoint);
+				  var geomextent = esri.geometry.webMercatorToGeographic(map.extent);						  
+				  identifyTask = new esri.tasks.IdentifyTask(layer.url);
+				  identifyParams = new esri.tasks.IdentifyParameters();
+				  identifyParams.tolerance = 3;
+				  identifyParams.returnGeometry = true;
+				  identifyParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_ALL;
+				  identifyParams.layerIds = [0];
+				  identifyParams.width  = map.width;
+				  identifyParams.height = map.height;	       
+				  identifyParams.geometry = geom;
+				  identifyParams.mapExtent = geomextent;
+				  //var spatialReference = new esri.SpatialReference({wkid:4326});
+				  //identifyParams.spatialReference=spatialReference;
+				  identifyTask.execute(identifyParams, dojo.hitch(this,function(idResults) {					 
+					  for ( var i = 0; i < idResults.length; i++) {	    		  
+					  	  resultados.push(idResults[i]);	
+					  } 
+					  var numres=resultados.length;
+					  if(numres>0){
+						  console.log("LLEGAN "+numres+ " RESULTADOS");
+						  var divcontiene=dojo.create("div");
+						  var divtabla=dojo.create("div");	
+						  divcontiene.appendChild(divtabla);				    		      
+						  var html="<table width=\"100%\">";	    		  
+						  for ( var k = 0; k < resultados.length; k++) {
+							  console.log("k:"+k);
+								    	 var result=resultados[k];
+								    	 if(k % 2==0){
+								  			clase="class=\"celdaImpar\"";
+								  		 }else{
+								  			 clase="class=\"celdaPar\"";
+								  	     }
+									     html+="<tr>";
+									     html+="<td class=\"TitTabla\" colspan=\"2\" align=\"center\"> Lotes </td>";			    				  
+									     html+="</tr>";				    			  				    				  
+									     var atributos=result.feature.attributes;
+									     for (var key in atributos) {
+									    	  //console.log("---------->"+key);
+									    	  if (atributos.hasOwnProperty(key)) {						    
+									    			if(atributos[key]=="Null" || atributos[key]==undefined ){
+									    				  atributos[key]="&nbsp";
+									    			}					    					  
+									    			//console.log(key + " -> " + atributos[key]);
+									    			if(tidentify.camposexcluidos.indexOf(key.toUpperCase())==-1){
+												    	html+="<tr>";
+									    				if(key=="agrinsagdb.DBO.LoteV.Area"){
+									    					html+="<td "+clase+"  align=\"center\">Area</td>";
+									    				}else{
+									    					html+="<td "+clase+"  align=\"center\">"+key+"</td>";
+									    				}									    										    			  
+												    	html+="<td "+clase+"  align=\"center\">"+atributos[key]+"</td>";
+												    	html+="</tr>";			    			  			    						  
+									    			}
+									    	  }
+									     }								    			  
+						   }
+						   html+="</table>";
+						   console.log(html);
+						   divtabla.innerHTML= html;				    		  			    		  				    		  
+						   map.infoWindow.setContent(divcontiene);    		 
+						   map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
+						   esri.hide(loading);								      
+					   }else{
+					     setMensaje("No hay se ha identificado ningun lote","INFO");
+						  esri.hide(loading);
+					   }
+			}));				  
+	   	 }    			  			  
+	  }	
+	  if(identificado==false){
+		     setMensaje("No existe el layer de lotes","INFO");
+			  esri.hide(loading);	   		 		  
+	  }
+	}));
   },
   showFeature: function(feature){
 	  map.graphics.clear();

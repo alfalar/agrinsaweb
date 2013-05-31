@@ -37,3 +37,4 @@ var serviciosgeograficos=new Array();
 var bookmarks;
 var serviciogeometria;
 var servicioimpresion;
+var idtematicos;
