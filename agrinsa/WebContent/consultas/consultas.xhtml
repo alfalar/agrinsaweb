@@ -30,7 +30,7 @@
 							value="#{consultasBean.areaxciudad}">
 							<p:column>  
 								<f:facet name="header">
-	         						<h:outputText value="Ciudad"/>
+	         						<h:outputText value="Municipio"/>
 	      						</f:facet>
 		            			<h:outputText value="#{cons.ciudad}" />  
 		        			</p:column>  
@@ -302,6 +302,24 @@
 	      						</f:facet>
 		            			<h:outputText value="#{cons.agricultor}" />  
 		        			</p:column>
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Vereda"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.vereda}" />  
+		        			</p:column>		        			
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Cultivo"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.cultivo}" />  
+		        			</p:column>
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Vendedor"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.vendedor}" />  
+		        			</p:column> 		        			 		        			 		        			
 		        			 <p:column>  
 								<f:facet name="header">
 	         						<h:outputText value="Area (Hec)"/>
@@ -336,7 +354,19 @@
 	         						<h:outputText value="Etapa"/>
 	      						</f:facet>
 		            			<h:outputText value="#{cons.etapa}" />  
-		        			</p:column> 
+		        			</p:column>
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Cultivo"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.cultivo}" />  
+		        			</p:column>
+							<p:column>  
+								<f:facet name="header">
+	         						<h:outputText value="Vendedor"/>
+	      						</f:facet>
+		            			<h:outputText value="#{cons.vendedor}" />  
+		        			</p:column> 		        			 		        			 
 		        			 <p:column>  
 								<f:facet name="header">
 	         						<h:outputText value="Area (Hec)"/>
