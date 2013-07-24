@@ -30,8 +30,8 @@ import co.geographs.agrinsa.security.UserData;
 
 public class ConsultasDao {
 	private HibernateTemplate hibernateTemplate;
-	//private String area="nlote.agrinsagdb_DBO_LoteV_Area";
-	private String area="nlote.area";
+	private String area="nlote.agrinsagdb_DBO_LoteV_Area";
+	//private String area="nlote.area";
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
