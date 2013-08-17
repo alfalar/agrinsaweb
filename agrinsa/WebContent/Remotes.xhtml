@@ -38,6 +38,13 @@
 				update=":mensajes">
 			</pe:remoteCommand>
 
+			<pe:remoteCommand name="setLoteidCultivo"
+				actionListener="#{identifyBean.setLoteidCultivo}"
+				oncomplete="tidentify.hcsetLoteidCultivo(xhr, status, args)">
+				<pe:methodSignature parameters="java.lang.String" />
+				<pe:methodParam name="loteid" />
+			</pe:remoteCommand>
+
 		</h:form>
 	</f:view>
 	<script type="text/javascript">

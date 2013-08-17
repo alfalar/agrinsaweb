@@ -15,6 +15,8 @@ dojo.require("dijit.form.Button");
 dojo.require("esri.map");
 dojo.require("dijit.form.ComboBox");
 dojo.require("dojo.store.Memory");
+dojo.require("esri.layers.FeatureLayer");
+dojo.require("esri.layers.Domain");
 
 (function() {
   var link = dojo.create("link", {
@@ -32,6 +34,10 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
   symbol:null,
   camposexcluidos:null,
   climapa:null,
+  featureLayer:null,
+  html:"",
+  divtabla:null,
+  divcontiene:null,
   constructor: function (params, srcNodeRef) {
      this.map = params.map;
      this.camposexcluidos=params.camposexcluidos;
@@ -68,7 +74,8 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 		  var identificado=false;
 		  for ( var j = 0; j <  map.layerIds.length; j++) {
 			  var layer = map.getLayer(map.layerIds[j]);		
-			  if(layer.id==idtematicos){
+			  if(layer.id==idtematicos){				  
+				  this.featureLayer=new esri.layers.FeatureLayer(layer.url+"/0");
 				  identificado=true;
 				  console.log("Identificar en Layer " + layer.id);								  
 				  var geom = esri.geometry.webMercatorToGeographic(evt.mapPoint);
@@ -85,28 +92,29 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 				  identifyParams.mapExtent = geomextent;
 				  //var spatialReference = new esri.SpatialReference({wkid:4326});
 				  //identifyParams.spatialReference=spatialReference;
-				  identifyTask.execute(identifyParams, dojo.hitch(this,function(idResults) {					 
+				  identifyTask.execute(identifyParams, dojo.hitch(this,function(idResults) {
+					  var loteid;
 					  for ( var i = 0; i < idResults.length; i++) {	    		  
 					  	  resultados.push(idResults[i]);	
 					  } 
 					  var numres=resultados.length;
 					  if(numres>0){
 						  console.log("LLEGAN "+numres+ " RESULTADOS");
-						  var divcontiene=dojo.create("div");
-						  var divtabla=dojo.create("div");	
-						  divcontiene.appendChild(divtabla);				    		      
-						  var html="<table width=\"100%\">";	    		  
+						  this.divcontiene=dojo.create("div");
+						  this.divtabla=dojo.create("div");	
+						  this.divcontiene.appendChild(this.divtabla);				    		      
+						  this.html="<table width=\"100%\">";	    		  
 						  for ( var k = 0; k < resultados.length; k++) {
-							  console.log("k:"+k);
+							  			 console.log("k:"+k);
 								    	 var result=resultados[k];
 								    	 if(k % 2==0){
 								  			clase="class=\"celdaImpar\"";
 								  		 }else{
 								  			 clase="class=\"celdaPar\"";
 								  	     }
-									     html+="<tr>";
-									     html+="<td class=\"TitTabla\" colspan=\"2\" align=\"center\"> Lotes </td>";			    				  
-									     html+="</tr>";				    			  				    				  
+								    	 this.html+="<tr>";
+								    	 this.html+="<td class=\"TitTabla\" colspan=\"2\" align=\"center\"> Lotes </td>";			    				  
+								    	 this.html+="</tr>";				    			  				    				  
 									     var atributos=result.feature.attributes;
 									     for (var key in atributos) {
 									    	  //console.log("---------->"+key);
@@ -116,24 +124,30 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 									    			}					    					  
 									    			//console.log(key + " -> " + atributos[key]);
 									    			if(tidentify.camposexcluidos.indexOf(key.toUpperCase())==-1){
-												    	html+="<tr>";
+									    				this.html+="<tr>";
 									    				if(key=="agrinsagdb.DBO.LoteV.Area"){
-									    					html+="<td "+clase+"  align=\"center\">Area</td>";
+									    					this.html+="<td "+clase+"  align=\"center\">Area</td>";
+									    				}else if(key=="Numero Lote"){
+										    					loteid=atributos[key];
+										    					this.html+="<td "+clase+"  align=\"center\">"+key+"</td>";
 									    				}else{
-									    					html+="<td "+clase+"  align=\"center\">"+key+"</td>";
-									    				}									    										    			  
-												    	html+="<td "+clase+"  align=\"center\">"+atributos[key]+"</td>";
-												    	html+="</tr>";			    			  			    						  
+									    					this.html+="<td "+clase+"  align=\"center\">"+key+"</td>";
+									    				}	
+									    				//var cval = this.getDomainValue(key,atributos[key]);
+									    				this.html+="<td "+clase+"  align=\"center\">"+atributos[key]+"</td>";
+									    				this.html+="</tr>";			    			  			    						  
 									    			}
 									    	  }
 									     }								    			  
 						   }
-						   html+="</table>";
-						   console.log(html);
-						   divtabla.innerHTML= html;				    		  			    		  				    		  
-						   map.infoWindow.setContent(divcontiene);    		 
-						   map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
-						   esri.hide(loading);								      
+						   this.html+="<tr>";
+						   //this.html+="<td class=\"TitTabla\" colspan=\"2\" align=\"center\"> <a href=\"#\" onclick=\"window.open('consultas/cultivoyvariedad.jsf','window')\">Ver Cultivo y Variedad</a>  </td>";
+						   this.html+="<td class=\"TitTabla\" colspan=\"2\" align=\"center\">Datos de Cultivo y Variedad </td>";
+					       this.html+="</tr>";	
+					       //this.html+="</table>";
+					       setLoteidCultivo(loteid);
+						   //console.log(html);
+					       map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
 					   }else{
 					     setMensaje("No hay se ha identificado ningun lote","INFO");
 						  esri.hide(loading);
@@ -147,6 +161,66 @@ dojo.declare("dojoclass.dijit.Identify", [dijit._Widget, dijit._Templated], {
 	  }
 	}));
   },
+  
+  hcsetLoteidCultivo: function (xhr, status, args) {
+	  //console.log("hcsetLoteidCultivo");
+	   var lista = args.listacyv;
+	   var listado = dojo.fromJson(lista);
+	   for(var i=0;i<listado.length;i++){		
+			var edad=listado[i].edad;
+			var etapa=listado[i].etapa;
+			var descripcion=listado[i].descripcion;
+			var variedad=listado[i].variedad;
+			this.html+="<tr>";
+			this.html+="<td class=\"celdaImpar\" align=\"center\">Edad</td>";
+			this.html+="<td class=\"celdaImpar\" align=\"center\">"+edad+"</td>";			    				  
+		    this.html+="</tr>";	
+		    this.html+="<tr>";
+			this.html+="<td class=\"celdaImpar\" align=\"center\">Etapa</td>";
+			this.html+="<td class=\"celdaImpar\" align=\"center\">"+etapa+"</td>";			    				  
+		    this.html+="</tr>";				
+		    this.html+="<tr>";
+			this.html+="<td class=\"celdaImpar\" align=\"center\">Descripcion</td>";
+			this.html+="<td class=\"celdaImpar\" align=\"center\">"+descripcion+"</td>";			    				  
+		    this.html+="</tr>";			    
+		    this.html+="<tr>";
+			this.html+="<td class=\"celdaImpar\" align=\"center\">Variedad</td>";
+			this.html+="<td class=\"celdaImpar\" align=\"center\">"+variedad+"</td>";			    				  
+		    this.html+="</tr>";			    
+	   }
+	   this.html+="</table>";
+	   //console.log(this.html);
+	   this.divtabla.innerHTML= this.html;				    		  			    		  				    		  
+	   map.infoWindow.setContent(this.divcontiene);    		 	   
+	   esri.hide(loading);								      	  
+  },	  
+  getDomainValue: function(fieldName,code){
+	   console.log(fieldName+","+ code);
+		var returnValue = "";
+		var cDomain=new esri.layers.Domain();
+		//console.log(this.featureLayer.fields.length);
+		dojo.forEach(this.featureLayer.fields, function(fld){	
+			//console.log(fld.name+","+fieldName);
+			if(fld.name == fieldName){
+				console.log(fld);
+				cDomain = fld.domain;
+				if (cDomain){					
+					dojo.forEach(cDomain.codedValues, function(cVal){
+						console.log("Hay dominio:"+cVal.code+","+code);
+						if(cVal.code == code)
+							returnValue = cVal.name;
+					})
+				}else{
+					console.log("Dominio no valido");
+				}
+			}
+		})
+		if(returnValue==""){
+			returnValue=code;
+		}
+		return returnValue;
+	
+  },  
   showFeature: function(feature){
 	  map.graphics.clear();
       //feature.setSymbol(symbol);

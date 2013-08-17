@@ -15,8 +15,8 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 		<property name="jdbcUrl" value="jdbc:sqlserver://localhost:1433;databaseName=agrinsagdb" />
-		<property name="user" value="sa" />
-		<property name="password" value="sa2013" />
+		<property name="user" value="agrinsa" />
+		<property name="password" value="agrinsa2013" />
 		<property name="minPoolSize" value="60" />
 		<property name="maxPoolSize" value="100" />
 		<property name="acquireIncrement" value="1" />

@@ -33,24 +33,27 @@ public class Usuarios implements java.io.Serializable {
 	private String primerApellido;
 	private String segundoApellido;
 	private boolean habilitado;
+	private int vendedor;
 	private Set<MiembrosRol> miembrosRols = new HashSet(0);
 
 	public Usuarios() {
 	}
 
 	public Usuarios(int usuarioId, String usuario, String password,
-			String primerNombre, String primerApellido, boolean habilitado) {
+			String primerNombre, String primerApellido, boolean habilitado,
+			int vendedor) {
 		this.usuarioId = usuarioId;
 		this.usuario = usuario;
 		this.password = password;
 		this.primerNombre = primerNombre;
 		this.primerApellido = primerApellido;
 		this.habilitado = habilitado;
+		this.vendedor=vendedor;
 	}
 
 	public Usuarios(int usuarioId, String usuario, String password,
 			String primerNombre, String segundoNombre, String primerApellido,
-			String segundoApellido, boolean habilitado, Set miembrosRols) {
+			String segundoApellido, boolean habilitado, Set miembrosRols,int vendedor) {
 		this.usuarioId = usuarioId;
 		this.usuario = usuario;
 		this.password = password;
@@ -60,6 +63,7 @@ public class Usuarios implements java.io.Serializable {
 		this.segundoApellido = segundoApellido;
 		this.habilitado = habilitado;
 		this.miembrosRols = miembrosRols;
+		this.vendedor=vendedor;
 	}
 
 	@Id
@@ -143,6 +147,14 @@ public class Usuarios implements java.io.Serializable {
 
 	public void setMiembrosRols(Set<MiembrosRol> miembrosRols) {
 		this.miembrosRols = miembrosRols;
+	}
+	@Column(name = "vendedor", nullable = true)
+	public int getVendedor() {
+		return vendedor;
+	}
+
+	public void setVendedor(int vendedor) {
+		this.vendedor = vendedor;
 	}
 
 }

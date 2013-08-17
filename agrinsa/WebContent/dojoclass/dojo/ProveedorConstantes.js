@@ -24,7 +24,9 @@ dojo.declare("dojoclass.dojo.ProveedorConstantes", null, {
 									}else if(llave=="MENU_ADMINISTRACION"){
 										menu_admon=valor;
 									}else if(llave=="MENU_CONSULTAS"){
-										menu_consultas=valor;	
+										menu_consultas=valor;
+									}else if(llave=="MENU_MARCADORES"){
+										menu_marcadores=valor;											
 									}else if(llave=="SERVICIO_GEOMETRIA"){
 										serviciogeometria=valor;	
 									}else if(llave=="SERVICIO_IMPRESION"){

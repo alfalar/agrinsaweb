@@ -899,10 +899,13 @@ function addBasemapGallery() {
 
 // add any bookmarks to the application
 function addBookmarks() {
-	  
+		var editable=false;
+		if(menu_marcadores != undefined){
+			editable=true;
+		}
 		bookmarks = new dojoclass.dijit.Bookmarks({
 			map : map,
-			editable: true,
+			editable: editable,
 			bookmarks : marcadoresiniciales
 		}, dojo.create("div"));
 
@@ -1859,7 +1862,7 @@ function addVentanaAdministracion() {
 				resizable : false,
 				dockable : false,
 				closable : false,
-				style : "position:absolute;top:0px;left:10px;width:90%;height:80%;z-index:100;visibility:hidden",
+				style : "position:absolute;top:0px;left:10px;width:90%;height:80%;z-index:210;visibility:hidden",
 				id : 'vntadmon',
 				region : 'none'
 			}, dojo.byId('VentanaAdministracion'));
@@ -1922,7 +1925,7 @@ function addVentanaConsultas() {
 				resizable : true,
 				dockable : false,
 				closable : false,
-				style : "position:absolute;top:100px;left:400px;width:800px;height:400px;z-index:200;visibility:hidden;",
+				style : "position:absolute;top:100px;left:200px;width:800px;height:400px;z-index:200;visibility:hidden;",
 				id : 'vntconsultas',
 				region : 'none'
 			}, dojo.byId('VentanaConsultas'));
@@ -2034,7 +2037,7 @@ function addIdentifyWidget() {
 				dockable : false,
 				closable : false,
 				region : 'none',
-				style : "position:absolute;bottom:300px;right:300px;width:350px;height:70px;z-index:110;visibility:hidden;",
+				style : "position:absolute;bottom:300px;left:200px;width:350px;height:70px;z-index:230;visibility:hidden;",
 				id : 'identifywid'
 			}, dojo.byId('identify'));
 	fp.startup();
