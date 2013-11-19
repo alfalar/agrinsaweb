@@ -42,6 +42,7 @@ public class VisitasDao {
 					.createSQLQuery(
 							"select * from agrinsagdb.dbo.LOTE_VW a "
 									+ "where a.usuarioid=:usuarioid "
+									+ "and a.estado=1 "
 									+ "and a.NomLote is not null")
 					.addScalar("Agricultor", Hibernate.STRING)
 					.addScalar("NomLote", Hibernate.STRING)
@@ -129,20 +130,33 @@ public class VisitasDao {
 					.getConnection();
 			conection.setAutoCommit(false);
 			for (Visita v : visitas) {
+				System.out.println("Numero de visita a guardar:"+v.getNumvisita());
 				query = conection
 						.prepareStatement("{call guardarvisita (?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 				query.setInt(1, v.getLoteid());
 				query.setInt(2, v.getSemestre());
 				query.setInt(3, v.getNumvisita());
-				dateutil = sdf.parse(v.getFechasiembra());				
-                datesql = new java.sql.Date(dateutil.getTime());
-				query.setDate(4, datesql);
-				dateutil = sdf.parse( v.getFechagerminacion());				
-                datesql = new java.sql.Date(dateutil.getTime());
-				query.setDate(5,datesql);
-				dateutil = sdf.parse( v.getFechacorte());				
-                datesql = new java.sql.Date(dateutil.getTime());				
-				query.setDate(6, datesql);
+				if(v.getFechasiembra().length()>0){
+					dateutil = sdf.parse(v.getFechasiembra());				
+	                datesql = new java.sql.Date(dateutil.getTime());
+					query.setDate(4, datesql);					
+				}else{
+					query.setDate(4, null);
+				}
+				if(v.getFechagerminacion().length()>0){
+					dateutil = sdf.parse( v.getFechagerminacion());				
+	                datesql = new java.sql.Date(dateutil.getTime());
+					query.setDate(5,datesql);					
+				}else{
+					query.setDate(5,null);
+				}
+				if(v.getFechacorte().length()>0){
+					dateutil = sdf.parse( v.getFechacorte());				
+	                datesql = new java.sql.Date(dateutil.getTime());				
+					query.setDate(6, datesql);					
+				}else{
+					query.setDate(6, null);					
+				}
 				query.setInt(7, v.getTipovisita());
 				query.setInt(8, v.getCalificacion());
 				query.setInt(9, v.getPorque());

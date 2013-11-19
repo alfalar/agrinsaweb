@@ -89,6 +89,7 @@ public class ConsultasBean implements Serializable {
 			lotxentxareaenabled=false;
 			hxaxeenabled=false;
 			hecxetapaenabled=false;
+			resumenenabled=false;
 		}else if(selectedTiposconsulta.equalsIgnoreCase("areaxvereda")){
 			areaxvereda=consultasDao.getAreaxvereda();
 			areaxciudadenabled=false;
