@@ -24,11 +24,15 @@ dojo.declare("dojoclass.dojo.ProveedorConstantes", null, {
 									}else if(llave=="MENU_ADMINISTRACION"){
 										menu_admon=valor;
 									}else if(llave=="MENU_CONSULTAS"){
-										menu_consultas=valor;	
+										menu_consultas=valor;
+									}else if(llave=="MENU_MARCADORES"){
+										menu_marcadores=valor;											
 									}else if(llave=="SERVICIO_GEOMETRIA"){
 										serviciogeometria=valor;	
 									}else if(llave=="SERVICIO_IMPRESION"){
-										servicioimpresion=valor;											
+										servicioimpresion=valor;
+									}else if(llave=="IDTEMATICO"){
+										idtematicos=valor;																					
 									}else if(tipo=="SERVICIO_GEOGRAFICO"){										
 										var objeto=new Object();
 										objeto.tipo=llave;

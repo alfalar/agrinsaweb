@@ -1,6 +1,8 @@
 package co.geographs.agrinsa.dao.business;
 
-public class Estadolotes {
+import java.io.Serializable;
+
+public class Estadolotes implements Serializable {
 	private int activos;
 	private int inactivos;
 	public int getActivos() {

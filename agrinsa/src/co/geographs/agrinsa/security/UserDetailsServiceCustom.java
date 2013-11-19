@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import co.geographs.agrinsa.dao.ConstantesDao;
 import co.geographs.agrinsa.dao.UsuariosDao;
+import co.geographs.agrinsa.dao.business.Roles;
 import co.geographs.agrinsa.dao.business.Usuarios;
 import co.geographs.agrinsa.util.SpringUtils;
 
@@ -30,7 +31,13 @@ public class UserDetailsServiceCustom implements UserDetailsService {
 		try {
 			usuarios = (UsuariosDao)SpringUtils.getBean("usuariosDao");
 			Usuarios usuario = usuarios.getUsuario(userName);
-			//List<Roles> roles= usuarios.getRoles(userName);
+			List<Roles> roles= usuarios.getRoles(userName);
+			boolean isRoleadm=false;
+			for(Roles rol: roles){
+				if(rol.getRol().equalsIgnoreCase("ROLE_ADMINISTRADOR")){
+					isRoleadm=true;
+				}
+			}
 			List<String> recursos=usuarios.getRecursosPermitidos(userName);	
 			constantes=(ConstantesDao)SpringUtils.getBean("constantesDao");
 			constantes.getConstantesJson(userName);
@@ -41,6 +48,8 @@ public class UserDetailsServiceCustom implements UserDetailsService {
 				user.setEnabled(usuario.isHabilitado());
 				user.setRecursos(recursos);
 				user.setDetalleUsuario(usuario);
+				user.setListaroles(roles);
+				user.setAdmRol(isRoleadm);
 			}
 			System.out.println(user.toString());
 		} catch (HibernateException e) {

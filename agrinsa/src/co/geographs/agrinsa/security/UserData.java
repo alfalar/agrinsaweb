@@ -25,9 +25,19 @@ public class UserData implements UserDetails {
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
 	private boolean enabled;
+	private boolean isAdmRol;
 	private Usuarios detalleUsuario;
+	private List<Roles> listaroles;
 	
 	
+	public boolean isAdmRol() {
+		return isAdmRol;
+	}
+
+	public void setAdmRol(boolean isAdmRol) {
+		this.isAdmRol = isAdmRol;
+	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -92,6 +102,15 @@ public class UserData implements UserDetails {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	
+	public List<Roles> getListaroles() {
+		return listaroles;
+	}
+
+	public void setListaroles(List<Roles> listaroles) {
+		this.listaroles = listaroles;
 	}
 
 	@Override

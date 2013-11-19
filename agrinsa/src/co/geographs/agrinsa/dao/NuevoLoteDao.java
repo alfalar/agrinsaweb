@@ -48,18 +48,22 @@ public class NuevoLoteDao {
 				int numvisita=0;
 				int calificacion=nl.getCalifilote();
 				int usuarioid=nl.getUsuarioid();
+				String agricultor=nl.getAgricultor();
+				String nombrelote=nl.getNombrelote();
 				int i=0;
 				for(Coordenadas co:nl.getCoordenadas()){
 					i++;					
 					double longitud=co.getLongitud();
 					double latitud=co.getLatitud();
-					query = conection.prepareStatement("{call guardapunto (?,?,?,?,?,?)}");
+					query = conection.prepareStatement("{call guardapunto (?,?,?,?,?,?,?,?)}");
 					query.setInt(1, loteid);
 					query.setInt(2, numvisita);
 					query.setInt(3, calificacion);
 					query.setInt(4, usuarioid);
 					query.setDouble(5, latitud);
 					query.setDouble(6, longitud);
+					query.setString(7, agricultor);
+					query.setString(8, nombrelote);
 					query.executeUpdate();												
 					//System.out.println("COORDENADA INSERTADA "+i);
 				}

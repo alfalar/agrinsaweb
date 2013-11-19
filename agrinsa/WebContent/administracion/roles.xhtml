@@ -150,6 +150,17 @@ xmlns:p="http://primefaces.org/ui">
 											</f:facet>
 										</p:cellEditor>
 									</p:column>
+									<p:column headerText="Vendedor">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{usuarios.vendedor}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText id="vendedorInput"
+												value="#{usuarios.vendedor}" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
 
 									<p:column style="width:4%">
 										<p:rowEditor />
@@ -429,6 +440,11 @@ xmlns:p="http://primefaces.org/ui">
 						value="#{administracionBean.segundoapellido}" required="false" />
 						<br />
 
+						<h:outputText value="Vendedor:" />
+						<p:inputText id="vendedor"
+						value="#{administracionBean.vendedor}" required="false" />
+						<br />
+						
 						<h:outputText value="Habilitado:" />
 						<p:selectBooleanCheckbox value="#{administracionBean.habilitado}" />
 						<br />

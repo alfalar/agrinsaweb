@@ -45,6 +45,7 @@ public class AdministracionBean {
 	private String primerapellido;
 	private String segundoapellido;
 	private boolean habilitado=false;	
+	private int vendedor;
 	//VARIABLES USUARIOS ROL
 	private List<Usuarios> usuariosrol;
 	//VARIABLES PERMISOS
@@ -164,6 +165,7 @@ public class AdministracionBean {
 		usuario.setPrimerApellido(primerapellido);
 		usuario.setSegundoApellido(segundoapellido);
 		usuario.setHabilitado(isHabilitado());
+		usuario.setVendedor(vendedor);
 		
 		mensaje=usuariosDao.addUsuario(usuario);
 			if(mensaje.equalsIgnoreCase("OK")){
@@ -244,6 +246,14 @@ public class AdministracionBean {
 	}
 
 	
+	public int getVendedor() {
+		return vendedor;
+	}
+
+	public void setVendedor(int vendedor) {
+		this.vendedor = vendedor;
+	}
+
 	public List<Usuarios> getUsuariosrol() {
 		UsuariosDao usuariosDao = (UsuariosDao)SpringUtils.getBean("usuariosDao");
 		if(this.selectedRol!=null){
